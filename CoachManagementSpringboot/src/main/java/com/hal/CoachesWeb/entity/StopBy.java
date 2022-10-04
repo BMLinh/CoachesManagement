@@ -1,10 +1,11 @@
-package com.hal.CoachesWeb.models;
+package com.hal.CoachesWeb.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Picture {
+@Table(name = "stop_by", schema = "coachesmanagementdb", catalog = "")
+public class StopBy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -13,11 +14,11 @@ public class Picture {
     @Column(name = "name")
     private String name;
     @Basic
-    @Column(name = "url")
-    private String url;
+    @Column(name = "address")
+    private String address;
     @Basic
-    @Column(name = "coach_id")
-    private String coachId;
+    @Column(name = "district_id")
+    private Integer districtId;
     @Basic
     @Column(name = "status")
     private Integer status;
@@ -38,20 +39,20 @@ public class Picture {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getAddress() {
+        return address;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getCoachId() {
-        return coachId;
+    public Integer getDistrictId() {
+        return districtId;
     }
 
-    public void setCoachId(String coachId) {
-        this.coachId = coachId;
+    public void setDistrictId(Integer districtId) {
+        this.districtId = districtId;
     }
 
     public Integer getStatus() {
@@ -66,12 +67,12 @@ public class Picture {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Picture picture = (Picture) o;
-        return id == picture.id && Objects.equals(name, picture.name) && Objects.equals(url, picture.url) && Objects.equals(coachId, picture.coachId) && Objects.equals(status, picture.status);
+        StopBy stopBy = (StopBy) o;
+        return id == stopBy.id && Objects.equals(name, stopBy.name) && Objects.equals(address, stopBy.address) && Objects.equals(districtId, stopBy.districtId) && Objects.equals(status, stopBy.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, url, coachId, status);
+        return Objects.hash(id, name, address, districtId, status);
     }
 }

@@ -1,4 +1,4 @@
-package com.hal.CoachesWeb.models;
+package com.hal.CoachesWeb.model;
 
 public class ResponseObject {
     private String status;

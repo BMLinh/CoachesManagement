@@ -1,4 +1,4 @@
-package com.hal.CoachesWeb.models;
+package com.hal.CoachesWeb.entity;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
