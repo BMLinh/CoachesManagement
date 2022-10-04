@@ -1,17 +1,17 @@
-package com.hal.CoachesWeb.models;
+package com.hal.CoachesWeb.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Category {
+public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "type")
-    private String type;
+    @Column(name = "name")
+    private String name;
     @Basic
     @Column(name = "status")
     private Integer status;
@@ -24,12 +24,12 @@ public class Category {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getStatus() {
@@ -44,12 +44,12 @@ public class Category {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
-        return id == category.id && Objects.equals(type, category.type) && Objects.equals(status, category.status);
+        Country country = (Country) o;
+        return id == country.id && Objects.equals(name, country.name) && Objects.equals(status, country.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, status);
+        return Objects.hash(id, name, status);
     }
 }

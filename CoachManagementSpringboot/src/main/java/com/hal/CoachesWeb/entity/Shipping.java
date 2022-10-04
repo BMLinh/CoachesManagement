@@ -1,4 +1,4 @@
-package com.hal.CoachesWeb.models;
+package com.hal.CoachesWeb.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
