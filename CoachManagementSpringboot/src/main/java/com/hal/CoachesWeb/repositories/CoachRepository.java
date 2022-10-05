@@ -1,4 +1,4 @@
 package com.hal.CoachesWeb.repositories;
 
-public class CoachRepository {
+public interface CoachRepository {
 }
