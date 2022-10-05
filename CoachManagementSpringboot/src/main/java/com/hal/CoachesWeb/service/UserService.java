@@ -52,6 +52,8 @@ public class UserService {
             user.setGender(newUser.getGender());
             user.setPassword(newUser.getPassword());
             user.setPhone(newUser.getPhone());
+            user.setStatus(1);
+            user.setRoleId(2);
             userRepository.save(user);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("200", "Sign up successfully",user.getStatus())
