@@ -2,14 +2,18 @@ package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.model.ResponseObject;
 import com.hal.CoachesWeb.entity.User;
+import com.hal.CoachesWeb.model.UserDto;
 import com.hal.CoachesWeb.model.UserLogin;
 import com.hal.CoachesWeb.repositories.UserRepository;
 import com.hal.CoachesWeb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api/user")
@@ -18,101 +22,89 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
+
     @GetMapping("/getall")
     List<User> getAllUser() {
         return userRepository.findAll();
     }
 
     @PostMapping("/signin")
-    ResponseEntity<ResponseObject> logIn(@RequestBody UserLogin userLogin){
-        return userService.logIn(userLogin.getPhone(), userLogin.getPassword());
+    ResponseEntity<ResponseObject> signIn(@RequestBody UserLogin userSignin) {
+        return userService.signIn(userSignin.getPhone(), userSignin.getPassword());
     }
 
     @PostMapping("/signup")
-    ResponseEntity<ResponseObject> signUp(@RequestBody User newUser){
+    ResponseEntity<ResponseObject> signUp(@RequestBody User newUser) {
+        if (isFieldMissing(newUser)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ResponseObject("400", "Required field is missing", "")
+            );
+        }
+        if (isDataMissing(newUser)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ResponseObject("400", "Require field data is missing", "")
+            );
+        }
         return userService.signUp(newUser);
     }
 
+    @GetMapping("/{id}")
+    ResponseEntity<ResponseObject> getUserById(@PathVariable int id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("200", "Query user successfully", new UserDto().userToDto(user.get()))
+            );
+        } else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("400", "Can not found user id= " + id, "")
+            );
+    }
 
-//    @GetMapping("/id")
-//    ResponseEntity<ResponseObject> getUserById(@RequestBody int id){
-//        Optional<User> user = userRes.findById(id);
-//        if (user.isPresent()){
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject("ok", "Query user successfully", user)
-//            );
-//        }
-//        else
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-//                    new ResponseObject("failed", "Can not found user id= "+id, "")
-//            );
-//    }
-//
-//    @GetMapping("/phone")
-//    ResponseEntity<ResponseObject> getUserByPhone(@RequestBody String phone){
-//        Optional<User> user = userRes.findByPhone(phone);
-//        if (user.isPresent()){
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject("ok", "Query user successfully", user)
-//            );
-//        }
-//        else
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-//                    new ResponseObject("failed", "Can not found user phone= "+phone, "")
-//            );
-//    }
-//
-//
-//    @PutMapping("/update")
-//    ResponseEntity<ResponseObject> updateUser(@RequestBody User newUser){
-//        Optional<User> user = userRes.findById(newUser.getId())
-//                .map(u -> {
-//                    u.setAvata(newUser.getAvata());
-//                    u.setDob(newUser.getDob());
-//                    u.setEmail(newUser.getEmail());
-//                    u.setFullname(newUser.getFullname());
-//                    u.setGender(newUser.getGender());
-//                    u.setPassword(newUser.getPassword());
-//                    u.setPhone(newUser.getPhone());
-//                    return userRes.save(u);
-//                });
-//        if (user.isPresent()){
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject("ok", "Query user successfully", user)
-//            );
-//        }
-//        else
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-//                    new ResponseObject("failed", "Can not found user id= "+newUser.getId(), "")
-//            );
-//    }
-//
-//    @DeleteMapping("/updateUserStatus")
-//    ResponseEntity<ResponseObject> updateUserStatus(@RequestBody int id, int status){
-//        Optional<User> user = userRes.findById(id).map(u->{u.setStatus(status);
-//            return userRes.save(u);});
-//        if (user.isPresent()){
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject("ok", "Delete user sucessfully",""));
-//        }
-//        else
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-//                    new ResponseObject("failed", "Can not found user id= "+id, "")
-//            );
-//
-//    }
-//
-//    @DeleteMapping("/deleteUser")
-//    ResponseEntity<ResponseObject> deleteUser(@RequestBody int id){
-//        boolean isExist = userRes.existsById(id);
-//        if (isExist){
-//            userRes.deleteById(id);
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject("ok", "Delete user successfully",""));
-//        }
-//        else
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-//                    new ResponseObject("failed", "Can not found user id= "+id, "")
-//            );
-//    }
+    @PutMapping("/update")
+    ResponseEntity<ResponseObject> updateUser(@RequestBody User newUser) {
+        if (isFieldMissing(newUser)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ResponseObject("400", "Required field is missing", "")
+            );
+        }
+        if (isDataMissing(newUser)){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ResponseObject("400", "Require field data is missing", "")
+            );
+        }
+        return userService.updateUser(newUser);
+    }
+
+    @PutMapping("/updateStatus/{id}")
+    ResponseEntity<ResponseObject> updateUserStatus(@PathVariable int id, @RequestBody int status){
+        return userService.updateUserStatus(id, status);
+    }
+    private boolean isFieldMissing(User user) {
+        if (user.getPhone() == null || user.getPassword() == null
+                || user.getEmail() == null || user.getFullname() == null) {
+            return true;
+        }
+        return false;
+    }
+    private boolean isDataMissing(User user){
+        if (user.getPhone().isBlank() || user.getPassword().isBlank()
+                || user.getEmail().isBlank() || user.getFullname().isBlank()) {
+            return true;
+        }
+        return false;
+    }
+    @DeleteMapping("/{id}")
+    ResponseEntity<ResponseObject> deleteUser(@PathVariable int id){
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()){
+            userRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("200", "Delete user successfully",""));
+        }
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    new ResponseObject("400", "Can not found user id= "+id, "")
+            );
+    }
 }

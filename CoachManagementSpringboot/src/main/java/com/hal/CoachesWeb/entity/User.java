@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -31,8 +32,8 @@ public class User {
     @Column(name = "gender")
     private Boolean gender;
     @Basic
-    @Column(name = "avata")
-    private String avata;
+    @Column(name = "avatar")
+    private String avatar;
     @Basic
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -40,9 +41,11 @@ public class User {
     private Date createdDate;
     @Basic
     @Column(name = "role_id")
+    @Value("${some.key:2}")
     private Integer roleId;
     @Basic
     @Column(name = "status")
+    @Value("${some.key:1}")
     private Integer status;
 
     public int getId() {
@@ -101,12 +104,12 @@ public class User {
         this.gender = gender;
     }
 
-    public String getAvata() {
-        return avata;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setAvata(String avata) {
-        this.avata = avata;
+    public void setAvatar(String avata) {
+        this.avatar = avata;
     }
 
     public Date getCreatedDate() {
@@ -138,12 +141,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(password, user.password) && Objects.equals(fullname, user.fullname) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(dob, user.dob) && Objects.equals(gender, user.gender) && Objects.equals(avata, user.avata) && Objects.equals(createdDate, user.createdDate) && Objects.equals(roleId, user.roleId) && Objects.equals(status, user.status);
+        return id == user.id && Objects.equals(password, user.password) && Objects.equals(fullname, user.fullname) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(dob, user.dob) && Objects.equals(gender, user.gender) && Objects.equals(avatar, user.avatar) && Objects.equals(createdDate, user.createdDate) && Objects.equals(roleId, user.roleId) && Objects.equals(status, user.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, password, fullname, email, phone, dob, gender, avata, createdDate, roleId, status);
+        return Objects.hash(id, password, fullname, email, phone, dob, gender, avatar, createdDate, roleId, status);
     }
 
     @Override
@@ -156,7 +159,7 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", dob=" + dob +
                 ", gender=" + gender +
-                ", avata='" + avata + '\'' +
+                ", avata='" + avatar + '\'' +
                 ", createdDate=" + createdDate +
                 ", roleId=" + roleId +
                 ", status=" + status +

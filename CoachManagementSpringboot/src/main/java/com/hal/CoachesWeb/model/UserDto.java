@@ -1,7 +1,8 @@
 package com.hal.CoachesWeb.model;
 
-import javax.persistence.*;
-import java.sql.Date;
+import com.hal.CoachesWeb.entity.User;
+
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -12,7 +13,7 @@ public class UserDto {
     private String phone;
     private Date dob;
     private Boolean gender;
-    private String avata;
+    private String avatar;
     private Date createdDate;
     private Integer roleId;
     private Integer status;
@@ -65,12 +66,12 @@ public class UserDto {
         this.gender = gender;
     }
 
-    public String getAvata() {
-        return avata;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setAvata(String avata) {
-        this.avata = avata;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Date getCreatedDate() {
@@ -99,7 +100,7 @@ public class UserDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fullname, email, phone, dob, gender, avata, createdDate, roleId, status);
+        return Objects.hash(id, fullname, email, phone, dob, gender, avatar, createdDate, roleId, status);
     }
 
     @Override
@@ -111,10 +112,25 @@ public class UserDto {
                 ", phone='" + phone + '\'' +
                 ", dob=" + dob +
                 ", gender=" + gender +
-                ", avata='" + avata + '\'' +
+                ", avata='" + avatar + '\'' +
                 ", createdDate=" + createdDate +
                 ", roleId=" + roleId +
                 ", status=" + status +
                 '}';
+    }
+
+    public UserDto userToDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.id = user.getId();
+        userDto.fullname = user.getFullname();
+        userDto.email = user.getEmail();
+        userDto.phone = user.getPhone();
+        userDto.dob = user.getDob();
+        userDto.gender = user.getGender();
+        userDto.avatar = user.getAvatar();
+        userDto.createdDate = user.getCreatedDate();
+        userDto.roleId = user.getRoleId();
+        userDto.status = user.getStatus();
+        return userDto;
     }
 }
