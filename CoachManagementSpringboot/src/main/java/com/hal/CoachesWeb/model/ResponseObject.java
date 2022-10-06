@@ -1,24 +1,24 @@
 package com.hal.CoachesWeb.model;
 
 public class ResponseObject {
-    private String status;
+    private int code;
     private String message;
     private Object data;
 
     public ResponseObject() {}
 
-    public ResponseObject(String status, String message, Object data) {
-        this.status = status;
+    public ResponseObject(int code, String message, Object data) {
+        this.code = code;
         this.message = message;
         this.data = data;
     }
 
-    public String getStatus() {
-        return status;
+    public int getCode() {
+        return code;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public String getMessage() {

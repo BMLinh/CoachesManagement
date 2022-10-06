@@ -11,6 +11,9 @@ public class Shipping {
     @Column(name = "id")
     private int id;
     @Basic
+    @Column(name = "name")
+    private String name;
+    @Basic
     @Column(name = "senderName")
     private String senderName;
     @Basic
@@ -32,8 +35,8 @@ public class Shipping {
     @Column(name = "sendTime")
     private Timestamp sendTime;
     @Basic
-    @Column(name = "receiveTime")
-    private Timestamp receiveTime;
+    @Column(name = "price")
+    private Integer price;
     @Basic
     @Column(name = "coaches_id")
     private Integer coachesId;
@@ -47,6 +50,14 @@ public class Shipping {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSenderName() {
@@ -105,12 +116,12 @@ public class Shipping {
         this.sendTime = sendTime;
     }
 
-    public Timestamp getReceiveTime() {
-        return receiveTime;
+    public Integer getPrice() {
+        return price;
     }
 
-    public void setReceiveTime(Timestamp receiveTime) {
-        this.receiveTime = receiveTime;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
     public Integer getCoachesId() {
@@ -134,11 +145,11 @@ public class Shipping {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Shipping shipping = (Shipping) o;
-        return id == shipping.id && Objects.equals(senderName, shipping.senderName) && Objects.equals(senderPhone, shipping.senderPhone) && Objects.equals(senderEmail, shipping.senderEmail) && Objects.equals(receiverName, shipping.receiverName) && Objects.equals(receiverPhone, shipping.receiverPhone) && Objects.equals(receiverEmail, shipping.receiverEmail) && Objects.equals(sendTime, shipping.sendTime) && Objects.equals(receiveTime, shipping.receiveTime) && Objects.equals(coachesId, shipping.coachesId) && Objects.equals(status, shipping.status);
+        return id == shipping.id && Objects.equals(name, shipping.name) && Objects.equals(senderName, shipping.senderName) && Objects.equals(senderPhone, shipping.senderPhone) && Objects.equals(senderEmail, shipping.senderEmail) && Objects.equals(receiverName, shipping.receiverName) && Objects.equals(receiverPhone, shipping.receiverPhone) && Objects.equals(receiverEmail, shipping.receiverEmail) && Objects.equals(sendTime, shipping.sendTime) && Objects.equals(price, shipping.price) && Objects.equals(coachesId, shipping.coachesId) && Objects.equals(status, shipping.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, senderName, senderPhone, senderEmail, receiverName, receiverPhone, receiverEmail, sendTime, receiveTime, coachesId, status);
+        return Objects.hash(id, name, senderName, senderPhone, senderEmail, receiverName, receiverPhone, receiverEmail, sendTime, price, coachesId, status);
     }
 }

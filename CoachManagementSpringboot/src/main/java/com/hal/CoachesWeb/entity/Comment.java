@@ -1,7 +1,9 @@
 package com.hal.CoachesWeb.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +20,8 @@ public class Comment {
     private Integer rating;
     @Basic
     @Column(name = "create_date")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
     @Basic
     @Column(name = "coach_id")

@@ -1,4 +1,4 @@
-package com.hal.CoachesWeb.model;
+package com.hal.CoachesWeb.model.User;
 
 import com.hal.CoachesWeb.entity.User;
 

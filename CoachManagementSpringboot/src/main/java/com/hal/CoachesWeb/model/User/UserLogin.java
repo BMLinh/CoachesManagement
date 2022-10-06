@@ -1,4 +1,4 @@
-package com.hal.CoachesWeb.model;
+package com.hal.CoachesWeb.model.User;
 
 public class UserLogin {
     public String getPhone() {

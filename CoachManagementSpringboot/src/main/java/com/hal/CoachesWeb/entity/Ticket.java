@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -12,10 +12,13 @@ public class Ticket {
     private int id;
     @Basic
     @Column(name = "price")
-    private Double price;
+    private Integer price;
+    @Basic
+    @Column(name = "email")
+    private String email;
     @Basic
     @Column(name = "create_date")
-    private Date createDate;
+    private Timestamp createDate;
     @Basic
     @Column(name = "coaches_id")
     private Integer coachesId;
@@ -43,19 +46,27 @@ public class Ticket {
         this.id = id;
     }
 
-    public Double getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public Date getCreateDate() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Timestamp getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 
@@ -112,11 +123,11 @@ public class Ticket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ticket ticket = (Ticket) o;
-        return id == ticket.id && Objects.equals(price, ticket.price) && Objects.equals(createDate, ticket.createDate) && Objects.equals(coachesId, ticket.coachesId) && Objects.equals(userId, ticket.userId) && Objects.equals(status, ticket.status) && Objects.equals(phone, ticket.phone) && Objects.equals(pickUpId, ticket.pickUpId) && Objects.equals(dropOffId, ticket.dropOffId);
+        return id == ticket.id && Objects.equals(price, ticket.price) && Objects.equals(email, ticket.email) && Objects.equals(createDate, ticket.createDate) && Objects.equals(coachesId, ticket.coachesId) && Objects.equals(userId, ticket.userId) && Objects.equals(status, ticket.status) && Objects.equals(phone, ticket.phone) && Objects.equals(pickUpId, ticket.pickUpId) && Objects.equals(dropOffId, ticket.dropOffId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, price, createDate, coachesId, userId, status, phone, pickUpId, dropOffId);
+        return Objects.hash(id, price, email, createDate, coachesId, userId, status, phone, pickUpId, dropOffId);
     }
 }
