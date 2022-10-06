@@ -96,6 +96,19 @@ public class CoachGarage {
         this.status = status;
     }
 
+    public  CoachGarage(){
+
+    }
+    public CoachGarage(String name, String phone, String address, Integer districId, Integer userId, String contract, Integer status) {
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.districId = districId;
+        this.userId = userId;
+        this.contract = contract;
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,14 +1,13 @@
 package com.hal.CoachesWeb.service;
 
 import com.hal.CoachesWeb.model.ResponseObject;
-import com.hal.CoachesWeb.model.UserDto;
+import com.hal.CoachesWeb.model.User.UserDto;
 import com.hal.CoachesWeb.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.hal.CoachesWeb.entity.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
@@ -24,21 +23,21 @@ public class UserService {
             if (user.getPassword().equals(password)){
                 if (user.getStatus()==0){
                     return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject("400", "Log in failed, your account is banned", "")
+                            new ResponseObject(400, "Log in failed, your account is banned", "")
                     );
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject("200", "Log in success", new UserDto().userToDto(user))
+                        new ResponseObject(200, "Log in success", new UserDto().userToDto(user))
                 );
             }
             else{
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                        new ResponseObject("400", "Password not correct", "")
+                        new ResponseObject(400, "Password not correct", "")
                 );
             }
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject("400", "Can not found user phone= " + phone, "")
+                new ResponseObject(400, "Can not found user phone= " + phone, "")
             );
     }
 
@@ -56,11 +55,11 @@ public class UserService {
             user.setRoleId(2);
             userRepository.save(user);
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("200", "Sign up successfully",user.getStatus())
+                    new ResponseObject(200, "Sign up successfully",user.getStatus())
             );
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                new ResponseObject("400", "Phone number already taken", "")
+                new ResponseObject(400, "Phone number already taken", "")
         );
     }
     
@@ -70,7 +69,7 @@ public class UserService {
             if (!newUser.getPhone().equals(user.get().getPhone())) {
                 if (userRepository.existsByPhone(newUser.getPhone())) {
                     return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                            new ResponseObject("400", "Phone number already taken", "")
+                            new ResponseObject(400, "Phone number already taken", "")
                     );
                 }
             }
@@ -83,11 +82,11 @@ public class UserService {
             user.get().setPassword(newUser.getPassword());
             userRepository.save(user.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("200", "Update user successfully", "")
+                    new ResponseObject(200, "Update user successfully", "")
             );
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject("400", "Can not found user id= "+newUser.getId(), "")
+                new ResponseObject(400, "Can not found user id= "+newUser.getId(), "")
         );
     }
     public ResponseEntity<ResponseObject> updateUserStatus(int id, int status){
@@ -96,11 +95,11 @@ public class UserService {
             user.get().setStatus(status);
             userRepository.save(user.get());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("200", "Update user successfully", "")
+                    new ResponseObject(200, "Update user successfully", "")
             );
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject("400", "Can not found user id= "+id, "")
+                new ResponseObject(400, "Can not found user id= "+id, "")
         );
     }
 }

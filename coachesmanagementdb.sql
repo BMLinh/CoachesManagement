@@ -72,6 +72,7 @@ CREATE TABLE `coach` (
 
 LOCK TABLES `coach` WRITE;
 /*!40000 ALTER TABLE `coach` DISABLE KEYS */;
+INSERT INTO `coach` VALUES ('DH190149','Phong lưu','0123456789',45,NULL,NULL,NULL,1);
 /*!40000 ALTER TABLE `coach` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,7 +198,7 @@ CREATE TABLE `comment` (
   KEY `fk_comment_coach_idx` (`coach_id`),
   CONSTRAINT `fk_comment_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`License_plates`),
   CONSTRAINT `fk_comment_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,6 +207,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT INTO `comment` VALUES (3,'aaaaa',5,NULL,'DH190149',1,1),(4,'bbbb',4,NULL,'DH190149',2,1);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -322,6 +324,7 @@ DROP TABLE IF EXISTS `shipping`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `shipping` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
   `senderName` varchar(45) DEFAULT NULL,
   `senderPhone` varchar(11) DEFAULT NULL,
   `senderEmail` varchar(45) DEFAULT NULL,
@@ -329,7 +332,7 @@ CREATE TABLE `shipping` (
   `receiverPhone` varchar(11) DEFAULT NULL,
   `receiverEmail` varchar(45) DEFAULT NULL,
   `sendTime` datetime DEFAULT NULL,
-  `receiveTime` datetime DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
   `coaches_id` int DEFAULT NULL,
   `status` int DEFAULT '1',
   PRIMARY KEY (`id`),
@@ -384,7 +387,8 @@ DROP TABLE IF EXISTS `ticket`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ticket` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `price` float DEFAULT NULL,
+  `price` decimal(10,0) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
   `create_date` datetime DEFAULT NULL,
   `coaches_id` int DEFAULT NULL,
   `user_id` int DEFAULT NULL,
@@ -458,4 +462,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-05  7:06:24
+-- Dump completed on 2022-10-06 15:50:57

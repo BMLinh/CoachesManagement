@@ -29,12 +29,12 @@ public class PictureController {
         List<Picture> pictures = pictureService.getPictureByCoachesId(id);
         if (!pictures.isEmpty()){
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("ok", "Query picture successfully", pictures)
+                    new ResponseObject(200, "Query picture successfully", pictures)
             );
         }
         else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    new ResponseObject("failed", "Can not found this coach id ="+id+" picture", "")
+                    new ResponseObject(400, "Can not found this coach id ="+id+" picture", "")
             );
         }
     }
