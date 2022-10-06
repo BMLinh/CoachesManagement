@@ -97,7 +97,7 @@ CREATE TABLE `coach_garage` (
   KEY `coachGarage_district_idx` (`distric_id`),
   CONSTRAINT `coachGarage_district` FOREIGN KEY (`distric_id`) REFERENCES `district` (`id`),
   CONSTRAINT `coachGarage_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,6 +106,7 @@ CREATE TABLE `coach_garage` (
 
 LOCK TABLES `coach_garage` WRITE;
 /*!40000 ALTER TABLE `coach_garage` DISABLE KEYS */;
+INSERT INTO `coach_garage` VALUES (1,'Hải Triều','0123456789',NULL,NULL,2,NULL,2),(2,'Đông Dương','1234567890',NULL,NULL,3,NULL,1),(3,'Hà Nam','2345678901',NULL,NULL,3,NULL,1),(4,'Hải Triều','0123456789',NULL,NULL,2,NULL,2);
 /*!40000 ALTER TABLE `coach_garage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -302,7 +303,7 @@ CREATE TABLE `role` (
   `name` varchar(20) DEFAULT NULL,
   `status` int DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -311,7 +312,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'admin',1),(2,'user',1),(3,'default',1);
+INSERT INTO `role` VALUES (1,'user',1),(2,'admin',1),(7,'coachGarage',1);
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -462,4 +463,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-06 15:50:57
+-- Dump completed on 2022-10-07  1:38:31
