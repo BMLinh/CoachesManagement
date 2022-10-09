@@ -11,11 +11,10 @@ public class UserDto {
     private String fullname;
     private String email;
     private String phone;
-    private Date dob;
     private Boolean gender;
     private String avatar;
     private Date createdDate;
-    private Integer roleId;
+    private String role;
     private Integer status;
 
     public int getId() {
@@ -50,13 +49,6 @@ public class UserDto {
         this.phone = phone;
     }
 
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
 
     public Boolean getGender() {
         return gender;
@@ -82,12 +74,12 @@ public class UserDto {
         this.createdDate = createdDate;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Integer getStatus() {
@@ -100,7 +92,7 @@ public class UserDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fullname, email, phone, dob, gender, avatar, createdDate, roleId, status);
+        return Objects.hash(id, fullname, email, phone, gender, avatar, createdDate, role, status);
     }
 
     @Override
@@ -110,13 +102,16 @@ public class UserDto {
                 ", fullname='" + fullname + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", dob=" + dob +
                 ", gender=" + gender +
                 ", avata='" + avatar + '\'' +
                 ", createdDate=" + createdDate +
-                ", roleId=" + roleId +
+                ", role=" + role +
                 ", status=" + status +
                 '}';
+    }
+
+    public UserDto() {
+
     }
 
     public UserDto userToDto(User user) {
@@ -125,11 +120,9 @@ public class UserDto {
         userDto.fullname = user.getFullname();
         userDto.email = user.getEmail();
         userDto.phone = user.getPhone();
-        userDto.dob = user.getDob();
         userDto.gender = user.getGender();
         userDto.avatar = user.getAvatar();
         userDto.createdDate = user.getCreatedDate();
-        userDto.roleId = user.getRoleId();
         userDto.status = user.getStatus();
         return userDto;
     }

@@ -1,6 +1,14 @@
 package com.hal.CoachesWeb.model.User;
 
-public class UserLogin {
+import javax.validation.constraints.NotBlank;
+
+public class UserSignIn {
+    @NotBlank
+    private String phone;
+
+    @NotBlank
+    private String password;
+
     public String getPhone() {
         return phone;
     }
@@ -16,7 +24,4 @@ public class UserLogin {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    private String phone;
-    private String password;
 }

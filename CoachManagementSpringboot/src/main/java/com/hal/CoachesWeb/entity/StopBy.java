@@ -6,6 +6,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "stop_by", schema = "coachesmanagementdb", catalog = "")
 public class StopBy {
+    //status = 0: delete or deactive; =1: active
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -60,6 +61,15 @@ public class StopBy {
     }
 
     public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public StopBy() {
+    }
+    public StopBy(String name, String address, Integer districtId, Integer status) {
+        this.name = name;
+        this.address = address;
+        this.districtId = districtId;
         this.status = status;
     }
 

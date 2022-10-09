@@ -3,6 +3,8 @@ package com.hal.CoachesWeb.controllers;
 import com.hal.CoachesWeb.entity.CoachGarage;
 import com.hal.CoachesWeb.model.ResponseObject;
 import com.hal.CoachesWeb.service.CoachGarageService;
+import com.hal.CoachesWeb.service.DistrictService;
+import com.hal.CoachesWeb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +19,21 @@ import java.util.Optional;
 public class CoachGarageController {
     @Autowired
     private CoachGarageService coachGarageService;
+    @Autowired
+    private DistrictService districtService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("")
     ResponseEntity<ResponseObject> getAllCoachGarage(){
         List<CoachGarage> coachGarages = coachGarageService.getAllCoachGarage();
         if (!coachGarages.isEmpty()){
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(200,"Get coach garage success", coachGarages)
+                    new ResponseObject(200,"Lấy nhà xe thành công", coachGarages)
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(400,"Coach garage is empty","")
+                new ResponseObject(400,"Nhà xe trống","")
         );
     }
 
@@ -36,23 +42,33 @@ public class CoachGarageController {
         Optional<CoachGarage> coachGarage = coachGarageService.getCoachGarageById(id);
         if (coachGarage.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(200, "Get coach garage success", coachGarage)
+                    new ResponseObject(200, "Lấy nhà xe thành công", coachGarage)
             );
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject(400, "Can not found coach garage with id= "+id, "")
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Không tìm thấy nhà xe id", "")
         );
     }
 
-    @PostMapping("/addcoachgarage")
+    @PostMapping("/add")
     ResponseEntity<ResponseObject> addCoachGarage(@RequestBody CoachGarage coachGarage){
-        if (coachGarageService.addCoachGarage(coachGarage)){
-            return ResponseEntity.status(HttpStatus.CREATED).body(
-                    new ResponseObject(200, "Create coach garage success", coachGarage)
+        if (userService.existsById(coachGarage.getUserId())){
+            if (districtService.getDistrictById(coachGarage.getDistrictId()).isPresent()){
+                if (coachGarageService.addCoachGarage(coachGarage)){
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                            new ResponseObject(200, "Tạo nhà xe thành công", coachGarage)
+                    );
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(400, "Thêm nhà xe thất bại", "")
+                );
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Không tìm thấy quận/huyện id", "")
             );
         }
-        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
-                new ResponseObject(400, "Can not create coach garage", "")
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Không tìm thấy người dùng id", "")
         );
     }
 
@@ -61,17 +77,17 @@ public class CoachGarageController {
         if (coachGarageService.getCoachGarageById(coachGarage.getId()).isPresent()){
             if (coachGarageService.updateCoachGarage(coachGarage)){
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(200, "Update coach garage success", coachGarage)
+                        new ResponseObject(200, "Cập nhật nhà xe thành công", coachGarage)
                 );
             }
             else {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                        new ResponseObject(400, "Can not update coach garage","")
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(400, "Cập nhật nhà xe thất bại","")
                 );
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject(400, "Can not found coach garage id= "+coachGarage.getId(),"")
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Không tìm thấy nhà xe id","")
         );
     }
     @DeleteMapping("/{id}")
@@ -79,17 +95,17 @@ public class CoachGarageController {
         if (coachGarageService.getCoachGarageById(id).isPresent()){
             if (coachGarageService.deleteCoachGarage(id)){
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(200, "Delete coach garage success", "")
+                        new ResponseObject(200, "Xóa nhà xe thành công", "")
                 );
             }
             else{
-                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
-                        new ResponseObject(400, "Can not delete coach garage", "")
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(400, "Xóa nhà xe thất bại", "")
                 );
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ResponseObject(400, "Can not found coach garage", "")
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Không tìm thấy nhà xe id", "")
         );
     }
 }

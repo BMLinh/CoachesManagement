@@ -5,6 +5,7 @@ import java.util.Objects;
 
 @Entity
 public class Country {
+    //status = 0: delete or deactive; =1: active
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -37,6 +38,14 @@ public class Country {
     }
 
     public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Country() {
+    }
+
+    public Country(String name, Integer status) {
+        this.name = name;
         this.status = status;
     }
 
