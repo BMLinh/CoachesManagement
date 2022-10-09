@@ -5,6 +5,7 @@ import java.util.Objects;
 
 @Entity
 public class Picture {
+    //status = 0: delete or deactive; =1: active
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")

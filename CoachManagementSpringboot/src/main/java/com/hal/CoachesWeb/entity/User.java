@@ -1,7 +1,6 @@
 package com.hal.CoachesWeb.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -26,9 +25,6 @@ public class User {
     @Column(name = "phone")
     private String phone;
     @Basic
-    @Column(name = "dob")
-    private Date dob;
-    @Basic
     @Column(name = "gender")
     private Boolean gender;
     @Basic
@@ -41,12 +37,24 @@ public class User {
     private Date createdDate;
     @Basic
     @Column(name = "role_id")
-    @Value("${some.key:2}")
     private Integer roleId;
     @Basic
     @Column(name = "status")
-    @Value("${some.key:1}")
     private Integer status;
+
+    public User() {
+    }
+
+    public User(String password, String fullname, String email, String phone, Boolean gender, String avatar, Integer roleId, Integer status) {
+        this.password = password;
+        this.fullname = fullname;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
+        this.avatar = avatar;
+        this.roleId = roleId;
+        this.status = status;
+    }
 
     public int getId() {
         return id;
@@ -88,14 +96,6 @@ public class User {
         this.phone = phone;
     }
 
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
-
     public Boolean getGender() {
         return gender;
     }
@@ -108,8 +108,8 @@ public class User {
         return avatar;
     }
 
-    public void setAvatar(String avata) {
-        this.avatar = avata;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Date getCreatedDate() {
@@ -141,28 +141,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(password, user.password) && Objects.equals(fullname, user.fullname) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(dob, user.dob) && Objects.equals(gender, user.gender) && Objects.equals(avatar, user.avatar) && Objects.equals(createdDate, user.createdDate) && Objects.equals(roleId, user.roleId) && Objects.equals(status, user.status);
+        return id == user.id && Objects.equals(password, user.password) && Objects.equals(fullname, user.fullname) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(gender, user.gender) && Objects.equals(avatar, user.avatar) && Objects.equals(createdDate, user.createdDate) && Objects.equals(roleId, user.roleId) && Objects.equals(status, user.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, password, fullname, email, phone, dob, gender, avatar, createdDate, roleId, status);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", password='" + password + '\'' +
-                ", fullname='" + fullname + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", dob=" + dob +
-                ", gender=" + gender +
-                ", avata='" + avatar + '\'' +
-                ", createdDate=" + createdDate +
-                ", roleId=" + roleId +
-                ", status=" + status +
-                '}';
+        return Objects.hash(id, password, fullname, email, phone, gender, avatar, createdDate, roleId, status);
     }
 }

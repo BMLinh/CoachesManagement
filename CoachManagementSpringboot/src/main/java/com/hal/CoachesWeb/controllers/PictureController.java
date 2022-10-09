@@ -24,7 +24,7 @@ public class PictureController {
 
     @GetMapping("/coachId")
     ResponseEntity<ResponseObject> getPictureByCoachId(@RequestBody int id){
-        List<Picture> pictures = pictureService.getPictureByCoachesId(id);
+        List<Picture> pictures = pictureService.getPictureByCoachId(id);
         if (!pictures.isEmpty()){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Query picture successfully", pictures)

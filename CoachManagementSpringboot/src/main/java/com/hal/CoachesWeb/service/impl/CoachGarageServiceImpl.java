@@ -25,7 +25,8 @@ public class CoachGarageServiceImpl implements CoachGarageService {
     @Override
     public boolean addCoachGarage(CoachGarage coachGarage){
         CoachGarage newCoachGarage = new CoachGarage
-                (coachGarage.getName(), coachGarage.getPhone(), coachGarage.getAddress(), coachGarage.getDistricId()
+                (coachGarage.getName(), coachGarage.getOwner(), coachGarage.getPhone(), coachGarage.getEmail()
+                        , coachGarage.getAddress(), coachGarage.getDistrictId()
                         , coachGarage.getUserId(), coachGarage.getContract(), 2);
         try {
             coachGarageRepository.save(newCoachGarage);
@@ -43,7 +44,7 @@ public class CoachGarageServiceImpl implements CoachGarageService {
                     c.setAddress(coachGarage.getAddress());
                     c.setName(coachGarage.getName());
                     c.setPhone(coachGarage.getPhone());
-                    c.setDistricId(coachGarage.getDistricId());
+                    c.setDistrictId(coachGarage.getDistrictId());
                     return coachGarageRepository.save(c);
                 });
             return newCoachGarage.isPresent();
