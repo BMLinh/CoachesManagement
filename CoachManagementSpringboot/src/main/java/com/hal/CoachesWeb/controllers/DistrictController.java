@@ -35,7 +35,7 @@ public class DistrictController {
         if (countryService.getCountryById(district.getCountryId()).isPresent()){
             if (districtService.addDistrict(district)){
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(200, "Thêm quận/huyện thành công", "")
+                        new ResponseObject(200, "Thêm quận/huyện thành công", district)
                 );
             }
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -52,7 +52,7 @@ public class DistrictController {
             if (countryService.getCountryById(district.getCountryId()).isPresent()){
                 if (districtService.updateDistrict(district)){
                     return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject(200, "Cập nhật quận/huyện thành công", "")
+                            new ResponseObject(200, "Cập nhật quận/huyện thành công", district)
                     );
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(

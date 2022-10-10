@@ -21,25 +21,22 @@ public class Coaches {
     private String description;
     @Basic
     @Column(name = "price")
-    private Integer price;
+    private int price;
     @Basic
     @Column(name = "emptySeat")
-    private Integer emptySeat;
+    private int emptySeat;
     @Basic
     @Column(name = "isShipping")
-    private Boolean isShipping;
-    @Basic
-    @Column(name = "driver_id")
-    private Integer driverId;
+    private boolean isShipping;
     @Basic
     @Column(name = "coach_id")
-    private String coachId;
+    private int coachId;
     @Basic
     @Column(name = "startPoint")
-    private Integer startPoint;
+    private int startPoint;
     @Basic
     @Column(name = "endPoint")
-    private Integer endPoint;
+    private int endPoint;
     @Basic
     @Column(name = "status")
     private Integer status;
@@ -76,59 +73,51 @@ public class Coaches {
         this.description = description;
     }
 
-    public Integer getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public Integer getEmptySeat() {
+    public int getEmptySeat() {
         return emptySeat;
     }
 
-    public void setEmptySeat(Integer emptySeat) {
+    public void setEmptySeat(int emptySeat) {
         this.emptySeat = emptySeat;
     }
 
-    public Boolean getShipping() {
+    public boolean isShipping() {
         return isShipping;
     }
 
-    public void setShipping(Boolean shipping) {
+    public void setShipping(boolean shipping) {
         isShipping = shipping;
     }
 
-    public Integer getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(Integer driverId) {
-        this.driverId = driverId;
-    }
-
-    public String getCoachId() {
+    public int getCoachId() {
         return coachId;
     }
 
-    public void setCoachId(String coachId) {
+    public void setCoachId(int coachId) {
         this.coachId = coachId;
     }
 
-    public Integer getStartPoint() {
+    public int getStartPoint() {
         return startPoint;
     }
 
-    public void setStartPoint(Integer startPoint) {
+    public void setStartPoint(int startPoint) {
         this.startPoint = startPoint;
     }
 
-    public Integer getEndPoint() {
+    public int getEndPoint() {
         return endPoint;
     }
 
-    public void setEndPoint(Integer endPoint) {
+    public void setEndPoint(int endPoint) {
         this.endPoint = endPoint;
     }
 
@@ -145,11 +134,11 @@ public class Coaches {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Coaches coaches = (Coaches) o;
-        return id == coaches.id && Objects.equals(startTime, coaches.startTime) && Objects.equals(endTime, coaches.endTime) && Objects.equals(description, coaches.description) && Objects.equals(price, coaches.price) && Objects.equals(emptySeat, coaches.emptySeat) && Objects.equals(isShipping, coaches.isShipping) && Objects.equals(driverId, coaches.driverId) && Objects.equals(coachId, coaches.coachId) && Objects.equals(startPoint, coaches.startPoint) && Objects.equals(endPoint, coaches.endPoint) && Objects.equals(status, coaches.status);
+        return id == coaches.id && price == coaches.price && emptySeat == coaches.emptySeat && isShipping == coaches.isShipping && coachId == coaches.coachId && startPoint == coaches.startPoint && endPoint == coaches.endPoint && Objects.equals(startTime, coaches.startTime) && Objects.equals(endTime, coaches.endTime) && Objects.equals(description, coaches.description) && Objects.equals(status, coaches.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, startTime, endTime, description, price, emptySeat, isShipping, driverId, coachId, startPoint, endPoint, status);
+        return Objects.hash(id, startTime, endTime, description, price, emptySeat, isShipping, coachId, startPoint, endPoint, status);
     }
 }

@@ -25,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public boolean addCategory(Category category){
         try {
-            categoryRepository.save(new Category(category.getName(), category.getStatus()));
+            categoryRepository.save(new Category(category.getName(), category.getStatus(), category.getSeat()));
             return true;
         } catch (HibernateException ex){
             System.out.println(ex);
@@ -51,5 +51,9 @@ public class CategoryServiceImpl implements CategoryService {
             System.out.println(ex);
         }
         return false;
+    }
+    @Override
+    public boolean existsById(int id){
+        return categoryRepository.existsById(id);
     }
 }

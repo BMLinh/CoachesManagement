@@ -29,7 +29,7 @@ public class CoachGarageController {
         List<CoachGarage> coachGarages = coachGarageService.getAllCoachGarage();
         if (!coachGarages.isEmpty()){
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(200,"Lấy nhà xe thành công", coachGarages)
+                    new ResponseObject(200,"Lấy tất cả nhà xe thành công", coachGarages)
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -74,7 +74,7 @@ public class CoachGarageController {
 
     @PutMapping("/update")
     ResponseEntity<ResponseObject> updateCoachGarage(@RequestBody CoachGarage coachGarage){
-        if (coachGarageService.getCoachGarageById(coachGarage.getId()).isPresent()){
+        if (coachGarageService.existsById(coachGarage.getId())){
             if (coachGarageService.updateCoachGarage(coachGarage)){
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(200, "Cập nhật nhà xe thành công", coachGarage)
@@ -92,7 +92,7 @@ public class CoachGarageController {
     }
     @DeleteMapping("/{id}")
     ResponseEntity<ResponseObject> deleteCoachGarage(@PathVariable int id){
-        if (coachGarageService.getCoachGarageById(id).isPresent()){
+        if (coachGarageService.existsById(id)){
             if (coachGarageService.deleteCoachGarage(id)){
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(200, "Xóa nhà xe thành công", "")

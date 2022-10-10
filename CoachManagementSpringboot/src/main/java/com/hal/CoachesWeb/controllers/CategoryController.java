@@ -48,10 +48,10 @@ public class CategoryController {
     }
     @PutMapping("/update")
     ResponseEntity<ResponseObject> updateCategory(@RequestBody Category category){
-        if (categoryService.getCategoryById(category.getId()).isPresent()){
+        if (categoryService.existsById(category.getId())){
             if (categoryService.updateCategory(category)){
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(200, "Cập nhật loại xe thành công", "")
+                        new ResponseObject(200, "Cập nhật loại xe thành công", category)
                 );
             }
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -64,7 +64,7 @@ public class CategoryController {
     }
     @DeleteMapping("/{id}")
     ResponseEntity<ResponseObject> deleteCategory(@PathVariable int id){
-        if (categoryService.getCategoryById(id).isPresent()){
+        if (categoryService.existsById(id)){
             if (categoryService.deleteCategory(id)){
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(200, "Xóa loại xe thành công", "")

@@ -39,7 +39,7 @@ public class CountryController {
     ResponseEntity<ResponseObject> addCountry(@RequestBody Country country){
         if (countryService.addCountry(country)){
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(200, "Thêm tỉnh/thành phố tỉnh/thành công", "")
+                    new ResponseObject(200, "Thêm tỉnh/thành phố tỉnh/thành công", country)
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -51,7 +51,7 @@ public class CountryController {
         if (countryService.getCountryById(country.getId()).isPresent()){
             if (countryService.updateCountry(country)){
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(200, "Cập nhật tỉnh/thành phố tỉnh/thành công", "")
+                        new ResponseObject(200, "Cập nhật tỉnh/thành phố tỉnh/thành công", country)
                 );
             }
             return ResponseEntity.status(HttpStatus.OK).body(

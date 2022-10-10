@@ -35,7 +35,7 @@ public class StopByController {
         if (districtService.getDistrictById(stopBy.getDistrictId()).isPresent()){
             if (stopByService.addStopBy(stopBy)){
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(200, "Thêm điểm dừng thành công", "")
+                        new ResponseObject(200, "Thêm điểm dừng thành công", stopBy)
                 );
             }
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -52,7 +52,7 @@ public class StopByController {
             if (districtService.getDistrictById(stopBy.getDistrictId()).isPresent()){
                 if (stopByService.updateStopBy(stopBy)){
                     return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject(200, "Cập nhật điểm dừng thành công", "")
+                            new ResponseObject(200, "Cập nhật điểm dừng thành công", stopBy)
                     );
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(

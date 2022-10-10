@@ -1,7 +1,9 @@
 package com.hal.CoachesWeb.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -17,26 +19,28 @@ public class Ticket {
     @Column(name = "email")
     private String email;
     @Basic
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date")
-    private Timestamp createDate;
-    @Basic
-    @Column(name = "coaches_id")
-    private Integer coachesId;
-    @Basic
-    @Column(name = "user_id")
-    private Integer userId;
-    @Basic
-    @Column(name = "status")
-    private Integer status;
+    private Date createDate;
     @Basic
     @Column(name = "phone")
     private String phone;
     @Basic
+    @Column(name = "coaches_id")
+    private int coachesId;
+    @Basic
+    @Column(name = "user_id")
+    private int userId;
+    @Basic
     @Column(name = "pick_up_id")
-    private Integer pickUpId;
+    private int pickUpId;
     @Basic
     @Column(name = "drop_off_id")
-    private Integer dropOffId;
+    private int dropOffId;
+    @Basic
+    @Column(name = "status")
+    private Integer status;
 
     public int getId() {
         return id;
@@ -62,36 +66,12 @@ public class Ticket {
         this.email = email;
     }
 
-    public Timestamp getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Timestamp createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    public Integer getCoachesId() {
-        return coachesId;
-    }
-
-    public void setCoachesId(Integer coachesId) {
-        this.coachesId = coachesId;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     public String getPhone() {
@@ -102,20 +82,44 @@ public class Ticket {
         this.phone = phone;
     }
 
-    public Integer getPickUpId() {
+    public int getCoachesId() {
+        return coachesId;
+    }
+
+    public void setCoachesId(int coachesId) {
+        this.coachesId = coachesId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getPickUpId() {
         return pickUpId;
     }
 
-    public void setPickUpId(Integer pickUpId) {
+    public void setPickUpId(int pickUpId) {
         this.pickUpId = pickUpId;
     }
 
-    public Integer getDropOffId() {
+    public int getDropOffId() {
         return dropOffId;
     }
 
-    public void setDropOffId(Integer dropOffId) {
+    public void setDropOffId(int dropOffId) {
         this.dropOffId = dropOffId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @Override
@@ -123,11 +127,11 @@ public class Ticket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ticket ticket = (Ticket) o;
-        return id == ticket.id && Objects.equals(price, ticket.price) && Objects.equals(email, ticket.email) && Objects.equals(createDate, ticket.createDate) && Objects.equals(coachesId, ticket.coachesId) && Objects.equals(userId, ticket.userId) && Objects.equals(status, ticket.status) && Objects.equals(phone, ticket.phone) && Objects.equals(pickUpId, ticket.pickUpId) && Objects.equals(dropOffId, ticket.dropOffId);
+        return id == ticket.id && coachesId == ticket.coachesId && userId == ticket.userId && pickUpId == ticket.pickUpId && dropOffId == ticket.dropOffId && Objects.equals(price, ticket.price) && Objects.equals(email, ticket.email) && Objects.equals(createDate, ticket.createDate) && Objects.equals(phone, ticket.phone) && Objects.equals(status, ticket.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, price, email, createDate, coachesId, userId, status, phone, pickUpId, dropOffId);
+        return Objects.hash(id, price, email, createDate, phone, coachesId, userId, pickUpId, dropOffId, status);
     }
 }
