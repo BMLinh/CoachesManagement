@@ -7,29 +7,42 @@ import java.util.Objects;
 public class Coach {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "License_plates")
+    @Column(name = "id")
+    private int id;
+    @Basic
+    @Column(name = "license_plates")
     private String licensePlates;
-    @Basic
-    @Column(name = "name")
-    private String name;
-    @Basic
-    @Column(name = "phone")
-    private String phone;
-    @Basic
-    @Column(name = "seat")
-    private Integer seat;
     @Basic
     @Column(name = "description")
     private String description;
     @Basic
-    @Column(name = "coachGarage_id")
-    private Integer coachGarageId;
+    @Column(name = "coach_garage_id")
+    private int coachGarageId;
     @Basic
     @Column(name = "category_id")
-    private Integer categoryId;
+    private int categoryId;
     @Basic
     @Column(name = "status")
-    private Integer status;
+    private int status;
+
+    public Coach() {
+    }
+
+    public Coach(String licensePlates, String description, int coachGarageId, int categoryId, int status) {
+        this.licensePlates = licensePlates;
+        this.description = description;
+        this.coachGarageId = coachGarageId;
+        this.categoryId = categoryId;
+        this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getLicensePlates() {
         return licensePlates;
@@ -37,30 +50,6 @@ public class Coach {
 
     public void setLicensePlates(String licensePlates) {
         this.licensePlates = licensePlates;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Integer getSeat() {
-        return seat;
-    }
-
-    public void setSeat(Integer seat) {
-        this.seat = seat;
     }
 
     public String getDescription() {
@@ -71,27 +60,27 @@ public class Coach {
         this.description = description;
     }
 
-    public Integer getCoachGarageId() {
+    public int getCoachGarageId() {
         return coachGarageId;
     }
 
-    public void setCoachGarageId(Integer coachGarageId) {
+    public void setCoachGarageId(int coachGarageId) {
         this.coachGarageId = coachGarageId;
     }
 
-    public Integer getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Integer categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -100,11 +89,11 @@ public class Coach {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Coach coach = (Coach) o;
-        return Objects.equals(licensePlates, coach.licensePlates) && Objects.equals(name, coach.name) && Objects.equals(phone, coach.phone) && Objects.equals(seat, coach.seat) && Objects.equals(description, coach.description) && Objects.equals(coachGarageId, coach.coachGarageId) && Objects.equals(categoryId, coach.categoryId) && Objects.equals(status, coach.status);
+        return id == coach.id && coachGarageId == coach.coachGarageId && categoryId == coach.categoryId && status == coach.status && Objects.equals(licensePlates, coach.licensePlates) && Objects.equals(description, coach.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(licensePlates, name, phone, seat, description, coachGarageId, categoryId, status);
+        return Objects.hash(id, licensePlates, description, coachGarageId, categoryId, status);
     }
 }

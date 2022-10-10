@@ -1,7 +1,9 @@
 package com.hal.CoachesWeb.entity;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -32,8 +34,10 @@ public class Shipping {
     @Column(name = "receiverEmail")
     private String receiverEmail;
     @Basic
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "sendTime")
-    private Timestamp sendTime;
+    private Date sendTime;
     @Basic
     @Column(name = "price")
     private Integer price;
@@ -108,11 +112,11 @@ public class Shipping {
         this.receiverEmail = receiverEmail;
     }
 
-    public Timestamp getSendTime() {
+    public Date getSendTime() {
         return sendTime;
     }
 
-    public void setSendTime(Timestamp sendTime) {
+    public void setSendTime(Date sendTime) {
         this.sendTime = sendTime;
     }
 

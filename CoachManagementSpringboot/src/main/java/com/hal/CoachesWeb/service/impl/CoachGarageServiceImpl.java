@@ -63,4 +63,8 @@ public class CoachGarageServiceImpl implements CoachGarageService {
         }
         return false;
     }
+    @Override
+    public boolean existsById(int id){
+        return coachGarageRepository.existsById(id);
+    }
 }

@@ -8,6 +8,7 @@ import java.util.Objects;
 
 @Entity
 public class User {
+    //status = 0: deleted or deactive; =1: active
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")

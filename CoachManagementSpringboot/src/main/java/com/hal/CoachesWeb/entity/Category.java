@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 public class Category {
-    //status = 0: delete or deactive; =1: active
+    //status = 0: deleted; =1: active
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -15,14 +15,18 @@ public class Category {
     private String name;
     @Basic
     @Column(name = "status")
-    private Integer status;
+    private int status;
+    @Basic
+    @Column(name = "seat")
+    private int seat;
 
     public Category() {
     }
 
-    public Category(String name, Integer status) {
+    public Category(String name, int status, int seat) {
         this.name = name;
         this.status = status;
+        this.seat = seat;
     }
 
     public int getId() {
@@ -41,12 +45,20 @@ public class Category {
         this.name = name;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getSeat() {
+        return seat;
+    }
+
+    public void setSeat(int seat) {
+        this.seat = seat;
     }
 
     @Override
@@ -54,11 +66,11 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return id == category.id && Objects.equals(name, category.name) && Objects.equals(status, category.status);
+        return id == category.id && status == category.status && seat == category.seat && Objects.equals(name, category.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, status);
+        return Objects.hash(id, name, status, seat);
     }
 }

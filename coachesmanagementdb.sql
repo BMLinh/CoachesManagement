@@ -27,7 +27,8 @@ DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
-  `status` int DEFAULT '1',
+  `status` int NOT NULL DEFAULT '1',
+  `seat` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -38,7 +39,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Giường nằm 45 chỗ',1),(2,'Giường nằm 25 chỗ',1),(3,'Giường nằm 49 chỗ',0);
+INSERT INTO `category` VALUES (1,'Giường nằm 45 chỗ',1,0),(2,'Giường nằm 25 chỗ',1,0),(3,'Giường nằm 49 chỗ',0,0);
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,21 +51,18 @@ DROP TABLE IF EXISTS `coach`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `coach` (
-  `License_plates` varchar(20) NOT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `phone` varchar(11) DEFAULT NULL,
-  `seat` int DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `license_plates` varchar(20) NOT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `coachGarage_id` int DEFAULT NULL,
-  `category_id` int DEFAULT NULL,
-  `status` int DEFAULT '1',
-  PRIMARY KEY (`License_plates`),
-  UNIQUE KEY `phone_UNIQUE` (`phone`),
-  KEY `coach_station_idx` (`coachGarage_id`),
+  `coach_garage_id` int NOT NULL,
+  `category_id` int NOT NULL,
+  `status` int NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `coach_station_idx` (`coach_garage_id`),
   KEY `coach_cagory_idx` (`category_id`),
   CONSTRAINT `coach_cagory` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
-  CONSTRAINT `coach_coachGarage` FOREIGN KEY (`coachGarage_id`) REFERENCES `coach_garage` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `coach_coachGarage` FOREIGN KEY (`coach_garage_id`) REFERENCES `coach_garage` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +71,7 @@ CREATE TABLE `coach` (
 
 LOCK TABLES `coach` WRITE;
 /*!40000 ALTER TABLE `coach` DISABLE KEYS */;
-INSERT INTO `coach` VALUES ('DH190149','Phong lưu','0123456789',45,NULL,NULL,NULL,1);
+INSERT INTO `coach` VALUES (1,'59AFG015H',NULL,1,1,1),(2,'58HFG015B',NULL,2,2,1),(3,'49HF321B','Xe màu hồng',2,1,0),(4,'58HFG015B',NULL,2,2,1);
 /*!40000 ALTER TABLE `coach` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,15 +84,15 @@ DROP TABLE IF EXISTS `coach_garage`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `coach_garage` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `owner` varchar(45) DEFAULT NULL,
-  `phone` varchar(11) DEFAULT NULL,
-  `email` varchar(45) DEFAULT NULL,
+  `name` varchar(45) NOT NULL,
+  `owner` varchar(45) NOT NULL,
+  `phone` varchar(11) NOT NULL,
+  `email` varchar(45) NOT NULL,
   `address` varchar(50) DEFAULT NULL,
   `district_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `contract` varchar(150) DEFAULT NULL,
-  `status` int DEFAULT '1',
+  `contract` varchar(150) NOT NULL,
+  `status` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `coachGarage_user_idx` (`user_id`),
   KEY `coachGarage_district_idx` (`district_id`),
@@ -109,7 +107,7 @@ CREATE TABLE `coach_garage` (
 
 LOCK TABLES `coach_garage` WRITE;
 /*!40000 ALTER TABLE `coach_garage` DISABLE KEYS */;
-INSERT INTO `coach_garage` VALUES (1,'Hải Triều','Linh','0123456789',NULL,NULL,3,2,NULL,2),(2,'Đông Dương','Hiếu','1234567890',NULL,NULL,2,3,NULL,1),(3,'Đà Lạt','Hải',NULL,NULL,NULL,1,3,NULL,1),(4,'Hải Triều','Nam','0123456789',NULL,NULL,3,2,NULL,2),(6,'Hải Triều','Linh','0123456789',NULL,'12/8 Đường 6',3,3,NULL,2);
+INSERT INTO `coach_garage` VALUES (1,'Hải Triều','Linh','0123456789','a',NULL,3,2,'a',2),(2,'Đông Dương','Hiếu','1234567890','b',NULL,2,3,'a',1),(3,'Đà Lạt','Hải','2345678901','c',NULL,1,3,'a',1),(4,'Hải Triều','Nam','0123456789','d',NULL,3,2,'a',2),(6,'Hải Triều','Linh','0123456789','e','12/8 Đường 6',3,3,'a',2);
 /*!40000 ALTER TABLE `coach_garage` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,24 +120,21 @@ DROP TABLE IF EXISTS `coaches`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `coaches` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `startTime` datetime DEFAULT NULL,
-  `endTime` datetime DEFAULT NULL,
+  `startTime` datetime NOT NULL,
+  `endTime` datetime NOT NULL,
   `description` varchar(150) DEFAULT NULL,
-  `price` decimal(10,0) DEFAULT NULL,
-  `emptySeat` int DEFAULT NULL,
-  `isShipping` bit(1) DEFAULT b'0',
-  `driver_id` int DEFAULT NULL,
-  `coach_id` varchar(20) DEFAULT NULL,
-  `startPoint` int DEFAULT NULL,
-  `endPoint` int DEFAULT NULL,
+  `price` decimal(10,0) NOT NULL,
+  `emptySeat` int NOT NULL,
+  `isShipping` bit(1) NOT NULL DEFAULT b'0',
+  `coach_id` int NOT NULL,
+  `startPoint` int NOT NULL,
+  `endPoint` int NOT NULL,
   `status` int DEFAULT '1',
   PRIMARY KEY (`id`),
-  KEY `fk_coaches_driver_idx` (`driver_id`),
   KEY `fk_coaches_country_idx` (`startPoint`),
   KEY `fk_coaches_country_idx1` (`endPoint`),
   KEY `fk_coaches_coach_idx` (`coach_id`),
-  CONSTRAINT `fk_coaches_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`License_plates`),
-  CONSTRAINT `fk_coaches_driver` FOREIGN KEY (`driver_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `fk_coaches_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`id`),
   CONSTRAINT `fk_coaches_end_point` FOREIGN KEY (`endPoint`) REFERENCES `country` (`id`),
   CONSTRAINT `fk_coaches_start_point` FOREIGN KEY (`startPoint`) REFERENCES `country` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -164,8 +159,8 @@ DROP TABLE IF EXISTS `coaches_stop_by`;
 CREATE TABLE `coaches_stop_by` (
   `coaches_id` int NOT NULL,
   `stopBy_id` int NOT NULL,
-  `time` int DEFAULT NULL,
-  `status` int DEFAULT '1',
+  `time` int NOT NULL,
+  `status` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`coaches_id`,`stopBy_id`),
   KEY `fk_stop_by_idx` (`stopBy_id`),
   CONSTRAINT `fk_coaches` FOREIGN KEY (`coaches_id`) REFERENCES `coaches` (`id`),
@@ -192,15 +187,15 @@ DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment` (
   `id` int NOT NULL AUTO_INCREMENT,
   `content` varchar(200) DEFAULT NULL,
-  `rating` int DEFAULT NULL,
+  `rating` int NOT NULL,
   `create_date` datetime DEFAULT NULL,
-  `coach_id` varchar(20) DEFAULT NULL,
-  `user_id` int DEFAULT NULL,
+  `coach_id` int NOT NULL,
+  `user_id` int NOT NULL,
   `status` int DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `comment_user_idx` (`user_id`),
   KEY `fk_comment_coach_idx` (`coach_id`),
-  CONSTRAINT `fk_comment_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`License_plates`),
+  CONSTRAINT `fk_comment_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`id`),
   CONSTRAINT `fk_comment_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -211,7 +206,6 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (3,'aaaaa',5,NULL,'DH190149',1,1),(4,'bbbb',4,NULL,'DH190149',2,1);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -225,7 +219,7 @@ DROP TABLE IF EXISTS `country`;
 CREATE TABLE `country` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
-  `status` int DEFAULT '1',
+  `status` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -250,8 +244,8 @@ DROP TABLE IF EXISTS `district`;
 CREATE TABLE `district` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
-  `country_id` int DEFAULT NULL,
-  `status` int DEFAULT '1',
+  `country_id` int NOT NULL,
+  `status` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `district_country_idx` (`country_id`),
   CONSTRAINT `district_country` FOREIGN KEY (`country_id`) REFERENCES `country` (`id`)
@@ -277,13 +271,12 @@ DROP TABLE IF EXISTS `picture`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `picture` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
   `url` varchar(150) DEFAULT NULL,
-  `coach_id` varchar(20) DEFAULT NULL,
-  `status` int DEFAULT '1',
+  `coach_id` int NOT NULL,
+  `status` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_picture_coach_idx` (`coach_id`),
-  CONSTRAINT `fk_picture_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`License_plates`)
+  CONSTRAINT `fk_picture_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -305,8 +298,8 @@ DROP TABLE IF EXISTS `role`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `role` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) DEFAULT NULL,
-  `status` int DEFAULT '1',
+  `name` varchar(20) NOT NULL,
+  `status` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -332,15 +325,15 @@ CREATE TABLE `shipping` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `senderName` varchar(45) DEFAULT NULL,
-  `senderPhone` varchar(11) DEFAULT NULL,
-  `senderEmail` varchar(45) DEFAULT NULL,
+  `senderPhone` varchar(11) NOT NULL,
+  `senderEmail` varchar(45) NOT NULL,
   `receiverName` varchar(45) DEFAULT NULL,
-  `receiverPhone` varchar(11) DEFAULT NULL,
-  `receiverEmail` varchar(45) DEFAULT NULL,
+  `receiverPhone` varchar(11) NOT NULL,
+  `receiverEmail` varchar(45) NOT NULL,
   `sendTime` datetime DEFAULT NULL,
   `price` decimal(10,0) DEFAULT NULL,
-  `coaches_id` int DEFAULT NULL,
-  `status` int DEFAULT '1',
+  `coaches_id` int NOT NULL,
+  `status` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_shipping_coaches_idx` (`coaches_id`),
   CONSTRAINT `fk_shipping_coaches` FOREIGN KEY (`coaches_id`) REFERENCES `coaches` (`id`)
@@ -367,8 +360,8 @@ CREATE TABLE `stop_by` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   `address` varchar(45) DEFAULT NULL,
-  `district_id` int DEFAULT NULL,
-  `status` int DEFAULT '1',
+  `district_id` int NOT NULL,
+  `status` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_stop_by_district_idx` (`district_id`),
   CONSTRAINT `fk_stop_by_district` FOREIGN KEY (`district_id`) REFERENCES `district` (`id`)
@@ -397,12 +390,12 @@ CREATE TABLE `ticket` (
   `price` decimal(10,0) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `create_date` datetime DEFAULT NULL,
-  `coaches_id` int DEFAULT NULL,
-  `user_id` int DEFAULT NULL,
-  `status` int DEFAULT '1',
   `phone` varchar(11) DEFAULT NULL,
-  `pick_up_id` int DEFAULT NULL,
-  `drop_off_id` int DEFAULT NULL,
+  `coaches_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `pick_up_id` int NOT NULL,
+  `drop_off_id` int NOT NULL,
+  `status` int DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_ticket_coaches_idx` (`coaches_id`),
   KEY `fk_tocket_user_idx` (`user_id`),
@@ -437,15 +430,14 @@ CREATE TABLE `user` (
   `fullname` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
   `phone` varchar(11) NOT NULL,
-  `gender` bit(1) DEFAULT NULL,
+  `gender` bit(1) DEFAULT b'1',
   `avatar` varchar(100) DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
-  `role_id` int DEFAULT NULL,
-  `status` int DEFAULT '1',
+  `role_id` int NOT NULL,
+  `status` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone_UNIQUE` (`phone`),
-  KEY `user_role_idx` (`role_id`),
-  CONSTRAINT `user_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+  KEY `user_role_idx` (`role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -455,7 +447,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'1','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','0123456789',_binary '',NULL,NULL,1,1),(2,'1','Bùi Mạnh Linh','1951052099linh@ou.edu.vn','1234567890',_binary '',NULL,NULL,2,1),(3,'1','Nguyễn Mạnh','1951052099linh@ou.edu.vn','2345678901',_binary '',NULL,NULL,2,1),(4,'1','Lương Hoàng Nam','1951052099linh@ou.edu.vn','3456789012',_binary '',NULL,NULL,1,0),(7,'1','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','4567890123',_binary '',NULL,'2022-10-05 01:38:30',1,NULL),(8,'1','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','5678901234',_binary '',NULL,'2022-10-05 01:38:56',1,NULL),(10,'1','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','0123456711',_binary '',NULL,'2022-10-05 01:46:18',1,NULL),(11,'1','Linh test update2','1951052099linh@ou.edu.vn','123465790',_binary '',NULL,'2022-10-05 03:56:00',1,0),(12,'1','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','12345456488',_binary '',NULL,'2022-10-05 05:46:56',1,NULL),(13,'1','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','    ',_binary '',NULL,'2022-10-05 06:09:11',1,NULL),(16,'1','Linh','1951052055hieu@ou.edu.vn','01234567777',_binary '',NULL,'2022-10-09 16:40:00',1,1),(17,'1','Linh','1951052055hieu@ou.edu.vn','01234567771',_binary '',NULL,'2022-10-09 16:43:11',1,1);
+INSERT INTO `user` VALUES (1,'1','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','0123456789',_binary '',NULL,NULL,1,1),(2,'1','Bùi Mạnh Linh','1951052099linh@ou.edu.vn','1234567890',_binary '',NULL,NULL,2,1),(3,'1','Nguyễn Mạnh','1951052099linh@ou.edu.vn','2345678901',_binary '',NULL,NULL,2,1),(4,'1','Lương Hoàng Nam','1951052099linh@ou.edu.vn','3456789012',_binary '',NULL,NULL,1,0),(7,'1','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','4567890123',_binary '',NULL,'2022-10-05 01:38:30',1,1),(8,'1','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','5678901234',_binary '',NULL,'2022-10-05 01:38:56',1,1),(10,'1','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','0123456711',_binary '',NULL,'2022-10-05 01:46:18',1,1),(11,'1','Linh test update2','1951052099linh@ou.edu.vn','1234555555',_binary '',NULL,NULL,1,0),(12,'1','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','12345456488',_binary '',NULL,'2022-10-05 05:46:56',1,1),(13,'1','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','    ',_binary '',NULL,'2022-10-05 06:09:11',1,1),(16,'1','Linh','1951052055hieu@ou.edu.vn','01234567777',_binary '',NULL,'2022-10-09 16:40:00',1,1),(17,'1','Linh','1951052055hieu@ou.edu.vn','01234567771',_binary '',NULL,'2022-10-09 16:43:11',1,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -468,4 +460,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-09 23:08:44
+-- Dump completed on 2022-10-10  7:46:27

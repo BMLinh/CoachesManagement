@@ -13,4 +13,5 @@ public interface CoachGarageService {
     boolean addCoachGarage(CoachGarage coachGarage);
     boolean updateCoachGarage(CoachGarage coachGarage);
     boolean deleteCoachGarage(int id);
+    boolean existsById(int id);
 }

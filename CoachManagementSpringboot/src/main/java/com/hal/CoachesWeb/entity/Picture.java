@@ -5,23 +5,19 @@ import java.util.Objects;
 
 @Entity
 public class Picture {
-    //status = 0: delete or deactive; =1: active
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "name")
-    private String name;
-    @Basic
     @Column(name = "url")
     private String url;
     @Basic
     @Column(name = "coach_id")
-    private String coachId;
+    private int coachId;
     @Basic
     @Column(name = "status")
-    private Integer status;
+    private int status;
 
     public int getId() {
         return id;
@@ -29,14 +25,6 @@ public class Picture {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getUrl() {
@@ -47,19 +35,19 @@ public class Picture {
         this.url = url;
     }
 
-    public String getCoachId() {
+    public int getCoachId() {
         return coachId;
     }
 
-    public void setCoachId(String coachId) {
+    public void setCoachId(int coachId) {
         this.coachId = coachId;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -68,11 +56,11 @@ public class Picture {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Picture picture = (Picture) o;
-        return id == picture.id && Objects.equals(name, picture.name) && Objects.equals(url, picture.url) && Objects.equals(coachId, picture.coachId) && Objects.equals(status, picture.status);
+        return id == picture.id && coachId == picture.coachId && status == picture.status && Objects.equals(url, picture.url);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, url, coachId, status);
+        return Objects.hash(id, url, coachId, status);
     }
 }
