@@ -1,12 +1,15 @@
 package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.StopBy;
+import com.hal.CoachesWeb.model.response.StopByRes;
+import com.hal.CoachesWeb.repositories.DistrictRepository;
 import com.hal.CoachesWeb.repositories.StopByRepository;
 import com.hal.CoachesWeb.service.StopByService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +17,8 @@ import java.util.Optional;
 public class StopByServiceImpl implements StopByService {
     @Autowired
     private StopByRepository stopByRepository;
+    @Autowired
+    private DistrictRepository districtRepository;
 
     @Override
     public List<StopBy> getAllStopBy(){
@@ -22,6 +27,14 @@ public class StopByServiceImpl implements StopByService {
     @Override
     public List<StopBy> getAllStopByDistrictId(int id){
         return stopByRepository.findAllByDistrictId(id);
+    }
+    @Override
+    public List<StopByRes> getAllStopByCountryId(int id){
+        List<StopByRes> stopByRes = new ArrayList<>();
+        districtRepository.findAllByCountryId(id).forEach(district -> {
+            stopByRes.add(new StopByRes(district.getName(), stopByRepository.findAllByDistrictId(district.getId())));
+        });
+        return stopByRes;
     }
     @Override
     public Optional<StopBy> getStopByById(int id){
@@ -57,5 +70,9 @@ public class StopByServiceImpl implements StopByService {
             System.out.println(ex);
         }
         return false;
+    }
+    @Override
+    public boolean existsById(int id){
+        return stopByRepository.existsById(id);
     }
 }

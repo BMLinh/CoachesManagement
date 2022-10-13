@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.Coach;
+import com.hal.CoachesWeb.repositories.CategoryRepository;
 import com.hal.CoachesWeb.repositories.CoachRepository;
 import com.hal.CoachesWeb.service.CoachService;
 import org.hibernate.HibernateException;
@@ -14,6 +15,8 @@ import java.util.Optional;
 public class CoachServiceImpl implements CoachService {
     @Autowired
     private CoachRepository coachRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public List<Coach> getAllCoach(){
@@ -61,5 +64,9 @@ public class CoachServiceImpl implements CoachService {
     @Override
     public boolean existsById(int id){
         return coachRepository.existsById(id);
+    }
+    @Override
+    public int getSeatByCoachId(int id){
+        return categoryRepository.getById(coachRepository.getById(id).getCategoryId()).getSeat();
     }
 }

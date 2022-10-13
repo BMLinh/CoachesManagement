@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.CoachGarage;
-import com.hal.CoachesWeb.model.ResponseObject;
+import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.service.CoachGarageService;
 import com.hal.CoachesWeb.service.DistrictService;
 import com.hal.CoachesWeb.service.UserService;
@@ -90,7 +90,7 @@ public class CoachGarageController {
                 new ResponseObject(400, "Không tìm thấy nhà xe id","")
         );
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<ResponseObject> deleteCoachGarage(@PathVariable int id){
         if (coachGarageService.existsById(id)){
             if (coachGarageService.deleteCoachGarage(id)){

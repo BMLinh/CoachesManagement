@@ -7,13 +7,11 @@ import java.util.Objects;
 @Table(name = "coaches_stop_by", schema = "coachesmanagementdb", catalog = "")
 @IdClass(CoachesStopByPK.class)
 public class CoachesStopBy {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "coaches_id")
     private int coachesId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "stopBy_id")
+    @Column(name = "stop_by_id")
     private int stopById;
     @Basic
     @Column(name = "time")
@@ -21,6 +19,16 @@ public class CoachesStopBy {
     @Basic
     @Column(name = "status")
     private Integer status;
+
+    public CoachesStopBy() {
+    }
+
+    public CoachesStopBy(int coachesId, int stopById, Integer time, Integer status) {
+        this.coachesId = coachesId;
+        this.stopById = stopById;
+        this.time = time;
+        this.status = status;
+    }
 
     public int getCoachesId() {
         return coachesId;

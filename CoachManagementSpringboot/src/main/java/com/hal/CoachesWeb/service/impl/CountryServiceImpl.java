@@ -53,4 +53,8 @@ public class CountryServiceImpl implements CountryService {
         }
         return false;
     }
+    @Override
+    public boolean existsById(int id){
+        return countryRespository.existsById(id);
+    }
 }

@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.District;
-import com.hal.CoachesWeb.model.ResponseObject;
+import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.service.CountryService;
 import com.hal.CoachesWeb.service.DistrictService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +67,7 @@ public class DistrictController {
                 new ResponseObject(400, "Không tìm thấy quận/huyện id", "")
         );
     }
-    @DeleteMapping("{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<ResponseObject> deleteDistrict(@PathVariable int id){
         if (districtService.getDistrictById(id).isPresent()){
             if (districtService.deleteDistrict(id)){

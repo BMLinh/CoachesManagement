@@ -1,9 +1,9 @@
 package com.hal.CoachesWeb.controllers;
 
-import com.hal.CoachesWeb.model.ResponseObject;
+import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.entity.User;
-import com.hal.CoachesWeb.model.User.UserDto;
-import com.hal.CoachesWeb.model.User.UserSignIn;
+import com.hal.CoachesWeb.model.response.UserDto;
+import com.hal.CoachesWeb.model.request.UserSignIn;
 import com.hal.CoachesWeb.service.RoleService;
 import com.hal.CoachesWeb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +130,7 @@ public class UserController {
         );
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<ResponseObject> deleteUser(@PathVariable int id){
         if (userService.getUserById(id)!=null){
             if (userService.deleteUser(id)){

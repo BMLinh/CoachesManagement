@@ -1,4 +1,4 @@
-package com.hal.CoachesWeb.model;
+package com.hal.CoachesWeb.model.response;
 
 public class ResponseObject {
     private int code;

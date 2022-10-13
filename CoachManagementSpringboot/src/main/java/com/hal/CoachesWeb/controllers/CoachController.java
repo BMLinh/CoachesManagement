@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.Coach;
-import com.hal.CoachesWeb.model.ResponseObject;
+import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.service.CategoryService;
 import com.hal.CoachesWeb.service.CoachGarageService;
 import com.hal.CoachesWeb.service.CoachService;
@@ -40,7 +40,7 @@ public class CoachController {
         );
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/delete/{id}")
     ResponseEntity<ResponseObject> getCoachByLicensePlate(@PathVariable int id){
         Optional<Coach> coach = coachService.getCoachById(id);
         if (coach.isPresent()){

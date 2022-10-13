@@ -42,6 +42,20 @@ public class Ticket {
     @Column(name = "status")
     private Integer status;
 
+    public Ticket() {
+    }
+
+    public Ticket(Integer price, String email, String phone, int coachesId, int userId, int pickUpId, int dropOffId, Integer status) {
+        this.price = price;
+        this.email = email;
+        this.phone = phone;
+        this.coachesId = coachesId;
+        this.userId = userId;
+        this.pickUpId = pickUpId;
+        this.dropOffId = dropOffId;
+        this.status = status;
+    }
+
     public int getId() {
         return id;
     }
