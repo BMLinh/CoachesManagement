@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.StopBy;
-import com.hal.CoachesWeb.model.ResponseObject;
+import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.service.DistrictService;
 import com.hal.CoachesWeb.service.StopByService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +28,12 @@ public class StopByController {
     ResponseEntity<ResponseObject> getStopByByDistrictId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy điểm dừng thành công", stopByService.getAllStopByDistrictId(id))
+        );
+    }
+    @GetMapping("/country/{id}")
+    ResponseEntity<ResponseObject> getStopByCountryId(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy điểm dừng thành công", stopByService.getAllStopByCountryId(id))
         );
     }
     @PostMapping("/add")
@@ -67,7 +73,7 @@ public class StopByController {
                 new ResponseObject(400, "Không tìm thấy điểm dừng id", "")
         );
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<ResponseObject> deleteStopBy(@PathVariable int id){
         if (stopByService.getStopByById(id).isPresent()){
             if (stopByService.deleteStopBy(id)){

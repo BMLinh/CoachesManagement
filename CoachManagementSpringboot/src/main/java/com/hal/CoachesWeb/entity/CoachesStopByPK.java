@@ -1,8 +1,6 @@
 package com.hal.CoachesWeb.entity;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
@@ -10,12 +8,18 @@ import java.util.Objects;
 public class CoachesStopByPK implements Serializable {
     @Column(name = "coaches_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int coachesId;
-    @Column(name = "stopBy_id")
+    @Column(name = "stop_by_id")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int stopById;
+
+    public CoachesStopByPK() {
+    }
+
+    public CoachesStopByPK(int coachesId, int stopById) {
+        this.coachesId = coachesId;
+        this.stopById = stopById;
+    }
 
     public int getCoachesId() {
         return coachesId;

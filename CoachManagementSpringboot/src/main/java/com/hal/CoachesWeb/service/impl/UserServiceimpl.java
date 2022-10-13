@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.User;
-import com.hal.CoachesWeb.model.User.UserDto;
+import com.hal.CoachesWeb.model.response.UserDto;
 import com.hal.CoachesWeb.repositories.RoleResponsitory;
 import com.hal.CoachesWeb.repositories.UserRepository;
 import com.hal.CoachesWeb.service.UserService;

@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.Category;
-import com.hal.CoachesWeb.model.ResponseObject;
+import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,7 +62,7 @@ public class CategoryController {
             new ResponseObject(400, "Không tìm thấy loại xe id", "")
         );
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<ResponseObject> deleteCategory(@PathVariable int id){
         if (categoryService.existsById(id)){
             if (categoryService.deleteCategory(id)){

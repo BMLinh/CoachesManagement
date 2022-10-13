@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.Country;
-import com.hal.CoachesWeb.model.ResponseObject;
+import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -62,7 +62,7 @@ public class CountryController {
                 new ResponseObject(400, "Không tìm thấy tỉnh/thành phố id", "")
         );
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<ResponseObject> deleteCountry(@PathVariable int id){
         if (countryService.getCountryById(id).isPresent()){
             if (countryService.deleteCountry(id)){

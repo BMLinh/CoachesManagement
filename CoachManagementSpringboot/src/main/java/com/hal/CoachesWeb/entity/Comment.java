@@ -25,13 +25,24 @@ public class Comment {
     private Date createDate;
     @Basic
     @Column(name = "coach_id")
-    private String coachId;
+    private int coachId;
     @Basic
     @Column(name = "user_id")
     private Integer userId;
     @Basic
     @Column(name = "status")
     private Integer status;
+
+    public Comment() {
+    }
+
+    public Comment(String content, Integer rating,  int coachId, Integer userId, Integer status) {
+        this.content = content;
+        this.rating = rating;
+        this.coachId = coachId;
+        this.userId = userId;
+        this.status = status;
+    }
 
     public int getId() {
         return id;
@@ -65,11 +76,11 @@ public class Comment {
         this.createDate = createDate;
     }
 
-    public String getCoachId() {
+    public int getCoachId() {
         return coachId;
     }
 
-    public void setCoachId(String coachId) {
+    public void setCoachId(int coachId) {
         this.coachId = coachId;
     }
 

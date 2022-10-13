@@ -1,4 +1,4 @@
-package com.hal.CoachesWeb.model.User;
+package com.hal.CoachesWeb.model.request;
 
 import javax.validation.constraints.NotBlank;
 

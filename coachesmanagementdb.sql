@@ -39,7 +39,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Giường nằm 45 chỗ',1,0),(2,'Giường nằm 25 chỗ',1,0),(3,'Giường nằm 49 chỗ',0,0);
+INSERT INTO `category` VALUES (1,'Giường nằm 45 chỗ',1,45),(2,'Giường nằm 25 chỗ',1,25),(3,'Giường nằm 49 chỗ',0,49);
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,7 +62,7 @@ CREATE TABLE `coach` (
   KEY `coach_cagory_idx` (`category_id`),
   CONSTRAINT `coach_cagory` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
   CONSTRAINT `coach_coachGarage` FOREIGN KEY (`coach_garage_id`) REFERENCES `coach_garage` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,7 +71,7 @@ CREATE TABLE `coach` (
 
 LOCK TABLES `coach` WRITE;
 /*!40000 ALTER TABLE `coach` DISABLE KEYS */;
-INSERT INTO `coach` VALUES (1,'59AFG015H',NULL,1,1,1),(2,'58HFG015B',NULL,2,2,1),(3,'49HF321B','Xe màu hồng',2,1,0),(4,'58HFG015B',NULL,2,2,1);
+INSERT INTO `coach` VALUES (1,'59AFG015H',NULL,1,1,1),(2,'58HFG015B',NULL,2,2,1),(3,'49HF321B','Xe màu hồng',2,3,0),(4,'58HFG015B',NULL,2,2,1),(5,'58HFG015B',NULL,2,2,1),(6,'58HFG015B',NULL,2,2,1),(7,'58HFG015B',NULL,2,2,1),(8,'58HFG015B',NULL,2,2,1),(9,'58HFG015B',NULL,2,2,1);
 /*!40000 ALTER TABLE `coach` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -120,24 +120,24 @@ DROP TABLE IF EXISTS `coaches`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `coaches` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `startTime` datetime NOT NULL,
-  `endTime` datetime NOT NULL,
+  `start_time` datetime NOT NULL,
+  `end_time` datetime NOT NULL,
   `description` varchar(150) DEFAULT NULL,
   `price` decimal(10,0) NOT NULL,
-  `emptySeat` int NOT NULL,
-  `isShipping` bit(1) NOT NULL DEFAULT b'0',
+  `empty_seat` int NOT NULL,
+  `is_shipping` bit(1) NOT NULL DEFAULT b'0',
   `coach_id` int NOT NULL,
-  `startPoint` int NOT NULL,
-  `endPoint` int NOT NULL,
+  `start_point` int NOT NULL,
+  `end_point` int NOT NULL,
   `status` int DEFAULT '1',
   PRIMARY KEY (`id`),
-  KEY `fk_coaches_country_idx` (`startPoint`),
-  KEY `fk_coaches_country_idx1` (`endPoint`),
+  KEY `fk_coaches_country_idx` (`start_point`),
+  KEY `fk_coaches_country_idx1` (`end_point`),
   KEY `fk_coaches_coach_idx` (`coach_id`),
   CONSTRAINT `fk_coaches_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`id`),
-  CONSTRAINT `fk_coaches_end_point` FOREIGN KEY (`endPoint`) REFERENCES `country` (`id`),
-  CONSTRAINT `fk_coaches_start_point` FOREIGN KEY (`startPoint`) REFERENCES `country` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `fk_coaches_end_point` FOREIGN KEY (`end_point`) REFERENCES `country` (`id`),
+  CONSTRAINT `fk_coaches_start_point` FOREIGN KEY (`start_point`) REFERENCES `country` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,6 +146,7 @@ CREATE TABLE `coaches` (
 
 LOCK TABLES `coaches` WRITE;
 /*!40000 ALTER TABLE `coaches` DISABLE KEYS */;
+INSERT INTO `coaches` VALUES (1,'2022-10-05 07:30:30','2022-10-05 10:30:30','',250000,38,_binary '',1,1,1,1),(2,'2022-10-14 06:30:00','2022-10-15 05:45:00','Xe hư dời 1 ngày',350000,0,_binary '\0',2,2,1,NULL),(3,'2022-10-13 06:30:00','2022-10-15 05:45:00','',550000,49,_binary '',1,1,1,1),(4,'2022-10-13 06:30:00','2022-10-15 05:45:00','',550000,25,_binary '',2,2,1,1);
 /*!40000 ALTER TABLE `coaches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,13 +159,13 @@ DROP TABLE IF EXISTS `coaches_stop_by`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `coaches_stop_by` (
   `coaches_id` int NOT NULL,
-  `stopBy_id` int NOT NULL,
+  `stop_by_id` int NOT NULL,
   `time` int NOT NULL,
   `status` int NOT NULL DEFAULT '1',
-  PRIMARY KEY (`coaches_id`,`stopBy_id`),
-  KEY `fk_stop_by_idx` (`stopBy_id`),
+  PRIMARY KEY (`coaches_id`,`stop_by_id`),
+  KEY `fk_stop_by_idx` (`stop_by_id`),
   CONSTRAINT `fk_coaches` FOREIGN KEY (`coaches_id`) REFERENCES `coaches` (`id`),
-  CONSTRAINT `fk_stop_by` FOREIGN KEY (`stopBy_id`) REFERENCES `stop_by` (`id`)
+  CONSTRAINT `fk_stop_by` FOREIGN KEY (`stop_by_id`) REFERENCES `stop_by` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -174,6 +175,7 @@ CREATE TABLE `coaches_stop_by` (
 
 LOCK TABLES `coaches_stop_by` WRITE;
 /*!40000 ALTER TABLE `coaches_stop_by` DISABLE KEYS */;
+INSERT INTO `coaches_stop_by` VALUES (1,1,0,1),(1,2,15,2),(1,3,0,3),(3,1,30,2),(3,2,15,3),(3,3,0,1),(4,2,15,3),(4,3,0,1);
 /*!40000 ALTER TABLE `coaches_stop_by` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,7 +199,7 @@ CREATE TABLE `comment` (
   KEY `fk_comment_coach_idx` (`coach_id`),
   CONSTRAINT `fk_comment_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`id`),
   CONSTRAINT `fk_comment_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,6 +208,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT INTO `comment` VALUES (5,'aaa',5,NULL,1,1,1),(6,'Tesing',4,'2022-10-13 08:10:05',1,1,1),(7,'Xe chạy bát nháo lắm',5,'2022-10-13 08:10:43',1,1,1);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -405,7 +408,7 @@ CREATE TABLE `ticket` (
   CONSTRAINT `fk_ticket_drop_off` FOREIGN KEY (`drop_off_id`) REFERENCES `stop_by` (`id`),
   CONSTRAINT `fk_ticket_pick_up` FOREIGN KEY (`pick_up_id`) REFERENCES `stop_by` (`id`),
   CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -414,6 +417,7 @@ CREATE TABLE `ticket` (
 
 LOCK TABLES `ticket` WRITE;
 /*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
+INSERT INTO `ticket` VALUES (1,15000,'1951052055Hieu@ou.edu.vn',NULL,'0123456789',1,1,1,1,1),(2,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:29:48','0123456789',1,2,2,1,1),(3,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:29:50','0123456789',1,2,2,1,1),(4,15000,'1951052055hieu@ou.edu.vn','2022-10-12 04:31:02','0123456789',1,2,2,1,1),(5,15000,'1951052055hieu@ou.edu.vn','2022-10-12 04:31:03','0123456789',1,2,2,1,1),(6,15000,'1951052055hieu@ou.edu.vn','2022-10-12 04:37:12','0123456789',1,2,2,1,1),(7,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:43:19','0123456789',1,2,2,1,1),(8,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:43:19','0123456789',1,2,2,1,1);
 /*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -460,4 +464,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-10  7:46:27
+-- Dump completed on 2022-10-13  8:16:00

@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.service;
 
 import com.hal.CoachesWeb.entity.User;
-import com.hal.CoachesWeb.model.User.UserDto;
+import com.hal.CoachesWeb.model.response.UserDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

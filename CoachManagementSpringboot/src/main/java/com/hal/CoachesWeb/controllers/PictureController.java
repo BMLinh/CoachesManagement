@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.Picture;
-import com.hal.CoachesWeb.model.ResponseObject;
+import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

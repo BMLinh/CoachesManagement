@@ -15,4 +15,5 @@ public interface CoachService {
     Coach updateCoach(Coach coach);
     boolean deleteCoach(int id);
     boolean existsById(int id);
+    int getSeatByCoachId(int id);
 }

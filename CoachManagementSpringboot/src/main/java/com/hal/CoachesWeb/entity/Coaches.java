@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.entity;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -11,11 +11,11 @@ public class Coaches {
     @Column(name = "id")
     private int id;
     @Basic
-    @Column(name = "startTime")
-    private Timestamp startTime;
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
     @Basic
-    @Column(name = "endTime")
-    private Timestamp endTime;
+    @Column(name = "end_time")
+    private LocalDateTime endTime;
     @Basic
     @Column(name = "description")
     private String description;
@@ -23,23 +23,49 @@ public class Coaches {
     @Column(name = "price")
     private int price;
     @Basic
-    @Column(name = "emptySeat")
+    @Column(name = "empty_seat")
     private int emptySeat;
     @Basic
-    @Column(name = "isShipping")
+    @Column(name = "is_shipping")
     private boolean isShipping;
     @Basic
     @Column(name = "coach_id")
     private int coachId;
     @Basic
-    @Column(name = "startPoint")
+    @Column(name = "start_point")
     private int startPoint;
     @Basic
-    @Column(name = "endPoint")
+    @Column(name = "end_point")
     private int endPoint;
     @Basic
     @Column(name = "status")
     private Integer status;
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "coaches_stop_by",
+//            joinColumns = {
+//                    @JoinColumn(name = "coaches_id")
+//            },
+//            inverseJoinColumns = {
+//                    @JoinColumn(name = {})
+//            }
+//    )
+    public Coaches() {
+    }
+
+    public Coaches(LocalDateTime startTime, LocalDateTime endTime, String description, int price, int emptySeat, boolean isShipping, int coachId, int startPoint, int endPoint, Integer status) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.description = description;
+        this.price = price;
+        this.emptySeat = emptySeat;
+        this.isShipping = isShipping;
+        this.coachId = coachId;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.status = status;
+    }
 
     public int getId() {
         return id;
@@ -49,19 +75,19 @@ public class Coaches {
         this.id = id;
     }
 
-    public Timestamp getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public Timestamp getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 

@@ -13,4 +13,5 @@ public interface CountryService {
     boolean addCountry(Country country);
     boolean updateCountry(Country country);
     boolean deleteCountry(int id);
+    boolean existsById(int id);
 }

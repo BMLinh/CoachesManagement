@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.Role;
-import com.hal.CoachesWeb.model.ResponseObject;
+import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,7 +46,7 @@ public class RoleController {
                 new ResponseObject(400, "Can not add role", "")
         );
     }
-    @PutMapping("/update")
+    @PutMapping("/delete/update")
     ResponseEntity<ResponseObject> updateRole(@RequestBody Role role){
         if (roleService.getRoleById(role.getId()).isPresent()){
             if (roleService.updateRole(role)){
