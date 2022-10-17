@@ -1,34 +1,39 @@
 package com.hal.CoachesWeb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
 @Table(name = "coaches_stop_by", schema = "coachesmanagementdb", catalog = "")
 @IdClass(CoachesStopByPK.class)
 public class CoachesStopBy {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "coaches_id")
+    @Column(name = "coaches_id", nullable = false)
     private int coachesId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "stop_by_id")
+    @Column(name = "stop_by_id", nullable = false)
     private int stopById;
     @Basic
-    @Column(name = "time")
-    private Integer time;
+    @NotBlank(message = "Điểm xuất phát không được để trống")
+    @Column(name = "time", nullable = false)
+    private int time;
     @Basic
-    @Column(name = "status")
-    private Integer status;
-
-    public CoachesStopBy() {
-    }
-
-    public CoachesStopBy(int coachesId, int stopById, Integer time, Integer status) {
-        this.coachesId = coachesId;
-        this.stopById = stopById;
-        this.time = time;
-        this.status = status;
-    }
+    @Column(name = "status", nullable = false)
+    private int status;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "coaches_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Coaches coachesByCoachesId;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "stop_by_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private StopBy stopByByStopById;
 
     public int getCoachesId() {
         return coachesId;
@@ -46,19 +51,19 @@ public class CoachesStopBy {
         this.stopById = stopById;
     }
 
-    public Integer getTime() {
+    public int getTime() {
         return time;
     }
 
-    public void setTime(Integer time) {
+    public void setTime(int time) {
         this.time = time;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -67,11 +72,27 @@ public class CoachesStopBy {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CoachesStopBy that = (CoachesStopBy) o;
-        return coachesId == that.coachesId && stopById == that.stopById && Objects.equals(time, that.time) && Objects.equals(status, that.status);
+        return coachesId == that.coachesId && stopById == that.stopById && time == that.time && status == that.status;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(coachesId, stopById, time, status);
+    }
+
+    public Coaches getCoachesByCoachesId() {
+        return coachesByCoachesId;
+    }
+
+    public void setCoachesByCoachesId(Coaches coachesByCoachesId) {
+        this.coachesByCoachesId = coachesByCoachesId;
+    }
+
+    public StopBy getStopByByStopById() {
+        return stopByByStopById;
+    }
+
+    public void setStopByByStopById(StopBy stopByByStopById) {
+        this.stopByByStopById = stopByByStopById;
     }
 }

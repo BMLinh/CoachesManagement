@@ -1,47 +1,60 @@
 package com.hal.CoachesWeb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
 public class User {
-    //status = 0: deleted or deactive; =1: active
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @Column(name = "password")
+    @Column(name = "password", nullable = false, length = 60)
     private String password;
     @Basic
-    @Column(name = "fullname")
+    @Column(name = "fullname", nullable = false, length = 45)
     private String fullname;
     @Basic
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, length = 45)
     private String email;
     @Basic
-    @Column(name = "phone")
+    @Column(name = "phone", nullable = false, length = 11)
     private String phone;
     @Basic
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = true)
     private Boolean gender;
     @Basic
-    @Column(name = "avatar")
+    @Column(name = "avatar", nullable = true, length = 100)
     private String avatar;
     @Basic
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = true)
     private Date createdDate;
     @Basic
-    @Column(name = "role_id")
-    private Integer roleId;
+    @Column(name = "role_id", nullable = false)
+    private int roleId;
     @Basic
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "status", nullable = false)
+    private int status;
+    @JsonBackReference
+    @OneToMany(mappedBy = "userByUserId")
+    private Collection<CoachGarage> coachGaragesById;
+    @JsonBackReference
+    @OneToMany(mappedBy = "userByUserId")
+    private Collection<Comment> commentsById;
+    @JsonBackReference
+    @OneToMany(mappedBy = "userByUserId")
+    private Collection<Shipping> shippingsById;
+    @JsonBackReference
+    @OneToMany(mappedBy = "userByUserId")
+    private Collection<Ticket> ticketsById;
 
     public User() {
     }
@@ -121,19 +134,19 @@ public class User {
         this.createdDate = createdDate;
     }
 
-    public Integer getRoleId() {
+    public int getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -142,11 +155,43 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(password, user.password) && Objects.equals(fullname, user.fullname) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(gender, user.gender) && Objects.equals(avatar, user.avatar) && Objects.equals(createdDate, user.createdDate) && Objects.equals(roleId, user.roleId) && Objects.equals(status, user.status);
+        return id == user.id && roleId == user.roleId && status == user.status && Objects.equals(password, user.password) && Objects.equals(fullname, user.fullname) && Objects.equals(email, user.email) && Objects.equals(phone, user.phone) && Objects.equals(gender, user.gender) && Objects.equals(avatar, user.avatar) && Objects.equals(createdDate, user.createdDate);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, password, fullname, email, phone, gender, avatar, createdDate, roleId, status);
+    }
+
+    public Collection<CoachGarage> getCoachGaragesById() {
+        return coachGaragesById;
+    }
+
+    public void setCoachGaragesById(Collection<CoachGarage> coachGaragesById) {
+        this.coachGaragesById = coachGaragesById;
+    }
+
+    public Collection<Comment> getCommentsById() {
+        return commentsById;
+    }
+
+    public void setCommentsById(Collection<Comment> commentsById) {
+        this.commentsById = commentsById;
+    }
+
+    public Collection<Shipping> getShippingsById() {
+        return shippingsById;
+    }
+
+    public void setShippingsById(Collection<Shipping> shippingsById) {
+        this.shippingsById = shippingsById;
+    }
+
+    public Collection<Ticket> getTicketsById() {
+        return ticketsById;
+    }
+
+    public void setTicketsById(Collection<Ticket> ticketsById) {
+        this.ticketsById = ticketsById;
     }
 }

@@ -40,8 +40,8 @@ public class CoachController {
         );
     }
 
-    @GetMapping("/delete/{id}")
-    ResponseEntity<ResponseObject> getCoachByLicensePlate(@PathVariable int id){
+    @GetMapping("/{id}")
+    ResponseEntity<ResponseObject> getCoachById(@PathVariable int id){
         Optional<Coach> coach = coachService.getCoachById(id);
         if (coach.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -104,7 +104,7 @@ public class CoachController {
                 new ResponseObject(400, "Không tìm thấy xe id", "")
         );
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<ResponseObject> deleteCoach(@PathVariable int id){
         if (coachService.existsById(id)){
             if (coachService.deleteCoach(id)){

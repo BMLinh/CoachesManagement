@@ -38,6 +38,12 @@ public class CoachesController {
                 new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByCoachId(id, PageRequest.of(page, size)).get())
         );
     }
+    @GetMapping("/{id}")
+    ResponseEntity<ResponseObject> getCoachesById(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy chuyến xe thành công", coachesService.getCoachesById(id))
+        );
+    }
     @GetMapping("/date/")
     ResponseEntity<ResponseObject> getAllCoachesByStartDate(@PathParam(value = "page") int page, @PathParam(value = "size") int size, @PathParam(value = "startTime")LocalDateTime startTime, @PathParam(value = "endTime")LocalDateTime endTime){
         return ResponseEntity.status(HttpStatus.OK).body(

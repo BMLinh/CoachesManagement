@@ -1,52 +1,62 @@
 package com.hal.CoachesWeb.entity;
 
-import org.hibernate.annotations.CreationTimestamp;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 public class Shipping {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = true, length = 45)
     private String name;
     @Basic
-    @Column(name = "senderName")
+    @Column(name = "senderName", nullable = true, length = 45)
     private String senderName;
     @Basic
-    @Column(name = "senderPhone")
+    @Column(name = "senderPhone", nullable = false, length = 11)
     private String senderPhone;
     @Basic
-    @Column(name = "senderEmail")
+    @Column(name = "senderEmail", nullable = false, length = 45)
     private String senderEmail;
     @Basic
-    @Column(name = "receiverName")
+    @Column(name = "receiverName", nullable = true, length = 45)
     private String receiverName;
     @Basic
-    @Column(name = "receiverPhone")
+    @Column(name = "receiverPhone", nullable = false, length = 11)
     private String receiverPhone;
     @Basic
-    @Column(name = "receiverEmail")
+    @Column(name = "receiverEmail", nullable = false, length = 45)
     private String receiverEmail;
     @Basic
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "sendTime")
-    private Date sendTime;
+    @Column(name = "sendTime", nullable = true)
+    private Timestamp sendTime;
     @Basic
-    @Column(name = "price")
+    @Column(name = "price", nullable = true, precision = 0)
     private Integer price;
     @Basic
-    @Column(name = "coaches_id")
-    private Integer coachesId;
+    @Column(name = "user_id", nullable = false)
+    private int userId;
     @Basic
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "coaches_id", nullable = false)
+    private int coachesId;
+    @Basic
+    @Column(name = "status", nullable = false)
+    private int status;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private User userByUserId;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "coaches_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Coaches coachesByCoachesId;
 
     public int getId() {
         return id;
@@ -112,11 +122,11 @@ public class Shipping {
         this.receiverEmail = receiverEmail;
     }
 
-    public Date getSendTime() {
+    public Timestamp getSendTime() {
         return sendTime;
     }
 
-    public void setSendTime(Date sendTime) {
+    public void setSendTime(Timestamp sendTime) {
         this.sendTime = sendTime;
     }
 
@@ -128,19 +138,27 @@ public class Shipping {
         this.price = price;
     }
 
-    public Integer getCoachesId() {
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getCoachesId() {
         return coachesId;
     }
 
-    public void setCoachesId(Integer coachesId) {
+    public void setCoachesId(int coachesId) {
         this.coachesId = coachesId;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -149,11 +167,27 @@ public class Shipping {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Shipping shipping = (Shipping) o;
-        return id == shipping.id && Objects.equals(name, shipping.name) && Objects.equals(senderName, shipping.senderName) && Objects.equals(senderPhone, shipping.senderPhone) && Objects.equals(senderEmail, shipping.senderEmail) && Objects.equals(receiverName, shipping.receiverName) && Objects.equals(receiverPhone, shipping.receiverPhone) && Objects.equals(receiverEmail, shipping.receiverEmail) && Objects.equals(sendTime, shipping.sendTime) && Objects.equals(price, shipping.price) && Objects.equals(coachesId, shipping.coachesId) && Objects.equals(status, shipping.status);
+        return id == shipping.id && userId == shipping.userId && coachesId == shipping.coachesId && status == shipping.status && Objects.equals(name, shipping.name) && Objects.equals(senderName, shipping.senderName) && Objects.equals(senderPhone, shipping.senderPhone) && Objects.equals(senderEmail, shipping.senderEmail) && Objects.equals(receiverName, shipping.receiverName) && Objects.equals(receiverPhone, shipping.receiverPhone) && Objects.equals(receiverEmail, shipping.receiverEmail) && Objects.equals(sendTime, shipping.sendTime) && Objects.equals(price, shipping.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, senderName, senderPhone, senderEmail, receiverName, receiverPhone, receiverEmail, sendTime, price, coachesId, status);
+        return Objects.hash(id, name, senderName, senderPhone, senderEmail, receiverName, receiverPhone, receiverEmail, sendTime, price, userId, coachesId, status);
+    }
+
+    public User getUserByUserId() {
+        return userByUserId;
+    }
+
+    public void setUserByUserId(User userByUserId) {
+        this.userByUserId = userByUserId;
+    }
+
+    public Coaches getCoachesByCoachesId() {
+        return coachesByCoachesId;
+    }
+
+    public void setCoachesByCoachesId(Coaches coachesByCoachesId) {
+        this.coachesByCoachesId = coachesByCoachesId;
     }
 }

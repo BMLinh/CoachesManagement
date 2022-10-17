@@ -13,7 +13,7 @@ public interface CoachesService {
     Page<Coaches> getAllCoaches(Pageable pageable);
     Page<Coaches> getAllCoachesByCoachId(int id, Pageable pageable);
     Page<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
-//    Optional<Coaches> getCoachesById(int id);
+    Optional<Coaches> getCoachesById(int id);
     Coaches addCoaches(Coaches coaches);
     Coaches updateCoaches(Coaches coaches);
     boolean deleteCoaches(int id);

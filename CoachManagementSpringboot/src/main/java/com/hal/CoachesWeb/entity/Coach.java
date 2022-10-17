@@ -1,29 +1,57 @@
 package com.hal.CoachesWeb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 public class Coach {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @Column(name = "license_plates")
+    @NotBlank(message = "Biến số xe không được để trống")
+    @Size(max = 20, message = "Độ dài biển số vượt quá quy định")
+    @Column(name = "license_plates", nullable = false, length = 20)
     private String licensePlates;
     @Basic
-    @Column(name = "description")
+    @Size(max = 100)
+    @Column(name = "description", nullable = true, length = 100)
     private String description;
     @Basic
-    @Column(name = "coach_garage_id")
+    @NotBlank(message = "Nhà xe id không được để trống")
+    @Column(name = "coach_garage_id", nullable = false)
     private int coachGarageId;
     @Basic
-    @Column(name = "category_id")
+    @NotBlank(message = "Loại xe không được để trống")
+    @Column(name = "category_id", nullable = false)
     private int categoryId;
     @Basic
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private int status;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "coach_garage_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private CoachGarage coachGarageByCoachGarageId;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Category categoryByCategoryId;
+    @JsonBackReference
+    @OneToMany(mappedBy = "coachByCoachId")
+    private Collection<Coaches> coachesById;
+    @JsonBackReference
+    @OneToMany(mappedBy = "coachByCoachId")
+    private Collection<Comment> commentsById;
+    @JsonBackReference
+    @OneToMany(mappedBy = "coachByCoachId")
+    private Collection<Picture> picturesById;
 
     public Coach() {
     }
@@ -95,5 +123,45 @@ public class Coach {
     @Override
     public int hashCode() {
         return Objects.hash(id, licensePlates, description, coachGarageId, categoryId, status);
+    }
+
+    public CoachGarage getCoachGarageByCoachGarageId() {
+        return coachGarageByCoachGarageId;
+    }
+
+    public void setCoachGarageByCoachGarageId(CoachGarage coachGarageByCoachGarageId) {
+        this.coachGarageByCoachGarageId = coachGarageByCoachGarageId;
+    }
+
+    public Category getCategoryByCategoryId() {
+        return categoryByCategoryId;
+    }
+
+    public void setCategoryByCategoryId(Category categoryByCategoryId) {
+        this.categoryByCategoryId = categoryByCategoryId;
+    }
+
+    public Collection<Coaches> getCoachesById() {
+        return coachesById;
+    }
+
+    public void setCoachesById(Collection<Coaches> coachesById) {
+        this.coachesById = coachesById;
+    }
+
+    public Collection<Comment> getCommentsById() {
+        return commentsById;
+    }
+
+    public void setCommentsById(Collection<Comment> commentsById) {
+        this.commentsById = commentsById;
+    }
+
+    public Collection<Picture> getPicturesById() {
+        return picturesById;
+    }
+
+    public void setPicturesById(Collection<Picture> picturesById) {
+        this.picturesById = picturesById;
     }
 }

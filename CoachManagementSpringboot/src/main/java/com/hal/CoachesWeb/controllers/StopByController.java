@@ -24,16 +24,16 @@ public class StopByController {
                 new ResponseObject(200, "Lấy tất cả điểm dừng thành công", stopByService.getAllStopBy())
         );
     }
-    @GetMapping("/district/{id}")
-    ResponseEntity<ResponseObject> getStopByByDistrictId(@PathVariable int id){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy điểm dừng thành công", stopByService.getAllStopByDistrictId(id))
-        );
-    }
     @GetMapping("/country/{id}")
-    ResponseEntity<ResponseObject> getStopByCountryId(@PathVariable int id){
+    ResponseEntity<ResponseObject> getStopByByCountryId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy điểm dừng thành công", stopByService.getAllStopByCountryId(id))
+        );
+    }
+    @GetMapping("/country-with-district/{id}")
+    ResponseEntity<ResponseObject> getStopByResCountryId(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy điểm dừng thành công", stopByService.getAllStopByResCountryId(id))
         );
     }
     @PostMapping("/add")

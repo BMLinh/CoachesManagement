@@ -5,17 +5,16 @@ import java.util.Objects;
 
 @Entity
 public class Role {
-    //status = 0: deleted or deactive; =1: active
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 20)
     private String name;
     @Basic
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "status", nullable = false)
+    private int status;
 
     public int getId() {
         return id;
@@ -33,11 +32,11 @@ public class Role {
         this.name = name;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -46,7 +45,7 @@ public class Role {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return id == role.id && Objects.equals(name, role.name) && Objects.equals(status, role.status);
+        return id == role.id && status == role.status && Objects.equals(name, role.name);
     }
 
     @Override

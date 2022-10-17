@@ -1,23 +1,35 @@
 package com.hal.CoachesWeb.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class Picture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @Column(name = "url")
+    @Column(name = "url", nullable = true, length = 150)
     private String url;
     @Basic
-    @Column(name = "coach_id")
+    @Column(name = "coach_id", nullable = false)
     private int coachId;
     @Basic
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private int status;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "coach_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Coach coachByCoachId;
+    @Transient
+    @JsonIgnore
+    private List<MultipartFile> multipartFileList;
 
     public int getId() {
         return id;
@@ -51,6 +63,14 @@ public class Picture {
         this.status = status;
     }
 
+    public List<MultipartFile> getMultipartFileList() {
+        return multipartFileList;
+    }
+
+    public void setMultipartFileList(List<MultipartFile> multipartFileList) {
+        this.multipartFileList = multipartFileList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,5 +82,13 @@ public class Picture {
     @Override
     public int hashCode() {
         return Objects.hash(id, url, coachId, status);
+    }
+
+    public Coach getCoachByCoachId() {
+        return coachByCoachId;
+    }
+
+    public void setCoachByCoachId(Coach coachByCoachId) {
+        this.coachByCoachId = coachByCoachId;
     }
 }
