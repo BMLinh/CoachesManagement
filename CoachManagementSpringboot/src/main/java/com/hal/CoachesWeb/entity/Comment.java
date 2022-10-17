@@ -1,5 +1,6 @@
 package com.hal.CoachesWeb.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -10,28 +11,36 @@ import java.util.Objects;
 public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @Column(name = "content")
+    @Column(name = "content", nullable = true, length = 200)
     private String content;
     @Basic
-    @Column(name = "rating")
-    private Integer rating;
+    @Column(name = "rating", nullable = false)
+    private int rating;
     @Basic
-    @Column(name = "create_date")
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date", nullable = true)
     private Date createDate;
     @Basic
-    @Column(name = "coach_id")
+    @Column(name = "coach_id", nullable = false)
     private int coachId;
     @Basic
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "user_id", nullable = false)
+    private int userId;
     @Basic
-    @Column(name = "status")
+    @Column(name = "status", nullable = true)
     private Integer status;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "coach_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Coach coachByCoachId;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private User userByUserId;
 
     public Comment() {
     }
@@ -60,11 +69,11 @@ public class Comment {
         this.content = content;
     }
 
-    public Integer getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
@@ -84,11 +93,11 @@ public class Comment {
         this.coachId = coachId;
     }
 
-    public Integer getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -105,11 +114,27 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return id == comment.id && Objects.equals(content, comment.content) && Objects.equals(rating, comment.rating) && Objects.equals(createDate, comment.createDate) && Objects.equals(coachId, comment.coachId) && Objects.equals(userId, comment.userId) && Objects.equals(status, comment.status);
+        return id == comment.id && rating == comment.rating && coachId == comment.coachId && userId == comment.userId && Objects.equals(content, comment.content) && Objects.equals(createDate, comment.createDate) && Objects.equals(status, comment.status);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, content, rating, createDate, coachId, userId, status);
+    }
+
+    public Coach getCoachByCoachId() {
+        return coachByCoachId;
+    }
+
+    public void setCoachByCoachId(Coach coachByCoachId) {
+        this.coachByCoachId = coachByCoachId;
+    }
+
+    public User getUserByUserId() {
+        return userByUserId;
+    }
+
+    public void setUserByUserId(User userByUserId) {
+        this.userByUserId = userByUserId;
     }
 }

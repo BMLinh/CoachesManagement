@@ -1,6 +1,11 @@
 package com.hal.CoachesWeb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -8,17 +13,23 @@ public class Category {
     //status = 0: deleted; =1: active
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @Column(name = "name")
+    @NotBlank(message = "Tên không được để trống")
+    @Size(max = 45)
+    @Column(name = "name", nullable = true, length = 45)
     private String name;
     @Basic
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private int status;
     @Basic
-    @Column(name = "seat")
+    @NotBlank(message = "Số ghế không được để trống")
+    @Column(name = "seat", nullable = false)
     private int seat;
+    @JsonBackReference
+    @OneToMany(mappedBy = "categoryByCategoryId")
+    private Collection<Coach> coachesById;
 
     public Category() {
     }
@@ -72,5 +83,13 @@ public class Category {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, status, seat);
+    }
+
+    public Collection<Coach> getCoachesById() {
+        return coachesById;
+    }
+
+    public void setCoachesById(Collection<Coach> coachesById) {
+        this.coachesById = coachesById;
     }
 }

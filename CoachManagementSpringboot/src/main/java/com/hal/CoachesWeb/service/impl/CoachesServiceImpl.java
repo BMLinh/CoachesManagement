@@ -33,10 +33,10 @@ public class CoachesServiceImpl implements CoachesService {
         Page<Coaches> coaches= coachesRepository.findAllByStartTimeBetween(startTime, endTime, pageable);
         return coaches;
     }
-//    @Override
-//    public Optional<Coaches> getCoachesById(int id){
-//        return coachesRepository.findById(id);
-//    }
+    @Override
+    public Optional<Coaches> getCoachesById(int id){
+        return coachesRepository.findById(id);
+    }
     @Override
     public Coaches addCoaches(Coaches coaches){
         try {

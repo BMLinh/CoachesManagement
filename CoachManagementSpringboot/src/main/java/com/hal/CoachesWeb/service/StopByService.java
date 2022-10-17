@@ -10,8 +10,8 @@ import java.util.Optional;
 @Service
 public interface StopByService {
     List<StopBy> getAllStopBy();
-    List<StopBy> getAllStopByDistrictId(int id);
-    List<StopByRes> getAllStopByCountryId(int id);
+    List<StopBy> getAllStopByCountryId(int id);
+    List<StopByRes> getAllStopByResCountryId(int id);
     Optional<StopBy> getStopByById(int id);
     boolean addStopBy(StopBy stopBy);
     boolean updateStopBy(StopBy stopBy);

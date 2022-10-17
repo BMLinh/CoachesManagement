@@ -1,56 +1,82 @@
 package com.hal.CoachesWeb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 public class Coaches {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @Column(name = "start_time")
+    @NotBlank(message = "Giờ bắt đầu không được để trống")
+    @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
     @Basic
-    @Column(name = "end_time")
+    @NotBlank(message = "Giờ kết thúc không được để trống")
+    @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
     @Basic
-    @Column(name = "description")
+    @Size(max = 150)
+    @Column(name = "description", nullable = true, length = 150)
     private String description;
     @Basic
-    @Column(name = "price")
+    @NotBlank(message = "Giá không được để trống")
+    @Column(name = "price", nullable = false, precision = 0)
     private int price;
     @Basic
-    @Column(name = "empty_seat")
+    @NotBlank(message = "Ghế trống không được để trống")
+    @Column(name = "empty_seat", nullable = false)
     private int emptySeat;
     @Basic
-    @Column(name = "is_shipping")
+    @NotBlank(message = "Giao hàng không được để trống")
+    @Column(name = "is_shipping", nullable = false)
     private boolean isShipping;
     @Basic
-    @Column(name = "coach_id")
+    @NotBlank(message = "Mã xe không được để trống")
+    @Column(name = "coach_id", nullable = false)
     private int coachId;
     @Basic
-    @Column(name = "start_point")
+    @NotBlank(message = "Điểm xuất phát không được để trống")
+    @Column(name = "start_point", nullable = false)
     private int startPoint;
     @Basic
-    @Column(name = "end_point")
+    @NotBlank(message = "Điểm kết thúc không được để trống")
+    @Column(name = "end_point", nullable = false)
     private int endPoint;
     @Basic
-    @Column(name = "status")
+    @Column(name = "status", nullable = true)
     private Integer status;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "coach_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Coach coachByCoachId;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "start_point", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Country countryByStartPoint;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "end_point", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Country countryByEndPoint;
+    @JsonBackReference
+    @OneToMany(mappedBy = "coachesByCoachesId")
+    private Collection<CoachesStopBy> coachesStopBIESById;
+    @JsonBackReference
+    @OneToMany(mappedBy = "coachesByCoachesId")
+    private Collection<Shipping> shippingsById;
+    @JsonBackReference
+    @OneToMany(mappedBy = "coachesByCoachesId")
+    private Collection<Ticket> ticketsById;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "coaches_stop_by",
-//            joinColumns = {
-//                    @JoinColumn(name = "coaches_id")
-//            },
-//            inverseJoinColumns = {
-//                    @JoinColumn(name = {})
-//            }
-//    )
     public Coaches() {
     }
 
@@ -166,5 +192,53 @@ public class Coaches {
     @Override
     public int hashCode() {
         return Objects.hash(id, startTime, endTime, description, price, emptySeat, isShipping, coachId, startPoint, endPoint, status);
+    }
+
+    public Coach getCoachByCoachId() {
+        return coachByCoachId;
+    }
+
+    public void setCoachByCoachId(Coach coachByCoachId) {
+        this.coachByCoachId = coachByCoachId;
+    }
+
+    public Country getCountryByStartPoint() {
+        return countryByStartPoint;
+    }
+
+    public void setCountryByStartPoint(Country countryByStartPoint) {
+        this.countryByStartPoint = countryByStartPoint;
+    }
+
+    public Country getCountryByEndPoint() {
+        return countryByEndPoint;
+    }
+
+    public void setCountryByEndPoint(Country countryByEndPoint) {
+        this.countryByEndPoint = countryByEndPoint;
+    }
+
+    public Collection<CoachesStopBy> getCoachesStopBIESById() {
+        return coachesStopBIESById;
+    }
+
+    public void setCoachesStopBIESById(Collection<CoachesStopBy> coachesStopBIESById) {
+        this.coachesStopBIESById = coachesStopBIESById;
+    }
+
+    public Collection<Shipping> getShippingsById() {
+        return shippingsById;
+    }
+
+    public void setShippingsById(Collection<Shipping> shippingsById) {
+        this.shippingsById = shippingsById;
+    }
+
+    public Collection<Ticket> getTicketsById() {
+        return ticketsById;
+    }
+
+    public void setTicketsById(Collection<Ticket> ticketsById) {
+        this.ticketsById = ticketsById;
     }
 }

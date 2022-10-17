@@ -1,24 +1,38 @@
 package com.hal.CoachesWeb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 public class District {
-    //status = 0: delete or deactive; =1: active
+    //status = 0: delete; =1: active
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = true, length = 45)
     private String name;
     @Basic
-    @Column(name = "country_id")
-    private Integer countryId;
+    @Column(name = "country_id", nullable = false)
+    private int countryId;
     @Basic
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "status", nullable = false)
+    private int status;
+    @JsonBackReference
+    @OneToMany(mappedBy = "districtByDistrictId")
+    private Collection<CoachGarage> coachGaragesById;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Country countryByCountryId;
+    @JsonBackReference
+    @OneToMany(mappedBy = "districtByDistrictId")
+    private Collection<StopBy> stopBIESById;
 
     public int getId() {
         return id;
@@ -36,19 +50,19 @@ public class District {
         this.name = name;
     }
 
-    public Integer getCountryId() {
+    public int getCountryId() {
         return countryId;
     }
 
-    public void setCountryId(Integer countryId) {
+    public void setCountryId(int countryId) {
         this.countryId = countryId;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -57,11 +71,35 @@ public class District {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         District district = (District) o;
-        return id == district.id && Objects.equals(name, district.name) && Objects.equals(countryId, district.countryId) && Objects.equals(status, district.status);
+        return id == district.id && countryId == district.countryId && status == district.status && Objects.equals(name, district.name);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, name, countryId, status);
+    }
+
+    public Collection<CoachGarage> getCoachGaragesById() {
+        return coachGaragesById;
+    }
+
+    public void setCoachGaragesById(Collection<CoachGarage> coachGaragesById) {
+        this.coachGaragesById = coachGaragesById;
+    }
+
+    public Country getCountryByCountryId() {
+        return countryByCountryId;
+    }
+
+    public void setCountryByCountryId(Country countryByCountryId) {
+        this.countryByCountryId = countryByCountryId;
+    }
+
+    public Collection<StopBy> getStopBIESById() {
+        return stopBIESById;
+    }
+
+    public void setStopBIESById(Collection<StopBy> stopBIESById) {
+        this.stopBIESById = stopBIESById;
     }
 }

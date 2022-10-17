@@ -1,6 +1,10 @@
 package com.hal.CoachesWeb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -9,35 +13,46 @@ public class CoachGarage {
     //status = 0: delete or deactive; =1: active; =2: waiting for access
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 45)
     private String name;
     @Basic
-    @Column(name = "owner")
+    @Column(name = "owner", nullable = false, length = 45)
     private String owner;
     @Basic
-    @Column(name = "phone")
+    @Column(name = "phone", nullable = false, length = 11)
     private String phone;
     @Basic
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, length = 45)
     private String email;
     @Basic
-    @Column(name = "address")
+    @Column(name = "address", nullable = true, length = 50)
     private String address;
     @Basic
-    @Column(name = "district_id")
+    @Column(name = "district_id", nullable = false)
     private int districtId;
     @Basic
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private int userId;
     @Basic
-    @Column(name = "contract")
+    @Column(name = "contract", nullable = false, length = 150)
     private String contract;
     @Basic
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "status", nullable = false)
+    private int status;
+    @JsonBackReference
+    @OneToMany(mappedBy = "coachGarageByCoachGarageId")
+    private Collection<Coach> coachesById;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "district_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private District districtByDistrictId;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private User userByUserId;
 
     public CoachGarage() {
     }
@@ -126,11 +141,11 @@ public class CoachGarage {
         this.contract = contract;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -139,11 +154,35 @@ public class CoachGarage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CoachGarage that = (CoachGarage) o;
-        return id == that.id && districtId == that.districtId && userId == that.userId && Objects.equals(name, that.name) && Objects.equals(owner, that.owner) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email) && Objects.equals(address, that.address) && Objects.equals(contract, that.contract) && Objects.equals(status, that.status);
+        return id == that.id && districtId == that.districtId && userId == that.userId && status == that.status && Objects.equals(name, that.name) && Objects.equals(owner, that.owner) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email) && Objects.equals(address, that.address) && Objects.equals(contract, that.contract);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, name, owner, phone, email, address, districtId, userId, contract, status);
+    }
+
+    public Collection<Coach> getCoachesById() {
+        return coachesById;
+    }
+
+    public void setCoachesById(Collection<Coach> coachesById) {
+        this.coachesById = coachesById;
+    }
+
+    public District getDistrictByDistrictId() {
+        return districtByDistrictId;
+    }
+
+    public void setDistrictByDistrictId(District districtByDistrictId) {
+        this.districtByDistrictId = districtByDistrictId;
+    }
+
+    public User getUserByUserId() {
+        return userByUserId;
+    }
+
+    public void setUserByUserId(User userByUserId) {
+        this.userByUserId = userByUserId;
     }
 }

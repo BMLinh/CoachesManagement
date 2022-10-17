@@ -1,21 +1,41 @@
 package com.hal.CoachesWeb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 public class Country {
-    //status = 0: delete or deactive; =1: active
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = true, length = 45)
     private String name;
     @Basic
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "status", nullable = false)
+    private int status;
+    @JsonBackReference
+    @OneToMany(mappedBy = "countryByStartPoint")
+    private Collection<Coaches> coachesById;
+    @JsonBackReference
+    @OneToMany(mappedBy = "countryByEndPoint")
+    private Collection<Coaches> coachesById_0;
+    @JsonBackReference
+    @OneToMany(mappedBy = "countryByCountryId")
+    private Collection<District> districtsById;
+
+    public Country() {
+    }
+
+    public Country(String name, Integer status) {
+        this.name = name;
+        this.status = status;
+    }
 
     public int getId() {
         return id;
@@ -33,19 +53,11 @@ public class Country {
         this.name = name;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Country() {
-    }
-
-    public Country(String name, Integer status) {
-        this.name = name;
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -54,11 +66,35 @@ public class Country {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
-        return id == country.id && Objects.equals(name, country.name) && Objects.equals(status, country.status);
+        return id == country.id && status == country.status && Objects.equals(name, country.name);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, name, status);
+    }
+
+    public Collection<Coaches> getCoachesById() {
+        return coachesById;
+    }
+
+    public void setCoachesById(Collection<Coaches> coachesById) {
+        this.coachesById = coachesById;
+    }
+
+    public Collection<Coaches> getCoachesById_0() {
+        return coachesById_0;
+    }
+
+    public void setCoachesById_0(Collection<Coaches> coachesById_0) {
+        this.coachesById_0 = coachesById_0;
+    }
+
+    public Collection<District> getDistrictsById() {
+        return districtsById;
+    }
+
+    public void setDistrictsById(Collection<District> districtsById) {
+        this.districtsById = districtsById;
     }
 }

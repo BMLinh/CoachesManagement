@@ -5,6 +5,7 @@ import com.hal.CoachesWeb.entity.StopBy;
 import java.util.List;
 
 public class StopByRes {
+    private int id;
     private String districtName;
     private List<StopBy> stopBy;
 
