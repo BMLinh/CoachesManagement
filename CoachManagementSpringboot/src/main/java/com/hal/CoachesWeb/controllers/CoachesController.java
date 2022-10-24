@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.server.PathParam;
 import java.time.LocalDateTime;
 
+
 @RestController
 @CrossOrigin
 @RequestMapping(path = "/api/coaches")
@@ -45,9 +46,9 @@ public class CoachesController {
         );
     }
     @GetMapping("/date/")
-    ResponseEntity<ResponseObject> getAllCoachesByStartDate(@PathParam(value = "page") int page, @PathParam(value = "size") int size, @PathParam(value = "startTime")LocalDateTime startTime, @PathParam(value = "endTime")LocalDateTime endTime){
+    ResponseEntity<ResponseObject> getAllCoachesByStartDate(@PathParam(value = "page") int page, @PathParam(value = "size") int size, @PathParam(value = "startTime") String startTime, @PathParam(value = "endTime")String endTime){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByStartDate(startTime, endTime, PageRequest.of(page, size)).get())
+                new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByStartDate(LocalDateTime.parse(startTime), LocalDateTime.parse(endTime), PageRequest.of(page, size)).get())
         );
     }
     @PostMapping("/add")
@@ -128,5 +129,4 @@ public class CoachesController {
         }
         return null;
     }
-
 }

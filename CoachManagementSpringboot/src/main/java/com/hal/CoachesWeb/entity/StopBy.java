@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -27,17 +28,17 @@ public class StopBy {
     @Basic
     @Column(name = "status", nullable = false)
     private int status;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "stopByByStopById")
     private Collection<CoachesStopBy> coachesStopBIESById;
+    @JsonIgnore
     @ManyToOne
-    @JsonManagedReference
     @JoinColumn(name = "district_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private District districtByDistrictId;
     @OneToMany(mappedBy = "stopByByPickUpId")
-    @JsonBackReference
+    @JsonIgnore
     private Collection<Ticket> ticketsById;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "stopByByDropOffId")
     private Collection<Ticket> ticketsById_0;
 

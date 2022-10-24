@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,18 +17,15 @@ public class Category {
     @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @NotBlank(message = "Tên không được để trống")
-    @Size(max = 45)
     @Column(name = "name", nullable = true, length = 45)
     private String name;
     @Basic
     @Column(name = "status", nullable = false)
     private int status;
     @Basic
-    @NotBlank(message = "Số ghế không được để trống")
     @Column(name = "seat", nullable = false)
     private int seat;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "categoryByCategoryId")
     private Collection<Coach> coachesById;
 

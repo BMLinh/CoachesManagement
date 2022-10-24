@@ -7,18 +7,41 @@ import com.hal.CoachesWeb.repositories.UserRepository;
 import com.hal.CoachesWeb.service.UserService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceimpl implements UserService {
+public class UserServiceimpl implements UserService, UserDetailsService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private RoleResponsitory roleResponsitory;
+    @Autowired
+    private PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.getUserByPhone(phone);
+        if (!user.isPresent()){
+            throw new UsernameNotFoundException("Không tìm thấy số điện thoại người dùng");
+        }
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.get().getRoleByRoleId().getName()));
+        return new org.springframework.security.core.userdetails.User(user.get().getPhone(), user.get().getPassword(), authorities);
+    }
 
     @Override
     public List<UserDto> getAllUser(){
@@ -41,7 +64,7 @@ public class UserServiceimpl implements UserService {
         return null;
     }
     @Override
-    public UserDto getUserByPhone(String phone){
+    public UserDto getUserDtoByPhone(String phone){
         Optional<User> user = userRepository.getUserByPhone(phone);
         if (user.isPresent()){
             UserDto userDto = new UserDto().userToDto(user.get());
@@ -51,9 +74,13 @@ public class UserServiceimpl implements UserService {
         return null;
     }
     @Override
+    public User getUserByPhone(String phone){
+        return userRepository.getUserByPhone(phone).get();
+    }
+    @Override
     public boolean addUser(User user){
         try {
-            System.out.println(user.getRoleId());
+            user.setPassword(passwordEncoder().encode(user.getPassword()));
             userRepository.save(new User(user.getPassword(),user.getFullname(), user.getEmail(), user.getPhone()
                     , user.getGender(), user.getAvatar(), user.getRoleId(), user.getStatus()));
             return true;
@@ -92,7 +119,6 @@ public class UserServiceimpl implements UserService {
     }
     @Override
     public boolean isCorrectPassword(String phone, String password){
-        return userRepository.getUserByPhone(phone).get().getPassword().equals(password);
+        return passwordEncoder().matches(password, userRepository.getUserByPhone(phone).get().getPassword());
     }
-
 }

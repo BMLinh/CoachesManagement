@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -43,19 +44,20 @@ public class Ticket {
     @Basic
     @Column(name = "status", nullable = true)
     private Integer status;
+    @JsonIgnore
     @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "coaches_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Coaches coachesByCoachesId;
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private User userByUserId;
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "pick_up_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private StopBy stopByByPickUpId;
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "drop_off_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private StopBy stopByByDropOffId;
