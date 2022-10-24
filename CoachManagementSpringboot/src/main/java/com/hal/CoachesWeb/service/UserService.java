@@ -12,7 +12,8 @@ public interface UserService {
 
     UserDto getUserById(int id);
 
-    UserDto getUserByPhone(String phone);
+    UserDto getUserDtoByPhone(String phone);
+    User getUserByPhone(String phone);
 
     boolean addUser(User user);
 
@@ -21,6 +22,7 @@ public interface UserService {
     boolean deleteUser(int id);
 
     boolean existsByPhone(String phone);
+
     boolean existsById(int id);
 
     boolean isCorrectPassword(String phone, String password);

@@ -1,7 +1,11 @@
 package com.hal.CoachesWeb.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -43,18 +47,26 @@ public class User {
     @Basic
     @Column(name = "status", nullable = false)
     private int status;
-    @JsonBackReference
+    @Transient
+    @JsonIgnore
     @OneToMany(mappedBy = "userByUserId")
     private Collection<CoachGarage> coachGaragesById;
-    @JsonBackReference
+    @Transient
+    @JsonIgnore
     @OneToMany(mappedBy = "userByUserId")
     private Collection<Comment> commentsById;
-    @JsonBackReference
+    @Transient
+    @JsonIgnore
     @OneToMany(mappedBy = "userByUserId")
     private Collection<Shipping> shippingsById;
-    @JsonBackReference
+    @Transient
+    @JsonIgnore
     @OneToMany(mappedBy = "userByUserId")
     private Collection<Ticket> ticketsById;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
+    private Role roleByRoleId;
 
     public User() {
     }
@@ -193,5 +205,13 @@ public class User {
 
     public void setTicketsById(Collection<Ticket> ticketsById) {
         this.ticketsById = ticketsById;
+    }
+
+    public Role getRoleByRoleId() {
+        return roleByRoleId;
+    }
+
+    public void setRoleByRoleId(Role roleByRoleId) {
+        this.roleByRoleId = roleByRoleId;
     }
 }

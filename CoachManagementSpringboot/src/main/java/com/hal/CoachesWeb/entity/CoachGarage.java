@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -42,14 +43,14 @@ public class CoachGarage {
     @Basic
     @Column(name = "status", nullable = false)
     private int status;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "coachGarageByCoachGarageId")
     private Collection<Coach> coachesById;
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "district_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private District districtByDistrictId;
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private User userByUserId;

@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -16,40 +17,35 @@ public class Coach {
     @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @NotBlank(message = "Biến số xe không được để trống")
-    @Size(max = 20, message = "Độ dài biển số vượt quá quy định")
     @Column(name = "license_plates", nullable = false, length = 20)
     private String licensePlates;
     @Basic
-    @Size(max = 100)
     @Column(name = "description", nullable = true, length = 100)
     private String description;
     @Basic
-    @NotBlank(message = "Nhà xe id không được để trống")
     @Column(name = "coach_garage_id", nullable = false)
     private int coachGarageId;
     @Basic
-    @NotBlank(message = "Loại xe không được để trống")
     @Column(name = "category_id", nullable = false)
     private int categoryId;
     @Basic
     @Column(name = "status", nullable = false)
     private int status;
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "coach_garage_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private CoachGarage coachGarageByCoachGarageId;
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Category categoryByCategoryId;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "coachByCoachId")
     private Collection<Coaches> coachesById;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "coachByCoachId")
     private Collection<Comment> commentsById;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "coachByCoachId")
     private Collection<Picture> picturesById;
 

@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -17,63 +18,54 @@ public class Coaches {
     @Column(name = "id", nullable = false)
     private int id;
     @Basic
-    @NotBlank(message = "Giờ bắt đầu không được để trống")
     @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
     @Basic
-    @NotBlank(message = "Giờ kết thúc không được để trống")
     @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
     @Basic
-    @Size(max = 150)
     @Column(name = "description", nullable = true, length = 150)
     private String description;
     @Basic
-    @NotBlank(message = "Giá không được để trống")
     @Column(name = "price", nullable = false, precision = 0)
     private int price;
     @Basic
-    @NotBlank(message = "Ghế trống không được để trống")
     @Column(name = "empty_seat", nullable = false)
     private int emptySeat;
     @Basic
-    @NotBlank(message = "Giao hàng không được để trống")
     @Column(name = "is_shipping", nullable = false)
     private boolean isShipping;
     @Basic
-    @NotBlank(message = "Mã xe không được để trống")
     @Column(name = "coach_id", nullable = false)
     private int coachId;
     @Basic
-    @NotBlank(message = "Điểm xuất phát không được để trống")
     @Column(name = "start_point", nullable = false)
     private int startPoint;
     @Basic
-    @NotBlank(message = "Điểm kết thúc không được để trống")
     @Column(name = "end_point", nullable = false)
     private int endPoint;
     @Basic
     @Column(name = "status", nullable = true)
     private Integer status;
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "coach_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Coach coachByCoachId;
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "start_point", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Country countryByStartPoint;
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "end_point", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Country countryByEndPoint;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "coachesByCoachesId")
     private Collection<CoachesStopBy> coachesStopBIESById;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "coachesByCoachesId")
     private Collection<Shipping> shippingsById;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "coachesByCoachesId")
     private Collection<Ticket> ticketsById;
 

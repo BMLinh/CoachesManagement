@@ -1,6 +1,10 @@
 package com.hal.CoachesWeb.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +19,9 @@ public class Role {
     @Basic
     @Column(name = "status", nullable = false)
     private int status;
+    @JsonIgnore
+    @OneToMany(mappedBy = "roleByRoleId")
+    private Collection<User> usersById;
 
     public int getId() {
         return id;
@@ -51,5 +58,13 @@ public class Role {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, status);
+    }
+
+    public Collection<User> getUsersById() {
+        return usersById;
+    }
+
+    public void setUsersById(Collection<User> usersById) {
+        this.usersById = usersById;
     }
 }

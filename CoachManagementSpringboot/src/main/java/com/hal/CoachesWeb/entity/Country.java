@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -19,13 +20,13 @@ public class Country {
     @Basic
     @Column(name = "status", nullable = false)
     private int status;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "countryByStartPoint")
     private Collection<Coaches> coachesById;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "countryByEndPoint")
     private Collection<Coaches> coachesById_0;
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "countryByCountryId")
     private Collection<District> districtsById;
 

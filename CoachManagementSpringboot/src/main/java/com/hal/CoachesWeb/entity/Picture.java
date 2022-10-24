@@ -23,7 +23,7 @@ public class Picture {
     @Basic
     @Column(name = "status", nullable = false)
     private int status;
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "coach_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Coach coachByCoachId;
