@@ -23,7 +23,6 @@ public class CommentController {
     @GetMapping("/coach/")
     ResponseEntity<ResponseObject> getCommentByCoachAndRating(@PathParam(value = "page") int page
             , @PathParam(value = "size") int size, @PathParam(value = "coachId") int coachId, @PathParam(value = "rating") int rating){
-        System.out.println(coachId+" "+rating);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy tất cả bình luận thành công"
                         , commentService.getCommentByCoachAndRating(coachId, rating, PageRequest.of(page, size)).get())

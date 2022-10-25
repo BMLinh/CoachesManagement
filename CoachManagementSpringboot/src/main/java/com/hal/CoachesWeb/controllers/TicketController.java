@@ -1,12 +1,8 @@
 package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.Ticket;
-import com.hal.CoachesWeb.model.request.TicketReq;
 import com.hal.CoachesWeb.model.response.ResponseObject;
-import com.hal.CoachesWeb.service.CoachesService;
-import com.hal.CoachesWeb.service.StopByService;
-import com.hal.CoachesWeb.service.TicketService;
-import com.hal.CoachesWeb.service.UserService;
+import com.hal.CoachesWeb.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -27,7 +23,7 @@ public class TicketController {
     @Autowired
     private UserService userService;
     @Autowired
-    private StopByService stopByService;
+    private CoachesStopByService coachesStopByService;
 
     @GetMapping("/")
     ResponseEntity<ResponseObject> getAllTicket(@PathParam(value = "page") int page, @PathParam(value = "size") int size){
@@ -42,28 +38,29 @@ public class TicketController {
         );
     }
     @PostMapping("/add")
-    ResponseEntity<ResponseObject> addTicket(@Valid @RequestBody TicketReq ticketReq){
-        if (!coachesService.existsById(ticketReq.getTicket().getCoachesId())){
+    ResponseEntity<ResponseObject> addTicket(@Valid @RequestBody Ticket ticket){
+        if (!coachesService.existsById(ticket.getCoachesId())){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Không tìm thấy chuyến xe id", "")
             );
         }
-        if (!userService.existsById(ticketReq.getTicket().getUserId())){
+        if (!userService.existsById(ticket.getUserId())){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Không tìm thấy người dùng id", "")
             );
         }
-        if(!stopByService.existsById(ticketReq.getTicket().getPickUpId())||!stopByService.existsById(ticketReq.getTicket().getDropOffId())){
+        if(!coachesStopByService.existsByCoachesAndStopBy(ticket.getCoachesId(), ticket.getPickUpId())
+                ||!coachesStopByService.existsByCoachesAndStopBy(ticket.getCoachesId(), ticket.getDropOffId())){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Không tìm thấy điểm dừng/trả id", "")
             );
         }
-        if (ticketReq.getSeatNum()>coachesService.getEmptySeatByCoachesId(ticketReq.getTicket().getCoachesId())){
+        if (ticket.getAmount()>coachesService.getEmptySeatByCoachesId(ticket.getCoachesId())){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Số lượng ghế còn lại không đủ", "")
             );
         }
-        if (!ticketService.addTicket(ticketReq.getTicket(), ticketReq.getSeatNum())){
+        if (!ticketService.addTicket(ticket)){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Đặt vé xe thất bại", "")
             );

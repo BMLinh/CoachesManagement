@@ -1,12 +1,8 @@
 package com.hal.CoachesWeb.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Objects;
@@ -46,7 +42,7 @@ public class Coaches {
     private int endPoint;
     @Basic
     @Column(name = "status", nullable = true)
-    private Integer status;
+    private int status;
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "coach_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
@@ -72,7 +68,7 @@ public class Coaches {
     public Coaches() {
     }
 
-    public Coaches(LocalDateTime startTime, LocalDateTime endTime, String description, int price, int emptySeat, boolean isShipping, int coachId, int startPoint, int endPoint, Integer status) {
+    public Coaches(LocalDateTime startTime, LocalDateTime endTime, String description, int price, int emptySeat, boolean isShipping, int coachId, int startPoint, int endPoint, int status) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.description = description;
@@ -165,11 +161,11 @@ public class Coaches {
         this.endPoint = endPoint;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

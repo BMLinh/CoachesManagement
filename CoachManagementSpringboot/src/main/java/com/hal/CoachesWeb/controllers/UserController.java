@@ -68,7 +68,7 @@ public class UserController {
                 Algorithm algorithm = Algorithm.HMAC256("hieuAndLinhSecret".getBytes());
                 List<String> roles = new ArrayList<>();
                 roles.add(user.getRoleByRoleId().getName());
-                Date expiredTime = new Date(System.currentTimeMillis()+ 10*60*1000);
+                Date expiredTime = new Date(System.currentTimeMillis()+ 60*60*1000);
                 String access_token = JWT.create()
                         .withSubject(user.getPhone())
                         .withExpiresAt(expiredTime)
@@ -191,7 +191,7 @@ public class UserController {
                 User user = userService.getUserByPhone(phone);
                 List<String> roles = new ArrayList<>();
                 roles.add(user.getRoleByRoleId().getName());
-                Date expiredTime = new Date(System.currentTimeMillis()+ 10*60*1000);
+                Date expiredTime = new Date(System.currentTimeMillis()+ 60*60*1000);
                 String access_token = JWT.create()
                         .withSubject(user.getPhone())
                         .withExpiresAt(expiredTime)

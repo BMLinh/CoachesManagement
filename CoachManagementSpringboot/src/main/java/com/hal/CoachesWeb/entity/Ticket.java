@@ -30,6 +30,9 @@ public class Ticket {
     @Column(name = "phone", nullable = true, length = 11)
     private String phone;
     @Basic
+    @Column(name = "amount", nullable = false)
+    private int amount;
+    @Basic
     @Column(name = "coaches_id", nullable = false)
     private int coachesId;
     @Basic
@@ -65,10 +68,11 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Integer price, String email, String phone, int coachesId, int userId, int pickUpId, int dropOffId, Integer status) {
+    public Ticket(Integer price, String email, String phone,int amount, int coachesId, int userId, int pickUpId, int dropOffId, Integer status) {
         this.price = price;
         this.email = email;
         this.phone = phone;
+        this.amount = amount;
         this.coachesId = coachesId;
         this.userId = userId;
         this.pickUpId = pickUpId;
@@ -116,6 +120,14 @@ public class Ticket {
         this.phone = phone;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     public int getCoachesId() {
         return coachesId;
     }
@@ -161,12 +173,12 @@ public class Ticket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ticket ticket = (Ticket) o;
-        return id == ticket.id && coachesId == ticket.coachesId && userId == ticket.userId && pickUpId == ticket.pickUpId && dropOffId == ticket.dropOffId && Objects.equals(price, ticket.price) && Objects.equals(email, ticket.email) && Objects.equals(createDate, ticket.createDate) && Objects.equals(phone, ticket.phone) && Objects.equals(status, ticket.status);
+        return id == ticket.id && coachesId == ticket.coachesId && userId == ticket.userId && pickUpId == ticket.pickUpId && dropOffId == ticket.dropOffId && Objects.equals(price, ticket.price) && Objects.equals(email, ticket.email) && Objects.equals(createDate, ticket.createDate) && Objects.equals(phone, ticket.phone) && Objects.equals(amount, ticket.amount) && Objects.equals(status, ticket.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, price, email, createDate, phone, coachesId, userId, pickUpId, dropOffId, status);
+        return Objects.hash(id, price, email, createDate, phone, amount, coachesId, userId, pickUpId, dropOffId, status);
     }
 
     public Coaches getCoachesByCoachesId() {

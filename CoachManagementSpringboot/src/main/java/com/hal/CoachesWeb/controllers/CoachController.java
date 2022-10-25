@@ -82,10 +82,9 @@ public class CoachController {
             if (coachGarageService.existsById(coach.getCoachGarageId())){
                 if (categoryService.existsById(coach.getCategoryId())){
                     coach.setCoachGarageId(optCoach.get().getCoachGarageId());
-                    Coach newCoach = coachService.updateCoach(coach);
-                    if (newCoach!=null){
+                    if (coachService.updateCoach(coach)){
                         return ResponseEntity.status(HttpStatus.OK).body(
-                                new ResponseObject(200, "Cập nhật xe thành công", newCoach)
+                                new ResponseObject(200, "Cập nhật xe thành công", "")
                         );
                     }
                     return ResponseEntity.status(HttpStatus.OK).body(

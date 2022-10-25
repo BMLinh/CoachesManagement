@@ -29,8 +29,9 @@ public class CategoryServiceImpl implements CategoryService {
             return true;
         } catch (HibernateException ex){
             System.out.println(ex);
+            return false;
         }
-        return false;
+
     }
     @Override
     public boolean updateCategory(Category category){
@@ -39,18 +40,23 @@ public class CategoryServiceImpl implements CategoryService {
             return true;
         } catch (HibernateException ex){
             System.out.println(ex);
+            return false;
         }
-        return false;
     }
     @Override
     public boolean deleteCategory(int id){
-        try {
-            categoryRepository.deleteById(id);
-            return true;
-        } catch (HibernateException ex){
-            System.out.println(ex);
+        Category category = categoryRepository.getById(id);
+        if (category.getCoachesById().isEmpty()){
+            try {
+                categoryRepository.deleteById(id);
+                return true;
+            } catch (HibernateException ex){
+                System.out.println(ex);
+                return false;
+            }
         }
-        return false;
+        category.setStatus(0);
+        return updateCategory(category);
     }
     @Override
     public boolean existsById(int id){

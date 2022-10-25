@@ -8,9 +8,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 public interface CoachesRepository extends JpaRepository<Coaches, Integer>, JpaSpecificationExecutor<Coaches> {
     Page<Coaches> findAllByCoachId (int id, Pageable pageable);
+    List<Coaches> findAllByCoachId (int id);
     Page<Coaches> findAllByStartTimeBetween (LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
-    Coaches findTopByCoachIdOrderByIdDesc (int id);
+    boolean existsByCoachId (int id);
 }
