@@ -8,10 +8,14 @@ import java.util.Optional;
 
 @Service
 public interface CoachGarageService {
-    List<CoachGarage> getAllCoachGarage();
+    List<CoachGarage> getCoachGarage();
+    List<CoachGarage> getRequestCoachGarage();
     Optional<CoachGarage> getCoachGarageById(int id);
+    boolean acceptCoachGarage(CoachGarage coachGarage);
+    boolean rejectCoachGarage(CoachGarage coachGarage);
     boolean addCoachGarage(CoachGarage coachGarage);
     boolean updateCoachGarage(CoachGarage coachGarage);
+//    boolean updateStatus(CoachGarage coachGarage);
     boolean deleteCoachGarage(int id);
     boolean existsById(int id);
 }

@@ -1,9 +1,10 @@
 package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.Coaches;
-import com.hal.CoachesWeb.repositories.CoachesRepository;
+import com.hal.CoachesWeb.repositories.*;
 import com.hal.CoachesWeb.service.CoachService;
 import com.hal.CoachesWeb.service.CoachesService;
+import com.hal.CoachesWeb.service.CoachesStopByService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,13 @@ public class CoachesServiceImpl implements CoachesService {
     @Autowired
     private CoachesRepository coachesRepository;
     @Autowired
-    private CoachService coachService;
+    private CoachRepository coachRepository;
+    @Autowired
+    private CoachesStopByRepository coachesStopByRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
+    @Autowired
+    private ShippingRepository shippingRepository;
 
     @Override
     public Page<Coaches> getAllCoaches(Pageable pageable){
@@ -38,36 +45,82 @@ public class CoachesServiceImpl implements CoachesService {
         return coachesRepository.findById(id);
     }
     @Override
-    public Coaches addCoaches(Coaches coaches){
+    public boolean addCoaches(Coaches coaches){
+        Coaches newCoaches = new Coaches(coaches.getStartTime(), coaches.getEndTime()
+                , coaches.getDescription(), coaches.getPrice()
+                , coachRepository.getById(coaches.getCoachId()).getCategoryByCategoryId().getSeat(), coaches.isShipping()
+                , coaches.getCoachId(), coaches.getStartPoint(), coaches.getEndPoint(), coaches.getStatus());
         try {
-            coachesRepository.save(new Coaches(coaches.getStartTime(), coaches.getEndTime()
-                    , coaches.getDescription(), coaches.getPrice(), coachService.getSeatByCoachId(coaches.getCoachId()), coaches.isShipping()
-                    , coaches.getCoachId(), coaches.getStartPoint(), coaches.getEndPoint(), 1));
-            return coachesRepository.findTopByCoachIdOrderByIdDesc(coaches.getCoachId());
-        } catch (HibernateException ex){
-            System.out.println(ex);
-        }
-        return null;
-    }
-    @Override
-    public Coaches updateCoaches(Coaches coaches){
-        try {
-            coachesRepository.save(coaches);
-            return coachesRepository.getById(coaches.getId());
-        } catch (HibernateException ex){
-            System.out.println(ex);
-        }
-        return null;
-    }
-    @Override
-    public boolean deleteCoaches(int id){
-        try {
-            coachesRepository.deleteById(id);
+            coachesRepository.save(newCoaches);
             return true;
         } catch (HibernateException ex){
             System.out.println(ex);
+            return false;
         }
-        return false;
+    }
+    @Override
+    public boolean updateCoaches(Coaches newCoaches){
+        Coaches coaches = coachesRepository.getById(newCoaches.getId());
+        newCoaches.setCoachByCoachId(coaches.getCoachByCoachId());
+        newCoaches.setCountryByEndPoint(coaches.getCountryByEndPoint());
+        newCoaches.setCountryByStartPoint(coaches.getCountryByStartPoint());
+        try {
+            coachesRepository.save(newCoaches);
+            return true;
+        } catch (HibernateException ex){
+            System.out.println(ex);
+            return false;
+        }
+    }
+
+//    @Override
+//    public boolean updateStatus(Coaches coaches) {
+//        try {
+//            coaches.getTicketsById().stream().forEach(ticket -> {
+//                if (ticket.getStatus()!=0){
+//                    ticket.setStatus(0);
+//                    ticketRepository.save(ticket);
+//                }
+//            });
+//            coaches.getShippingsById().stream().forEach(shipping -> {
+//                if (shipping.getStatus()!=0){
+//                    shipping.setStatus(0);
+//                    shippingRepository.save(shipping);
+//                }
+//            });
+//            coachesStopByRepository.findAllByCoachesId(coaches.getId()).forEach(coachesStopBy -> {
+//                if (coachesStopBy.getStatus()!=0){
+//                    coachesStopBy.setStatus(0);
+//                    coachesStopByRepository.save(coachesStopBy);
+//                }
+//            });
+//            if (coaches.getStatus()!=0){
+//                coaches.setStatus(0);
+//                coachesRepository.save(coaches);
+//            }
+//            return true;
+//        } catch (HibernateException ex){
+//            System.out.println(ex.getMessage());
+//            return false;
+//        }
+//    }
+    @Override
+    public boolean deleteCoaches(int id){
+        Coaches coaches = coachesRepository.getById(id);
+        if (coachesStopByRepository.existsByCoachesId(id)
+                && shippingRepository.existsByUserId(id)
+                && ticketRepository.existsByCoachesId(id)){
+            try {
+                coachesRepository.deleteById(id);
+                return true;
+            } catch (HibernateException ex) {
+                System.out.println(ex);
+                return false;
+            }
+        }
+        coaches.setStatus(0);
+        return updateCoaches(coaches);
+
     }
     @Override
     public boolean existsById(int id){

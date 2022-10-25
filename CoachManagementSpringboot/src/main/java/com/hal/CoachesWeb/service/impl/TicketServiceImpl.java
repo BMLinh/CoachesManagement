@@ -14,6 +14,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,27 +30,27 @@ public class TicketServiceImpl implements TicketService {
     public Page<Ticket> getAllTicket(Pageable pageable){
         return ticketRepository.findAll(pageable);
     }
+
+    @Override
+    public List<Ticket> getTicketByCoaches(int id) {
+        return ticketRepository.findAllByCoachesId(id);
+    }
+
     @Override
     public Optional<Ticket> getTicketById(int id){
         return ticketRepository.findById(id);
     }
     @Override
-    public boolean addTicket(Ticket ticket, int amount){
+    public boolean addTicket(Ticket ticket){
         String text = "Các mã vé của bạn là:";
         try {
             Coaches coaches = coachesRepository.getById(ticket.getCoachesId());
-            coaches.setEmptySeat(coaches.getEmptySeat()-amount);
+            coaches.setEmptySeat(coaches.getEmptySeat()-ticket.getAmount());
             coachesRepository.save(coaches);
-            for (int i = 1; i <= amount; i++) {
-                ticketRepository.save(new Ticket(ticket.getPrice(), ticket.getEmail()
-                        , ticket.getPhone(), ticket.getCoachesId(), ticket.getUserId()
-                        , ticket.getPickUpId(), ticket.getDropOffId(), 1));
-                if (i<amount){
-                    text = text.concat(" "+ticketRepository.findTopByEmailOrderByIdDesc(ticket.getEmail()).getId()+",");
-                }else {
-                    text = text.concat(" "+ticketRepository.findTopByEmailOrderByIdDesc(ticket.getEmail()).getId()+".");
-                }
-            }
+            ticketRepository.save(new Ticket(ticket.getPrice(), ticket.getEmail()
+                    , ticket.getPhone(), ticket.getAmount(), ticket.getCoachesId(), ticket.getUserId()
+                    , ticket.getPickUpId(), ticket.getDropOffId(), 1));
+                    text = text.concat(" "+ticketRepository.findTopByEmailOrderByIdDesc(ticket.getEmail()).getId());
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom("1951052099Linh@ou.edu.vn");
             message.setTo(ticket.getEmail());
@@ -66,16 +67,22 @@ public class TicketServiceImpl implements TicketService {
         }
         return false;
     }
-//    @Override
-//    public Ticket updateTicket(Ticket ticket){
-//        try {
-//            ticketRepository.save(ticket);
-//            return ticketRepository.getById(ticket.getId());
-//        } catch (HibernateException ex){
-//            System.out.println(ex.getMessage());
-//        }
-//        return null;
-//    }
+    @Override
+    public Ticket updateTicket(Ticket ticket){
+        try {
+            Ticket oldTicket = ticketRepository.getById(ticket.getId());
+            ticket.setCoachesId(oldTicket.getCoachesId());
+            ticket.setCreateDate(oldTicket.getCreateDate());
+            ticket.setUserId(oldTicket.getUserId());
+            ticket.setPrice(oldTicket.getPrice());
+            ticketRepository.save(ticket);
+            return ticketRepository.getById(ticket.getId());
+        } catch (HibernateException ex){
+            System.out.println(ex.getMessage());
+        }
+        return null;
+    }
+
     @Override
     public boolean deleteTicket(int id){
         try {

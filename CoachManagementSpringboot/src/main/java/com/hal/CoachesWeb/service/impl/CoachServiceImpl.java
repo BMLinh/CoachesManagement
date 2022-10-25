@@ -1,8 +1,7 @@
 package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.Coach;
-import com.hal.CoachesWeb.repositories.CategoryRepository;
-import com.hal.CoachesWeb.repositories.CoachRepository;
+import com.hal.CoachesWeb.repositories.*;
 import com.hal.CoachesWeb.service.CoachService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,13 @@ public class CoachServiceImpl implements CoachService {
     @Autowired
     private CoachRepository coachRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CoachesServiceImpl coachesService;
+    @Autowired
+    private CoachesRepository coachesRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private PictureRepository pictureRepository;
 
     @Override
     public List<Coach> getAllCoach(){
@@ -38,35 +43,57 @@ public class CoachServiceImpl implements CoachService {
             return coachRepository.findTopByCoachGarageIdOrderByIdDesc(coach.getCoachGarageId());
         } catch (HibernateException ex){
             System.out.println(ex);
+            return null;
         }
-        return null;
     }
+
+//    @Override
+//    public boolean updateStatus(Coach coach) {
+//        try {
+//            coach.setCoachesById(coachesRepository.findAllByCoachId(coach.getId()));
+//            coach.getCoachesById().forEach(coaches -> {
+//                if (coaches.getStatus()!=0){
+//                    coachesService.updateStatus(coaches);
+//                }
+//            });
+//            if (coach.getStatus()!=0){
+//                coach.setStatus(0);
+//                coachRepository.save(coach);
+//            }
+//            return true;
+//        } catch (HibernateException ex){
+//            System.out.println(ex.getMessage());
+//            return false;
+//        }
+//    }
+
     @Override
-    public Coach updateCoach(Coach coach){
+    public boolean updateCoach(Coach coach){
         try {
             coachRepository.save(coach);
-            return coach;
-        } catch (HibernateException ex){
-            System.out.println(ex);
-        }
-        return null;
-    }
-    @Override
-    public boolean deleteCoach(int id){
-        try {
-            coachRepository.deleteById(id);
             return true;
         } catch (HibernateException ex){
             System.out.println(ex);
+            return false;
         }
-        return false;
+    }
+    @Override
+    public boolean deleteCoach(int id){
+        Coach coach = coachRepository.getById(id);
+        if (coachesRepository.existsByCoachId(id) && pictureRepository.existsByCoachId(id)){
+            try {
+                coachRepository.deleteById(id);
+                return true;
+            } catch (HibernateException ex){
+                System.out.println(ex);
+                return false;
+            }
+        }
+        coach.setStatus(0);
+        return updateCoach(coach);
     }
     @Override
     public boolean existsById(int id){
         return coachRepository.existsById(id);
-    }
-    @Override
-    public int getSeatByCoachId(int id){
-        return categoryRepository.getById(coachRepository.getById(id).getCategoryId()).getSeat();
     }
 }

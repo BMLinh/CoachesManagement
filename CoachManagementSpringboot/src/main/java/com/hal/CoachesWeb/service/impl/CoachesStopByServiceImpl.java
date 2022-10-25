@@ -1,5 +1,6 @@
 package com.hal.CoachesWeb.service.impl;
 
+import com.hal.CoachesWeb.entity.Coaches;
 import com.hal.CoachesWeb.entity.CoachesStopBy;
 import com.hal.CoachesWeb.entity.CoachesStopByPK;
 import com.hal.CoachesWeb.repositories.CoachesStopByRepository;
@@ -40,5 +41,10 @@ public class CoachesStopByServiceImpl implements CoachesStopByService {
             System.out.println(ex);
         }
         return false;
+    }
+
+    @Override
+    public boolean existsByCoachesAndStopBy(int coachesId, int stopById) {
+        return coachesStopByRepository.existsByCoachesIdAndStopById(coachesId, stopById);
     }
 }

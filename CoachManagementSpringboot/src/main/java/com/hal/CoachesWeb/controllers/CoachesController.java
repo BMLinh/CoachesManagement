@@ -57,14 +57,13 @@ public class CoachesController {
         if (res!=null){
             return res;
         }
-        Coaches newCoaches = coachesService.addCoaches(coaches);
-        if (newCoaches==null){
+        if (!coachesService.addCoaches(coaches)){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Thêm chuyến xe thất bại", "")
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Thêm chuyến xe thành công", newCoaches)
+                new ResponseObject(200, "Thêm chuyến xe thành công", "")
         );
     }
     @PutMapping("/update")
@@ -78,14 +77,13 @@ public class CoachesController {
         if (res!=null){
             return res;
         }
-        Coaches newCoaches = coachesService.updateCoaches(coaches);
-        if (newCoaches==null){
+        if (!coachesService.updateCoaches(coaches)){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Cập nhật chuyến xe thất bại", "")
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Cập nhật chuyến xe thành công", newCoaches)
+                new ResponseObject(200, "Cập nhật chuyến xe thành công", "")
         );
     }
     @DeleteMapping("/delete/{id}")

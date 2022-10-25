@@ -1,5 +1,6 @@
 package com.hal.CoachesWeb.service;
 
+import com.hal.CoachesWeb.entity.CoachGarage;
 import com.hal.CoachesWeb.entity.Coaches;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +15,9 @@ public interface CoachesService {
     Page<Coaches> getAllCoachesByCoachId(int id, Pageable pageable);
     Page<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
     Optional<Coaches> getCoachesById(int id);
-    Coaches addCoaches(Coaches coaches);
-    Coaches updateCoaches(Coaches coaches);
+    boolean addCoaches(Coaches coaches);
+    boolean updateCoaches(Coaches coaches);
+//    boolean updateStatus(Coaches coaches);
     boolean deleteCoaches(int id);
     boolean existsById(int id);
     int getEmptySeatByCoachesId(int id);

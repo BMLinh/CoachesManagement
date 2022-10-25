@@ -26,7 +26,7 @@ public class CoachGarageController {
 
     @GetMapping("")
     ResponseEntity<ResponseObject> getAllCoachGarage(){
-        List<CoachGarage> coachGarages = coachGarageService.getAllCoachGarage();
+        List<CoachGarage> coachGarages = coachGarageService.getCoachGarage();
         if (!coachGarages.isEmpty()){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200,"Lấy tất cả nhà xe thành công", coachGarages)

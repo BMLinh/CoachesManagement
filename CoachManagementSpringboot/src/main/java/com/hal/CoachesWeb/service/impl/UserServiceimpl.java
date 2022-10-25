@@ -1,9 +1,10 @@
 package com.hal.CoachesWeb.service.impl;
 
+import com.hal.CoachesWeb.entity.CoachGarage;
 import com.hal.CoachesWeb.entity.User;
 import com.hal.CoachesWeb.model.response.UserDto;
-import com.hal.CoachesWeb.repositories.RoleResponsitory;
-import com.hal.CoachesWeb.repositories.UserRepository;
+import com.hal.CoachesWeb.repositories.*;
+import com.hal.CoachesWeb.service.CoachGarageService;
 import com.hal.CoachesWeb.service.UserService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,16 @@ public class UserServiceimpl implements UserService, UserDetailsService {
     private UserRepository userRepository;
     @Autowired
     private RoleResponsitory roleResponsitory;
+    @Autowired
+    private CoachGarageServiceImpl coachGarageService;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private ShippingRepository shippingRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
+    @Autowired
+    private CoachGarageRepository coachGarageRepository;
     @Autowired
     private PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -92,6 +103,7 @@ public class UserServiceimpl implements UserService, UserDetailsService {
     @Override
     public boolean updateUser(User user){
         try {
+            user.setCreatedDate(userRepository.getById(user.getId()).getCreatedDate());
             userRepository.save(user);
             return true;
         } catch (HibernateException ex){
@@ -99,15 +111,45 @@ public class UserServiceimpl implements UserService, UserDetailsService {
         }
         return false;
     }
+
+//    @Override
+//    public boolean updateStatus(User user) {
+//        try {
+//            user.getCoachGaragesById().forEach(coachGarage -> {
+//                if (coachGarage.getStatus()!=0){
+//                    coachGarageService.updateStatus(coachGarage);
+//                }
+//            });
+//            if (user.getStatus()!=0){
+//                user.setStatus(0);
+//                userRepository.save(user);
+//            }
+//            return true;
+//        } catch (HibernateException ex){
+//            System.out.println(ex.getMessage());
+//            return false;
+//        }
+//    }
+
     @Override
     public boolean deleteUser(int id){
-        try {
-            userRepository.deleteById(id);
-            return true;
-        } catch (HibernateException ex){
-            System.out.println(ex);
+        User user = userRepository.getById(id);
+        user.setCommentsById(commentRepository.findAllByUserId(id));
+        user.setCoachGaragesById(coachGarageRepository.findAllByUserId(id));
+        user.setTicketsById(ticketRepository.findAllByUserId(id));
+        user.setShippingsById(shippingRepository.findAllByUserId(id));
+        if (user.getCoachGaragesById().isEmpty() && user.getCommentsById().isEmpty()
+                && user.getShippingsById().isEmpty() && user.getTicketsById().isEmpty()){
+            try {
+                userRepository.deleteById(id);
+                return true;
+            } catch (HibernateException ex){
+                System.out.println(ex);
+                return false;
+            }
         }
-        return false;
+        user.setStatus(0);
+        return updateUser(user);
     }
     @Override
     public boolean existsByPhone(String phone){
@@ -115,7 +157,7 @@ public class UserServiceimpl implements UserService, UserDetailsService {
     }
     @Override
     public boolean existsById(int id){
-        return userRepository.existsById(id);
+        return userRepository.existsByIdAndStatusIsNot(id, 0);
     }
     @Override
     public boolean isCorrectPassword(String phone, String password){

@@ -19,6 +19,8 @@ public interface UserService {
 
     boolean updateUser(User user);
 
+//    boolean updateStatus(User user);
+
     boolean deleteUser(int id);
 
     boolean existsByPhone(String phone);
