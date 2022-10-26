@@ -102,7 +102,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    ResponseEntity<ResponseObject> signUp(@RequestBody User newUser) {
+    ResponseEntity<ResponseObject> signUp(@ModelAttribute User newUser) {
         if (isFieldMissing(newUser)){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Thiếu trường dữ liệu", "")

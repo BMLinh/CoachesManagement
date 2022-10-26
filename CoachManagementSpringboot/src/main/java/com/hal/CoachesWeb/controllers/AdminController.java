@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.*;
+import com.hal.CoachesWeb.model.request.CoachReq;
 import com.hal.CoachesWeb.model.response.CoachRes;
 import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.model.response.UserDto;
@@ -10,9 +11,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.websocket.server.PathParam;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -37,6 +40,8 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private CoachesStopByService coachesStopByService;
+    @Autowired
+    private StopByService stopByService;
 
     //Category
     @GetMapping("/category/getall")
@@ -47,14 +52,8 @@ public class AdminController {
     }
     @GetMapping("/category/{id}")
     ResponseEntity<ResponseObject> getCategoryById(@PathVariable int id){
-        Optional<Category> category = categoryService.getCategoryById(id);
-        if (category.isPresent() && category.get().getStatus() != 0) {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(200, "Lấy loại xe thành công", category)
-            );
-        }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(400, "Không tìm thấy loại xe id", "")
+                new ResponseObject(200, "Lấy loại xe thành công", categoryService.getCategoryById(id).get())
         );
     }
     @PostMapping("/category/add")
@@ -133,10 +132,10 @@ public class AdminController {
         );
     }
     @PostMapping("/coach/add")
-    ResponseEntity<ResponseObject> addCoach(@RequestBody Coach coach){
-        if (coachGarageService.existsById(coach.getCoachGarageId())){
-            if (categoryService.existsById(coach.getCategoryId())){
-                if (coachService.addCoach(coach)){
+    ResponseEntity<ResponseObject> addCoach(@RequestBody CoachReq coachReq){
+        if (coachGarageService.existsById(coachReq.getCoach().getCoachGarageId())){
+            if (categoryService.existsById(coachReq.getCoach().getCategoryId())){
+                if (coachService.addCoach(coachReq.getCoach(), coachReq.getPictures())){
                     return ResponseEntity.status(HttpStatus.OK).body(
                             new ResponseObject(200, "Thêm xe thành công", "")
                     );
@@ -200,6 +199,11 @@ public class AdminController {
     //Coaches
     @GetMapping("/coaches/getall")
     ResponseEntity<ResponseObject> getAllCoaches(@PathParam(value = "page") int page, @PathParam(value = "size") int size){
+        if ((Integer)page==null || (Integer)size==null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoaches())
+            );
+        }
         PageRequest pageRequest = PageRequest.of(page, size);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoaches(pageRequest).get())
@@ -268,7 +272,20 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(400, "Xóa chuyến xe thất bại", "")
         );
+    }
 
+    //StopBy
+    @GetMapping("/coaches/pickup/{id}")
+    ResponseEntity<ResponseObject> getPickUpByCoachesId(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy tất cả điểm đón thành công", stopByService.getAllStopByCoachesId(id, 3))
+        );
+    }
+    @GetMapping("/coaches/droppoff/{id}")
+    ResponseEntity<ResponseObject> getDropOffByCoachesId(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy tất cả điểm trả thành công", stopByService.getAllStopByCoachesId(id, 4))
+        );
     }
 
     //CoachGarage

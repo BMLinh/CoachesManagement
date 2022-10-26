@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.lang.Nullable;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -67,6 +68,9 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
     private Role roleByRoleId;
+
+    @Transient
+    private MultipartFile avatarPic;
 
     public User() {
     }
@@ -160,6 +164,14 @@ public class User {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public MultipartFile getAvatarPic() {
+        return avatarPic;
+    }
+
+    public void setAvatarPic(MultipartFile avatarPic) {
+        this.avatarPic = avatarPic;
     }
 
     @Override

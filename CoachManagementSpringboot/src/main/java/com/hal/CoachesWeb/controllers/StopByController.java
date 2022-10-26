@@ -24,6 +24,12 @@ public class StopByController {
                 new ResponseObject(200, "Lấy tất cả điểm dừng thành công", stopByService.getAllStopBy())
         );
     }
+    @GetMapping("/CoachesId/{id}")
+    ResponseEntity<ResponseObject> getStopByCoachesId(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy tất cả điểm dừng thành công", stopByService.getAllStopByCoachesId(id, 3))
+        );
+    }
     @GetMapping("/country/{id}")
     ResponseEntity<ResponseObject> getStopByByCountryId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(

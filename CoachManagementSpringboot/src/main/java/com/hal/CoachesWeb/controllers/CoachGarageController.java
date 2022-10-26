@@ -1,8 +1,10 @@
 package com.hal.CoachesWeb.controllers;
 
+import com.hal.CoachesWeb.entity.Category;
 import com.hal.CoachesWeb.entity.Coach;
 import com.hal.CoachesWeb.entity.CoachGarage;
 import com.hal.CoachesWeb.entity.Coaches;
+import com.hal.CoachesWeb.model.request.CoachReq;
 import com.hal.CoachesWeb.model.response.CoachRes;
 import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.service.*;
@@ -56,6 +58,25 @@ public class CoachGarageController {
 //                new ResponseObject(400, "Không tìm thấy nhà xe id", "")
 //        );
 //    }
+    //Category
+    @GetMapping("/category/getall")
+    ResponseEntity<ResponseObject> getAllCategory(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200,"Lấy tất cả loại xe thành công", categoryService.getAllActiveCategory())
+        );
+    }
+    @GetMapping("/category/{id}")
+    ResponseEntity<ResponseObject> getCategoryById(@PathVariable int id){
+        Optional<Category> category = categoryService.getCategoryById(id);
+        if (category.isPresent() && category.get().getStatus() != 0) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Lấy loại xe thành công", category.get())
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Không tìm thấy loại xe id", "")
+        );
+    }
 
     //Coach
     @GetMapping("/coachgarage/{id}")
@@ -69,7 +90,7 @@ public class CoachGarageController {
     @GetMapping("/coachgarage/coach/{id}")
     ResponseEntity<ResponseObject> getCoachById(@PathVariable int id){
         Optional<Coach> coach = coachService.getCoachById(id);
-        if (coach.isPresent()){
+        if (coach.isPresent() && coach.get().getStatus()!=0){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Lấy xe thành công", new CoachRes(coach.get()))
             );
@@ -79,10 +100,10 @@ public class CoachGarageController {
         );
     }
     @PostMapping("/coachgarage/coach/add")
-    ResponseEntity<ResponseObject> addCoach(@RequestBody Coach coach){
-        if (coachGarageService.existsById(coach.getCoachGarageId())){
-            if (categoryService.existsById(coach.getCategoryId())){
-                if (coachService.addCoach(coach)){
+    ResponseEntity<ResponseObject> addCoach(@ModelAttribute CoachReq coachReq){
+        if (coachGarageService.existsById(coachReq.getCoach().getCoachGarageId())){
+            if (categoryService.existsById(coachReq.getCoach().getCategoryId())){
+                if (coachService.addCoach(coachReq.getCoach(), coachReq.getPictures())){
                     return ResponseEntity.status(HttpStatus.OK).body(
                             new ResponseObject(200, "Thêm xe thành công", "")
                     );
@@ -210,7 +231,7 @@ public class CoachGarageController {
     @GetMapping("/coachgarage/coaches/shipping/{id}")
     ResponseEntity<ResponseObject> getShippingByCoachesId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy vé xe thành công", shippingService.getShippingByCoaches(id))
+                new ResponseObject(200, "Lấy giao hàng thành công", shippingService.getShippingByCoaches(id))
         );
     }
 
