@@ -46,13 +46,14 @@ public class CoachesServiceImpl implements CoachesService {
 
     @Override
     public List<Coaches> getAllCoachesByCoachId(int id) {
-        List<Coaches> coaches = new ArrayList<>();
-        coachRepository.findAllByCoachGarageIdAndStatusIsNot(id, 0).forEach(coach -> {
-            if (coach.getStatus()!=0){
-                coaches.addAll(coachesRepository.findAllByCoachIdAndStatusNot(id, 0));
-            }
-        });
-        return coaches;
+//        List<Coaches> coaches = new ArrayList<>();
+//        coachRepository.findAllByCoachGarageIdAndStatusIsNot(id, 0).forEach(coach -> {
+//            if (coach.getStatus()!=0){
+//                coaches.addAll(coachesRepository.findAllByCoachIdAndStatusNot(id, 0));
+//            }
+//        });
+//        return coaches;
+        return coachesRepository.findAllByCoachId(id);
     }
 
     @Override
@@ -81,6 +82,7 @@ public class CoachesServiceImpl implements CoachesService {
     @Override
     public boolean updateCoaches(Coaches newCoaches){
         Coaches coaches = coachesRepository.getById(newCoaches.getId());
+        newCoaches.setCreateDate(coaches.getCreateDate());
         newCoaches.setCoachByCoachId(coaches.getCoachByCoachId());
         newCoaches.setCountryByEndPoint(coaches.getCountryByEndPoint());
         newCoaches.setCountryByStartPoint(coaches.getCountryByStartPoint());

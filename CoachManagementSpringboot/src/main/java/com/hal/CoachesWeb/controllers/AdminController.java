@@ -199,7 +199,7 @@ public class AdminController {
     //Coaches
     @GetMapping("/coaches/getall")
     ResponseEntity<ResponseObject> getAllCoaches(@PathParam(value = "page") int page, @PathParam(value = "size") int size){
-        if ((Integer)page==null || (Integer)size==null){
+        if (page==0 || size==0){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoaches())
             );
@@ -211,6 +211,11 @@ public class AdminController {
     }
     @GetMapping("/coaches/coach/")
     ResponseEntity<ResponseObject> getAllCoachesByCoachId(@PathParam(value = "page") int page, @PathParam(value = "size") int size, @PathParam(value = "id") int id){
+        if (page==0 || size==0){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getCoachesById(id))
+            );
+        }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByCoachId(id, PageRequest.of(page, size)).get())
         );
@@ -221,12 +226,13 @@ public class AdminController {
                 new ResponseObject(200, "Lấy chuyến xe thành công", coachesService.getCoachesById(id))
         );
     }
-    @GetMapping("/coaches/date/")
-    ResponseEntity<ResponseObject> getAllCoachesByStartDate(@PathParam(value = "page") int page, @PathParam(value = "size") int size, @PathParam(value = "startTime") String startTime, @PathParam(value = "endTime")String endTime){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByStartDate(LocalDateTime.parse(startTime), LocalDateTime.parse(endTime), PageRequest.of(page, size)).get())
-        );
-    }
+//    @GetMapping("/coaches/date/")
+//    ResponseEntity<ResponseObject> getAllCoachesByStartDate(@PathParam(value = "page") int page, @PathParam(value = "size") int size, @PathParam(value = "startTime") String startTime, @PathParam(value = "endTime")String endTime){
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByStartDate(LocalDateTime.parse(startTime), LocalDateTime.parse(endTime), PageRequest.of(page, size)).get())
+//        );
+//    }
     @PostMapping("/coaches/add")
     ResponseEntity<ResponseObject> addCoaches(@RequestBody Coaches coaches){
         ResponseEntity<ResponseObject> res = coachesChecking(coaches);

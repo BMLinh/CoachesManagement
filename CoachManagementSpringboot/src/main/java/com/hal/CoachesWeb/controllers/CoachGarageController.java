@@ -83,14 +83,14 @@ public class CoachGarageController {
     ResponseEntity<ResponseObject> getCoachByGarageId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy danh sách xe thành công"
-                        , coachService.getAllCoachByGarageIdNoDelete(id))
+                        , coachService.getAllCoachByGarageId(id))
         );
     }
 
     @GetMapping("/coachgarage/coach/{id}")
     ResponseEntity<ResponseObject> getCoachById(@PathVariable int id){
         Optional<Coach> coach = coachService.getCoachById(id);
-        if (coach.isPresent() && coach.get().getStatus()!=0){
+        if (coach.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Lấy xe thành công", new CoachRes(coach.get()))
             );
@@ -166,10 +166,16 @@ public class CoachGarageController {
     }
 
     //Coaches
-    @GetMapping("/coachgarage/coaches/{id}")
+    @GetMapping("/coachgarage/coaches/getall/{id}")
     ResponseEntity<ResponseObject> getAllCoachesByCoachGarageId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByCoachId(id))
+        );
+    }
+    @GetMapping("/coachgarage/coaches/{id}")
+    ResponseEntity<ResponseObject> getCoachesById(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy chuyến xe thành công", coachesService.getCoachesById(id))
         );
     }
     @PostMapping("/coachgarage/coaches/add")
@@ -207,17 +213,17 @@ public class CoachGarageController {
                 new ResponseObject(200, "Cập nhật chuyến xe thành công", "")
         );
     }
-//    @DeleteMapping("/coachgarage/coaches/delete/{id}")
-//    ResponseEntity<ResponseObject> deleteCoaches(@PathVariable int id){
-//        if (coachesService.deleteCoaches(id)){
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject(200, "Xóa chuyến xe thành công", "")
-//            );
-//        }
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject(400, "Xóa chuyến xe thất bại", "")
-//        );
-//    }
+    @DeleteMapping("/coachgarage/coaches/delete/{id}")
+    ResponseEntity<ResponseObject> deleteCoaches(@PathVariable int id){
+        if (coachesService.deleteCoaches(id)){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Xóa chuyến xe thành công", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Xóa chuyến xe thất bại", "")
+        );
+    }
 
     //Ticket
     @GetMapping("/coachgarage/coaches/ticket/{id}")

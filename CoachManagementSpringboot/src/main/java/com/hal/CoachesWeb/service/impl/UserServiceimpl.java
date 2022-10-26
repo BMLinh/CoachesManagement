@@ -184,7 +184,7 @@ public class UserServiceimpl implements UserService, UserDetailsService {
     public boolean isActive(String phone) {
         Optional<User> user = userRepository.getUserByPhone(phone);
         if (user.get().getStatus()!=1)
-            return true;
-        return false;
+            return false;
+        return true;
     }
 }

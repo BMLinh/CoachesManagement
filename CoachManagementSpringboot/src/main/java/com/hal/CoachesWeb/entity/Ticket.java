@@ -48,7 +48,6 @@ public class Ticket {
     @Column(name = "status", nullable = true)
     private Integer status;
     @JsonIgnore
-    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "coaches_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Coaches coachesByCoachesId;
