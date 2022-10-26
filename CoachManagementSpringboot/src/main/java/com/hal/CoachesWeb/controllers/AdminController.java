@@ -1,7 +1,7 @@
 package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.*;
-import com.hal.CoachesWeb.model.request.TicketReq;
+import com.hal.CoachesWeb.model.response.CoachRes;
 import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.model.response.UserDto;
 import com.hal.CoachesWeb.service.*;
@@ -9,13 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -128,21 +125,20 @@ public class AdminController {
         Optional<Coach> coach = coachService.getCoachById(id);
         if (coach.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(200, "Lấy xe thành công", coach)
+                    new ResponseObject(200, "Lấy xe thành công", new CoachRes(coach.get()))
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(400, "Không tìm thấy xe", "")
+                new ResponseObject(200, "Lấy xe thành công", "")
         );
     }
     @PostMapping("/coach/add")
     ResponseEntity<ResponseObject> addCoach(@RequestBody Coach coach){
         if (coachGarageService.existsById(coach.getCoachGarageId())){
             if (categoryService.existsById(coach.getCategoryId())){
-                Coach newCoach = coachService.addCoach(coach);
-                if (newCoach!=null){
+                if (coachService.addCoach(coach)){
                     return ResponseEntity.status(HttpStatus.OK).body(
-                            new ResponseObject(200, "Thêm xe thành công", newCoach)
+                            new ResponseObject(200, "Thêm xe thành công", "")
                     );
                 }
                 return ResponseEntity.status(HttpStatus.OK).body(
@@ -432,7 +428,7 @@ public class AdminController {
                         new ResponseObject(400, "Không tìm thấy điểm dừng/trả id", "")
                 );
             }
-            if (ticketService.updateTicket(ticket)==null){
+            if (ticketService.updateTicket(ticket)){
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(400, "Cập nhật vé xe thất bại", "")
                 );
@@ -463,14 +459,14 @@ public class AdminController {
         );
     }
     //User
-    @GetMapping("user/getall")
+    @GetMapping("/user/getall")
     ResponseEntity<ResponseObject> getAllUser() {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy tất cả người dùng thành công", userService.getAllUser())
         );
     }
 
-    @GetMapping("user/{id}")
+    @GetMapping("/user/{id}")
     ResponseEntity<ResponseObject> getUserById(@PathVariable int id) {
         UserDto userDto = userService.getUserById(id);
         if (userDto!=null) {
@@ -482,7 +478,7 @@ public class AdminController {
                     new ResponseObject(400, "Không tìm thấy người dùng", "")
             );
     }
-    @PostMapping("user/add")
+    @PostMapping("/user/add")
     ResponseEntity<ResponseObject> addUser(@RequestBody User newUser) {
         if (isFieldMissing(newUser)){
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -513,7 +509,7 @@ public class AdminController {
                 new ResponseObject(400, "Số điện thoại đã có tài khoản", "")
         );
     }
-    @PutMapping("user/update")
+    @PutMapping("/user/update")
     ResponseEntity<ResponseObject> updateUser(@RequestBody User newUser) {
         if (isFieldMissing(newUser)){
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -549,7 +545,7 @@ public class AdminController {
         );
     }
 
-    @DeleteMapping("user/delete/{id}")
+    @DeleteMapping("/user/delete/{id}")
     ResponseEntity<ResponseObject> deleteUser(@PathVariable int id){
         if (userService.getUserById(id)!=null){
             if (userService.deleteUser(id)){

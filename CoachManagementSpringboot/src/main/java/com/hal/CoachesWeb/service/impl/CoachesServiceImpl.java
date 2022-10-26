@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,10 +33,23 @@ public class CoachesServiceImpl implements CoachesService {
     public Page<Coaches> getAllCoaches(Pageable pageable){
         return coachesRepository.findAll(pageable);
     }
+
     @Override
     public Page<Coaches> getAllCoachesByCoachId(int id, Pageable pageable){
         return coachesRepository.findAllByCoachId(id, pageable);
     }
+
+    @Override
+    public List<Coaches> getAllCoachesByCoachId(int id) {
+        List<Coaches> coaches = new ArrayList<>();
+        coachRepository.findAllByCoachGarageIdAndStatusIsNot(id, 0).forEach(coach -> {
+            if (coach.getStatus()!=0){
+                coaches.addAll(coachesRepository.findAllByCoachIdAndStatusNot(id, 0));
+            }
+        });
+        return coaches;
+    }
+
     @Override
     public Page<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable){
         Page<Coaches> coaches= coachesRepository.findAllByStartTimeBetween(startTime, endTime, pageable);

@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface CoachRepository extends JpaRepository<Coach, Integer> {
     List<Coach> findAllByCoachGarageId(int id);
-    Coach findTopByCoachGarageIdOrderByIdDesc(int id);
+    List<Coach> findAllByCoachGarageIdAndStatusIsNot (int id, int status);
+//    Coach findTopByCoachGarageIdOrderByIdDesc(int id);
 }

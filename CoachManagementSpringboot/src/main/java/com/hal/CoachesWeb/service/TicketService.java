@@ -14,7 +14,7 @@ public interface TicketService {
     List<Ticket> getTicketByCoaches(int id);
     Optional<Ticket> getTicketById(int id);
     boolean addTicket(Ticket ticket);
-    Ticket updateTicket(Ticket ticket);
+    boolean updateTicket(Ticket ticket);
     boolean deleteTicket(int id);
     boolean existsById(int id);
 }

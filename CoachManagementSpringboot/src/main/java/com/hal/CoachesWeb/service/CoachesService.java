@@ -7,12 +7,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public interface CoachesService {
     Page<Coaches> getAllCoaches(Pageable pageable);
     Page<Coaches> getAllCoachesByCoachId(int id, Pageable pageable);
+    List<Coaches> getAllCoachesByCoachId(int id);
     Page<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
     Optional<Coaches> getCoachesById(int id);
     boolean addCoaches(Coaches coaches);

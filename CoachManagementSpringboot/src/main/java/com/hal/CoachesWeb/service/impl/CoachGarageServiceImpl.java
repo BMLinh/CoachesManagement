@@ -40,6 +40,11 @@ public class CoachGarageServiceImpl implements CoachGarageService {
     }
 
     @Override
+    public List<CoachGarage> getCoachGarageByUserId(int id) {
+        return coachGarageRepository.findAllByUserId(id);
+    }
+
+    @Override
     public Optional<CoachGarage> getCoachGarageById(int id){
         return coachGarageRepository.findById(id);
     }
@@ -122,7 +127,7 @@ public class CoachGarageServiceImpl implements CoachGarageService {
         }
     }
 
-//    @Override
+    //    @Override
 //    public boolean updateStatus(CoachGarage coachGarage) {
 //        try {
 //            coachGarage.setCoachesById(coachService.getAllCoachByGarageId(coachGarage.getId()));

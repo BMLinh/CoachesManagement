@@ -1,11 +1,10 @@
 package com.hal.CoachesWeb.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -36,8 +35,10 @@ public class Shipping {
     @Column(name = "receiverEmail", nullable = false, length = 45)
     private String receiverEmail;
     @Basic
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "sendTime", nullable = true)
-    private Timestamp sendTime;
+    private Date sendTime;
     @Basic
     @Column(name = "price", nullable = true, precision = 0)
     private Integer price;
@@ -58,6 +59,26 @@ public class Shipping {
     @ManyToOne
     @JoinColumn(name = "coaches_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Coaches coachesByCoachesId;
+
+    public Shipping() {
+    }
+
+    public Shipping(String name, String senderName, String senderPhone, String senderEmail, String receiverName
+            , String receiverPhone, String receiverEmail, Date sendTime
+            , Integer price, int userId, int coachesId, int status) {
+        this.name = name;
+        this.senderName = senderName;
+        this.senderPhone = senderPhone;
+        this.senderEmail = senderEmail;
+        this.receiverName = receiverName;
+        this.receiverPhone = receiverPhone;
+        this.receiverEmail = receiverEmail;
+        this.sendTime = sendTime;
+        this.price = price;
+        this.userId = userId;
+        this.coachesId = coachesId;
+        this.status = status;
+    }
 
     public int getId() {
         return id;
@@ -123,11 +144,11 @@ public class Shipping {
         this.receiverEmail = receiverEmail;
     }
 
-    public Timestamp getSendTime() {
+    public Date getSendTime() {
         return sendTime;
     }
 
-    public void setSendTime(Timestamp sendTime) {
+    public void setSendTime(Date sendTime) {
         this.sendTime = sendTime;
     }
 

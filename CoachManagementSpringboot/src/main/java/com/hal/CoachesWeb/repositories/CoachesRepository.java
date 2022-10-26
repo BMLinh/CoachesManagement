@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface CoachesRepository extends JpaRepository<Coaches, Integer>, JpaSpecificationExecutor<Coaches> {
     Page<Coaches> findAllByCoachId (int id, Pageable pageable);
-    List<Coaches> findAllByCoachId (int id);
+    List<Coaches> findAllByCoachIdAndStatusNot (int id, int status);
     Page<Coaches> findAllByStartTimeBetween (LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
     boolean existsByCoachId (int id);
 }
