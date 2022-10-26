@@ -58,6 +58,9 @@ public class TicketServiceImpl implements TicketService {
                 ". Mọi thắc mắc vui lòng liên hệ nhà xe để hiểu rõ hơn" +
                 ". Cảm ơn bạn đã tin dùng nhà xe chúng tôi");
         try {
+            Coaches coaches = coachesRepository.getById(ticket.getId());
+            coaches.setEmptySeat(coaches.getEmptySeat()+1);
+            coachesRepository.save(coaches);
             ticketRepository.delete(ticket);
             mailSender.send(message);
             return true;
