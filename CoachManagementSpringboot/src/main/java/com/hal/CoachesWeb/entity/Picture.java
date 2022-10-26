@@ -27,9 +27,15 @@ public class Picture {
     @ManyToOne
     @JoinColumn(name = "coach_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Coach coachByCoachId;
-    @Transient
-    @JsonIgnore
-    private List<MultipartFile> multipartFileList;
+
+    public Picture() {
+    }
+
+    public Picture(String url, int coachId, int status) {
+        this.url = url;
+        this.coachId = coachId;
+        this.status = status;
+    }
 
     public int getId() {
         return id;
@@ -63,13 +69,6 @@ public class Picture {
         this.status = status;
     }
 
-    public List<MultipartFile> getMultipartFileList() {
-        return multipartFileList;
-    }
-
-    public void setMultipartFileList(List<MultipartFile> multipartFileList) {
-        this.multipartFileList = multipartFileList;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -75,17 +75,15 @@ public class Coaches {
     public Coaches() {
     }
 
-    public Coaches(int id, LocalDateTime startTime, LocalDateTime endTime, String description, int price
-            , int emptySeat, boolean isShipping, Date createDate, int coachId
+    public Coaches(LocalDateTime startTime, LocalDateTime endTime, String description, int price
+            , int emptySeat, boolean isShipping, int coachId
             , int startPoint, int endPoint, int status) {
-        this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.description = description;
         this.price = price;
         this.emptySeat = emptySeat;
         this.isShipping = isShipping;
-        this.createDate = createDate;
         this.coachId = coachId;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
