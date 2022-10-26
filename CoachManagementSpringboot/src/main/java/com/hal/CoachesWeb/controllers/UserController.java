@@ -62,7 +62,7 @@ public class UserController {
     ResponseEntity<ResponseObject> signIn(@Valid @RequestBody UserSignIn userSignin) {
         if (userService.existsByPhone(userSignin.getPhone())){
             if (userService.isCorrectPassword(userSignin.getPhone(), userSignin.getPassword())){
-                if (!userService.isActive(userSignin.getPhone())){
+                if (userService.isActive(userSignin.getPhone())){
                     return ResponseEntity.status(HttpStatus.OK).body(
                             new ResponseObject(400, "Tài khoản của bạn không còn tồn tại hoặc đã bị khóa", "")
                     );
