@@ -37,38 +37,7 @@ public class TicketController {
                 new ResponseObject(200, "Lấy vé xe thành công", ticketService.getTicketById(id))
         );
     }
-    @PostMapping("/add")
-    ResponseEntity<ResponseObject> addTicket(@Valid @RequestBody Ticket ticket){
-        if (!coachesService.existsById(ticket.getCoachesId())){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(400, "Không tìm thấy chuyến xe id", "")
-            );
-        }
-        if (!userService.existsById(ticket.getUserId())){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(400, "Không tìm thấy người dùng id", "")
-            );
-        }
-        if(!coachesStopByService.existsByCoachesAndStopBy(ticket.getCoachesId(), ticket.getPickUpId())
-                ||!coachesStopByService.existsByCoachesAndStopBy(ticket.getCoachesId(), ticket.getDropOffId())){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(400, "Không tìm thấy điểm dừng/trả id", "")
-            );
-        }
-        if (ticket.getAmount()>coachesService.getEmptySeatByCoachesId(ticket.getCoachesId())){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(400, "Số lượng ghế còn lại không đủ", "")
-            );
-        }
-        if (!ticketService.addTicket(ticket)){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(400, "Đặt vé xe thất bại", "")
-            );
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Đặt vé xe thành công", "")
-        );
-    }
+   
     @DeleteMapping("/delete/{id}")
     ResponseEntity<ResponseObject> deleteTicket(@PathVariable int id){
         if (ticketService.existsById(id)){

@@ -17,6 +17,7 @@ public interface CoachesService {
     List<Coaches> getAllCoaches();
     List<Coaches> getAllCoachesByCoachId(int id);
     Page<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
+    List<Coaches> getAllCoachesInDay(LocalDateTime startTime);
     Optional<Coaches> getCoachesById(int id);
     boolean addCoaches(Coaches coaches);
     boolean updateCoaches(Coaches coaches);
