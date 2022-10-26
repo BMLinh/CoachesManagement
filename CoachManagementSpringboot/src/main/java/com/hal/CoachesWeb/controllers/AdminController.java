@@ -303,7 +303,7 @@ public class AdminController {
     @GetMapping("/coachgarage/request")
     ResponseEntity<ResponseObject> getRequestCoachGarage(){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200,"Lấy nhà xe yêu cầu thành công", coachGarageService.getRequestCoachGarage())
+                new ResponseObject(200,"Lấy nhà xe yêu cầu thành công", coachGarageService.getCoachGarageByStatus(2))
         );
     }
 

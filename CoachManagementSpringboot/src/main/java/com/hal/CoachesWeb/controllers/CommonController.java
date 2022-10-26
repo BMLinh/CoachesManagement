@@ -19,13 +19,7 @@ public class CommonController {
     @Autowired
     private CategoryService categoryService;
     @Autowired
-    private TicketService ticketService;
-    @Autowired
-    private CoachesService coachesService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private CoachesStopByService coachesStopByService;
+    private CoachGarageService coachGarageService;
 
     //Category
     @GetMapping("/category/getall")
@@ -47,37 +41,12 @@ public class CommonController {
         );
     }
 
-    //Ticket
-    @PostMapping("/ticket/add")
-    ResponseEntity<ResponseObject> addTicket(@Valid @RequestBody Ticket ticket){
-        if (!coachesService.existsById(ticket.getCoachesId())){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(400, "Không tìm thấy chuyến xe id", "")
-            );
-        }
-        if (!userService.existsById(ticket.getUserId())){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(400, "Không tìm thấy người dùng id", "")
-            );
-        }
-        if(!coachesStopByService.existsByCoachesAndStopBy(ticket.getCoachesId(), ticket.getPickUpId())
-                ||!coachesStopByService.existsByCoachesAndStopBy(ticket.getCoachesId(), ticket.getDropOffId())){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(400, "Không tìm thấy điểm dừng/trả id", "")
-            );
-        }
-        if (ticket.getAmount()>coachesService.getEmptySeatByCoachesId(ticket.getCoachesId())){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(400, "Số lượng ghế còn lại không đủ", "")
-            );
-        }
-        if (!ticketService.addTicket(ticket)){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(400, "Đặt vé xe thất bại", "")
-            );
-        }
+    //
+    @GetMapping("/coachgarage/")
+    ResponseEntity<ResponseObject> getCoachGarage(){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Đặt vé xe thành công", "")
+                new ResponseObject(200,"Lấy nhà xe thành công", coachGarageService.getCoachGarageByStatus(1))
         );
     }
+
 }
