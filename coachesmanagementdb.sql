@@ -126,6 +126,7 @@ CREATE TABLE `coaches` (
   `price` decimal(10,0) NOT NULL,
   `empty_seat` int NOT NULL,
   `is_shipping` bit(1) NOT NULL DEFAULT b'0',
+  `create_date` datetime DEFAULT NULL,
   `coach_id` int NOT NULL,
   `start_point` int NOT NULL,
   `end_point` int NOT NULL,
@@ -137,7 +138,7 @@ CREATE TABLE `coaches` (
   CONSTRAINT `fk_coaches_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`id`),
   CONSTRAINT `fk_coaches_end_point` FOREIGN KEY (`end_point`) REFERENCES `country` (`id`),
   CONSTRAINT `fk_coaches_start_point` FOREIGN KEY (`start_point`) REFERENCES `country` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,7 +147,7 @@ CREATE TABLE `coaches` (
 
 LOCK TABLES `coaches` WRITE;
 /*!40000 ALTER TABLE `coaches` DISABLE KEYS */;
-INSERT INTO `coaches` VALUES (1,'2022-10-05 07:30:30','2022-10-05 10:30:30','',250000,38,_binary '',1,1,1,1),(2,'2022-10-14 06:30:00','2022-10-15 05:45:00','Xe hư dời 1 ngày',350000,0,_binary '\0',2,2,1,0),(3,'2022-10-13 06:30:00','2022-10-15 05:45:00','',550000,49,_binary '',1,1,1,1),(4,'2022-10-13 06:30:00','2022-10-15 05:45:00','',550000,25,_binary '',2,2,1,1),(6,'2022-10-26 06:30:00','2022-10-27 05:45:00','',650000,0,_binary '',2,2,1,1),(7,'2022-10-26 06:30:00','2022-10-27 05:45:00','',650000,0,_binary '',2,2,1,1);
+INSERT INTO `coaches` VALUES (1,'2022-10-05 07:30:30','2022-10-05 10:30:30','',250000,38,_binary '',NULL,1,1,1,1),(2,'2022-10-14 06:30:00','2022-10-15 05:45:00','Xe hư dời 1 ngày',350000,0,_binary '\0',NULL,2,2,1,0),(3,'2022-10-13 06:30:00','2022-10-15 05:45:00','',550000,49,_binary '',NULL,1,1,1,1),(4,'2022-10-13 06:30:00','2022-10-15 05:45:00','',550000,25,_binary '',NULL,2,2,1,1),(6,'2022-10-26 06:30:00','2022-10-27 05:45:00','',650000,0,_binary '',NULL,2,2,1,1),(7,'2022-10-26 06:30:00','2022-10-27 05:45:00','',650000,0,_binary '',NULL,2,2,1,1),(9,'2022-10-29 06:30:00','2022-10-30 05:45:00','test update',350000,0,_binary '\0',NULL,2,2,1,0);
 /*!40000 ALTER TABLE `coaches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -280,7 +281,7 @@ CREATE TABLE `picture` (
   PRIMARY KEY (`id`),
   KEY `fk_picture_coach_idx` (`coach_id`),
   CONSTRAINT `fk_picture_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -289,6 +290,7 @@ CREATE TABLE `picture` (
 
 LOCK TABLES `picture` WRITE;
 /*!40000 ALTER TABLE `picture` DISABLE KEYS */;
+INSERT INTO `picture` VALUES (1,'https://res.cloudinary.com/dd3tfkb7f/image/upload/v1666753564/poocvhri3euprr3l8dh5.png',1,1),(2,'https://res.cloudinary.com/dd3tfkb7f/image/upload/v1666753564/poocvhri3euprr3l8dh5.png',1,1),(3,'https://res.cloudinary.com/dd3tfkb7f/image/upload/v1666753564/poocvhri3euprr3l8dh5.png',1,1),(4,'https://res.cloudinary.com/dd3tfkb7f/image/upload/v1666753574/wwibwbvo0c0m6jxxz10k.png',1,1);
 /*!40000 ALTER TABLE `picture` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -421,7 +423,7 @@ CREATE TABLE `ticket` (
 
 LOCK TABLES `ticket` WRITE;
 /*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
-INSERT INTO `ticket` VALUES (1,15000,'1951052055Hieu@ou.edu.vn',NULL,'0123456789',1,1,1,1,1,1),(2,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:29:48','0123456789',1,1,2,2,1,1),(3,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:29:50','0123456789',1,1,2,2,1,1),(4,15000,'1951052055hieu@ou.edu.vn','2022-10-12 04:31:02','0123456789',1,1,2,2,1,1),(5,15000,'1951052055hieu@ou.edu.vn','2022-10-12 04:31:03','0123456789',1,1,2,2,1,1),(6,15000,'1951052055hieu@ou.edu.vn','2022-10-12 04:37:12','0123456789',1,1,2,2,1,1),(7,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:43:19','0123456789',1,1,2,2,1,1),(8,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:43:19','0123456789',1,1,2,2,1,1);
+INSERT INTO `ticket` VALUES (1,15000,'1951052055Hieu@ou.edu.vn',NULL,'0123456789',1,1,1,1,1,1),(2,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:29:48','0123456789',1,1,2,2,1,1),(3,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:29:50','0123456789',1,1,2,2,1,2),(4,15000,'1951052055hieu@ou.edu.vn','2022-10-12 04:31:02','0123456789',1,1,2,2,1,1),(5,15000,'1951052055hieu@ou.edu.vn','2022-10-12 04:31:03','0123456789',1,1,2,2,1,2),(6,15000,'1951052055hieu@ou.edu.vn','2022-10-12 04:37:12','0123456789',1,1,2,2,1,1),(7,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:43:19','0123456789',1,1,2,2,1,1);
 /*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -469,4 +471,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-26  1:33:22
+-- Dump completed on 2022-10-27  2:22:55

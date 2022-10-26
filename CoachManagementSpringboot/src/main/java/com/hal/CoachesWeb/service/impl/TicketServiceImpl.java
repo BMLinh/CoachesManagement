@@ -13,6 +13,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,9 +38,55 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public List<Ticket> getRequestTicket() {
+        return ticketRepository.findAllByStatus(2);
+    }
+
+    @Override
     public Optional<Ticket> getTicketById(int id){
         return ticketRepository.findById(id);
     }
+
+    @Override
+    @Transactional
+    public boolean acceptRefundTicket(Ticket ticket) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("1951052099Linh@ou.edu.vn");
+        message.setTo(ticket.getEmail());
+        message.setSubject("Thông tin hủy vé từ H&L");
+        message.setText("Vé xe "+ticket.getId()+" đã được chấp nhận hủy vé" +
+                ". Mọi thắc mắc vui lòng liên hệ nhà xe để hiểu rõ hơn" +
+                ". Cảm ơn bạn đã tin dùng nhà xe chúng tôi");
+        try {
+            ticketRepository.delete(ticket);
+            mailSender.send(message);
+            return true;
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+    @Override
+    @Transactional
+    public boolean rejectRefundTicket(Ticket ticket) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("1951052099Linh@ou.edu.vn");
+        message.setTo(ticket.getEmail());
+        message.setSubject("Thông tin hủy vé từ H&L");
+        message.setText("Vé xe "+ticket.getId()+" không được chấp nhận hủy vé" +
+                ". Mọi thắc mắc vui lòng liên hệ nhà xe để hiểu rõ hơn" +
+                ". Cảm ơn bạn đã tin dùng nhà xe chúng tôi");
+        ticket.setStatus(1);
+        try {
+            ticketRepository.save(ticket);
+            mailSender.send(message);
+            return true;
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+
     @Override
     public boolean addTicket(Ticket ticket){
         String text = "Các mã vé của bạn là:";

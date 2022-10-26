@@ -287,7 +287,7 @@ public class AdminController {
                 new ResponseObject(200, "Lấy tất cả điểm đón thành công", stopByService.getAllStopByCoachesId(id, 3))
         );
     }
-    @GetMapping("/coaches/droppoff/{id}")
+    @GetMapping("/coaches/dropoff/{id}")
     ResponseEntity<ResponseObject> getDropOffByCoachesId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy tất cả điểm trả thành công", stopByService.getAllStopByCoachesId(id, 4))
@@ -430,6 +430,12 @@ public class AdminController {
         );
     }
     //Ticket
+    @GetMapping("/ticket/request")
+    ResponseEntity<ResponseObject> getTicketRequest(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy vé xe thành công", ticketService.getRequestTicket())
+        );
+    }
     @GetMapping("/ticket/coaches/{id}")
     ResponseEntity<ResponseObject> getTicketByCoaches(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -442,6 +448,43 @@ public class AdminController {
                 new ResponseObject(200, "Lấy vé xe thành công", ticketService.getTicketById(id))
         );
     }
+    @PutMapping("/ticket/refund/accept/{id}")
+    ResponseEntity<ResponseObject> acceptRefundTicket(@PathVariable int id){
+        Optional<Ticket> ticket = ticketService.getTicketById(id);
+        if (ticket.isPresent()){
+            if (ticketService.acceptRefundTicket(ticket.get())){
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(200, "Chấp thuận hủy vé xe thành công", "")
+                );
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Chấp thuận hủy vé xe thất bại", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Không tìm thấy vé xe", "")
+        );
+    }
+
+    @PutMapping("/ticket/refund/reject/{id}")
+    ResponseEntity<ResponseObject> rejectRefundTicket(@PathVariable int id){
+        Optional<Ticket> ticket = ticketService.getTicketById(id);
+        if (ticket.isPresent()){
+            ticket.get().setStatus(1);
+            if (ticketService.rejectRefundTicket(ticket.get())){
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(200, "Từ chối hủy vé xe thành công", "")
+                );
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Từ chối hủy vé xe thất bại", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Không tìm thấy vé xe", "")
+        );
+    }
+
     @PostMapping("/ticket/update")
     ResponseEntity<ResponseObject> updateTicket(@PathVariable Ticket ticket){
         if (ticketService.existsById(ticket.getId())){
