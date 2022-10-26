@@ -1,10 +1,12 @@
 package com.hal.CoachesWeb.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -31,6 +33,11 @@ public class Coaches {
     @Basic
     @Column(name = "is_shipping", nullable = false)
     private boolean isShipping;
+    @Basic
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date", nullable = true)
+    private Date createDate;
     @Basic
     @Column(name = "coach_id", nullable = false)
     private int coachId;
@@ -68,13 +75,17 @@ public class Coaches {
     public Coaches() {
     }
 
-    public Coaches(LocalDateTime startTime, LocalDateTime endTime, String description, int price, int emptySeat, boolean isShipping, int coachId, int startPoint, int endPoint, int status) {
+    public Coaches(int id, LocalDateTime startTime, LocalDateTime endTime, String description, int price
+            , int emptySeat, boolean isShipping, Date createDate, int coachId
+            , int startPoint, int endPoint, int status) {
+        this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.description = description;
         this.price = price;
         this.emptySeat = emptySeat;
         this.isShipping = isShipping;
+        this.createDate = createDate;
         this.coachId = coachId;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -135,6 +146,14 @@ public class Coaches {
 
     public void setShipping(boolean shipping) {
         isShipping = shipping;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public int getCoachId() {

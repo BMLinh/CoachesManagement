@@ -163,4 +163,12 @@ public class UserServiceimpl implements UserService, UserDetailsService {
     public boolean isCorrectPassword(String phone, String password){
         return passwordEncoder().matches(password, userRepository.getUserByPhone(phone).get().getPassword());
     }
+
+    @Override
+    public boolean isActive(String phone) {
+        Optional<User> user = userRepository.getUserByPhone(phone);
+        if (user.get().getStatus()!=1)
+            return true;
+        return false;
+    }
 }

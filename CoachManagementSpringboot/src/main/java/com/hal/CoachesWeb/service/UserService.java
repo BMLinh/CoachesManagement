@@ -29,4 +29,5 @@ public interface UserService {
 
     boolean isCorrectPassword(String phone, String password);
 
+    boolean isActive(String phone);
 }

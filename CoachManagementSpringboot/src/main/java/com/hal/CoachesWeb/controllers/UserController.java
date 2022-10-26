@@ -2,6 +2,7 @@ package com.hal.CoachesWeb.controllers;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.hal.CoachesWeb.entity.CoachGarage;
 import com.hal.CoachesWeb.entity.User;
 import com.hal.CoachesWeb.model.request.UserSignIn;
 import com.hal.CoachesWeb.model.response.ResponseObject;
@@ -61,6 +62,11 @@ public class UserController {
     ResponseEntity<ResponseObject> signIn(@Valid @RequestBody UserSignIn userSignin) {
         if (userService.existsByPhone(userSignin.getPhone())){
             if (userService.isCorrectPassword(userSignin.getPhone(), userSignin.getPassword())){
+                if (!userService.isActive(userSignin.getPhone())){
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                            new ResponseObject(400, "Tài khoản của bạn không còn tồn tại hoặc đã bị khóa", "")
+                    );
+                }
                 Authentication authentication = authenticationManager
                         .authenticate(new UsernamePasswordAuthenticationToken(userSignin.getPhone(), userSignin.getPassword()));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -232,6 +238,27 @@ public class UserController {
         }
         return false;
     }
+//    @PostMapping("/add")
+//    ResponseEntity<ResponseObject> addCoachGarage(@RequestBody CoachGarage coachGarage){
+//        if (userService.existsById(coachGarage.getUserId())){
+//            if (districtService.getDistrictById(coachGarage.getDistrictId()).isPresent()){
+//                if (coachGarageService.addCoachGarage(coachGarage)){
+//                    return ResponseEntity.status(HttpStatus.OK).body(
+//                            new ResponseObject(200, "Tạo nhà xe thành công", coachGarage)
+//                    );
+//                }
+//                return ResponseEntity.status(HttpStatus.OK).body(
+//                        new ResponseObject(400, "Thêm nhà xe thất bại", "")
+//                );
+//            }
+//            return ResponseEntity.status(HttpStatus.OK).body(
+//                    new ResponseObject(400, "Không tìm thấy quận/huyện id", "")
+//            );
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseObject(400, "Không tìm thấy người dùng id", "")
+//        );
+//    }
 }
 @Data
 class UserRes {

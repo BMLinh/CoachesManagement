@@ -68,7 +68,7 @@ public class TicketServiceImpl implements TicketService {
         return false;
     }
     @Override
-    public Ticket updateTicket(Ticket ticket){
+    public boolean updateTicket(Ticket ticket){
         try {
             Ticket oldTicket = ticketRepository.getById(ticket.getId());
             ticket.setCoachesId(oldTicket.getCoachesId());
@@ -76,11 +76,11 @@ public class TicketServiceImpl implements TicketService {
             ticket.setUserId(oldTicket.getUserId());
             ticket.setPrice(oldTicket.getPrice());
             ticketRepository.save(ticket);
-            return ticketRepository.getById(ticket.getId());
+            return true;
         } catch (HibernateException ex){
             System.out.println(ex.getMessage());
+            return false;
         }
-        return null;
     }
 
     @Override

@@ -31,19 +31,25 @@ public class CoachServiceImpl implements CoachService {
     public List<Coach> getAllCoachByGarageId(int id){
         return coachRepository.findAllByCoachGarageId(id);
     }
+
+    @Override
+    public List<Coach> getAllCoachByGarageIdNoDelete(int id) {
+        return coachRepository.findAllByCoachGarageIdAndStatusIsNot(id, 0);
+    }
+
     @Override
     public Optional<Coach> getCoachById(int id){
         return coachRepository.findById(id);
     }
     @Override
-    public Coach addCoach(Coach coach){
+    public boolean addCoach(Coach coach){
         try {
             coachRepository.save(new Coach(coach.getLicensePlates(), coach.getDescription()
                     , coach.getCoachGarageId(), coach.getCategoryId(), coach.getStatus()));
-            return coachRepository.findTopByCoachGarageIdOrderByIdDesc(coach.getCoachGarageId());
+            return true;
         } catch (HibernateException ex){
             System.out.println(ex);
-            return null;
+            return false;
         }
     }
 
