@@ -1,17 +1,25 @@
 package com.hal.CoachesWeb.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.hal.CoachesWeb.entity.Coach;
+import com.hal.CoachesWeb.entity.Picture;
 import com.hal.CoachesWeb.repositories.*;
 import com.hal.CoachesWeb.service.CoachService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CoachServiceImpl implements CoachService {
+    private Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "dd3tfkb7f",
+            "api_key", "267679115459675",
+            "api_secret", "oa4v8FNxe1LCovHI1wVLlhH4t9s"));
     @Autowired
     private CoachRepository coachRepository;
     @Autowired
@@ -42,10 +50,20 @@ public class CoachServiceImpl implements CoachService {
         return coachRepository.findById(id);
     }
     @Override
-    public boolean addCoach(Coach coach){
+    public boolean addCoach(Coach coach, List<MultipartFile> pictures){
         try {
             coachRepository.save(new Coach(coach.getLicensePlates(), coach.getDescription()
                     , coach.getCoachGarageId(), coach.getCategoryId(), coach.getStatus()));
+            if (!pictures.isEmpty()){
+                pictures.forEach(picture -> {
+                    try {
+                        pictureRepository.save(new Picture(cloudinary.uploader().upload(picture.getBytes()
+                                , ObjectUtils.emptyMap()).get("secure_url").toString(), coach.getId(), 1));
+                    } catch (Exception ex){
+                        System.out.println(ex);
+                    }
+                });
+            }
             return true;
         } catch (HibernateException ex){
             System.out.println(ex);

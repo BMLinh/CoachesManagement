@@ -2,8 +2,10 @@ package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.StopBy;
 import com.hal.CoachesWeb.model.response.StopByRes;
+import com.hal.CoachesWeb.repositories.CoachesStopByRepository;
 import com.hal.CoachesWeb.repositories.DistrictRepository;
 import com.hal.CoachesWeb.repositories.StopByRepository;
+import com.hal.CoachesWeb.service.CoachesStopByService;
 import com.hal.CoachesWeb.service.StopByService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,23 @@ public class StopByServiceImpl implements StopByService {
     private StopByRepository stopByRepository;
     @Autowired
     private DistrictRepository districtRepository;
+    @Autowired
+    private CoachesStopByRepository coachesStopByRepository;
 
     @Override
     public List<StopBy> getAllStopBy(){
         return stopByRepository.findAll();
     }
+
+    @Override
+    public List<StopBy> getAllStopByCoachesId(int id, int status) {
+        List<Integer> stopById = new ArrayList<>();
+        coachesStopByRepository.findAllByCoachesIdAndStatusIs(id, status).forEach(coachesStopBy -> {
+            stopById.add(coachesStopBy.getStopById());
+        });
+        return stopByRepository.findAllByIdIn(stopById);
+    }
+
     @Override
     public List<StopBy> getAllStopByCountryId(int id){
         List<StopBy> stopBy = new ArrayList<>();

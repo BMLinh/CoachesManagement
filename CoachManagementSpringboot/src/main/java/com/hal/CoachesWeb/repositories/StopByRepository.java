@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface StopByRepository extends JpaRepository<StopBy, Integer> {
     List<StopBy> findAllByDistrictId(int id);
+    List<StopBy> findAllByIdIn (List<Integer> id);
 }

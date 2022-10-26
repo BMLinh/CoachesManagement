@@ -1,6 +1,9 @@
 package com.hal.CoachesWeb.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.hal.CoachesWeb.entity.CoachGarage;
+import com.hal.CoachesWeb.entity.Picture;
 import com.hal.CoachesWeb.entity.User;
 import com.hal.CoachesWeb.model.response.UserDto;
 import com.hal.CoachesWeb.repositories.*;
@@ -24,6 +27,10 @@ import java.util.Optional;
 
 @Service
 public class UserServiceimpl implements UserService, UserDetailsService {
+    private Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+            "cloud_name", "dd3tfkb7f",
+            "api_key", "267679115459675",
+            "api_secret", "oa4v8FNxe1LCovHI1wVLlhH4t9s"));
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -90,6 +97,15 @@ public class UserServiceimpl implements UserService, UserDetailsService {
     }
     @Override
     public boolean addUser(User user){
+        if (!user.getAvatarPic().isEmpty()){
+            try {
+                user.setAvatar(cloudinary.uploader().upload(user.getAvatarPic().getBytes()
+                        , ObjectUtils.emptyMap()).get("secure_url").toString());
+            } catch (Exception ex){
+                System.out.println(ex);
+                return false;
+            }
+        }
         try {
             user.setPassword(passwordEncoder().encode(user.getPassword()));
             userRepository.save(new User(user.getPassword(),user.getFullname(), user.getEmail(), user.getPhone()

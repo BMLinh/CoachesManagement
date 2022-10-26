@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface CoachesService {
     Page<Coaches> getAllCoaches(Pageable pageable);
     Page<Coaches> getAllCoachesByCoachId(int id, Pageable pageable);
+    List<Coaches> getAllCoaches();
     List<Coaches> getAllCoachesByCoachId(int id);
     Page<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
     Optional<Coaches> getCoachesById(int id);

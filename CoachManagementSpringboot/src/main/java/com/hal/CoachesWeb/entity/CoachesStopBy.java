@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.sql.Time;
 import java.util.Objects;
 
 @Entity
@@ -22,7 +23,7 @@ public class CoachesStopBy {
     private int stopById;
     @Basic
     @Column(name = "time", nullable = false)
-    private int time;
+    private Time time;
     @Basic
     @Column(name = "status", nullable = false)
     private int status;
@@ -51,11 +52,11 @@ public class CoachesStopBy {
         this.stopById = stopById;
     }
 
-    public int getTime() {
+    public Time getTime() {
         return time;
     }
 
-    public void setTime(int time) {
+    public void setTime(Time time) {
         this.time = time;
     }
 
