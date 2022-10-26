@@ -173,7 +173,7 @@ public class UserServiceimpl implements UserService, UserDetailsService {
     }
     @Override
     public boolean existsById(int id){
-        return userRepository.existsByIdAndStatusIsNot(id, 0);
+        return userRepository.existsByIdAndStatusIs(id, 1);
     }
     @Override
     public boolean isCorrectPassword(String phone, String password){

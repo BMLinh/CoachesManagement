@@ -8,9 +8,7 @@ import com.hal.CoachesWeb.entity.User;
 import com.hal.CoachesWeb.model.request.UserSignIn;
 import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.model.response.UserDto;
-import com.hal.CoachesWeb.service.RoleService;
-import com.hal.CoachesWeb.service.TicketService;
-import com.hal.CoachesWeb.service.UserService;
+import com.hal.CoachesWeb.service.*;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,9 +33,15 @@ public class UserController {
     @Autowired
     private RoleService roleService;
     @Autowired
-    AuthenticationManager authenticationManager;
-    @Autowired
     private TicketService ticketService;
+    @Autowired
+    private CoachesService coachesService;
+    @Autowired
+    private CoachesStopByService coachesStopByService;
+    @Autowired
+    private DistrictService districtService;
+    @Autowired
+    private CoachGarageService coachGarageService;
 
     @PutMapping("/refund/{id}")
     ResponseEntity<ResponseObject> requestRefundTicket(@PathVariable int id) {
@@ -117,6 +121,64 @@ public class UserController {
         );
     }
 
+    //Ticket
+    @PostMapping("/ticket/add")
+    ResponseEntity<ResponseObject> addTicket(@Valid @RequestBody Ticket ticket){
+        if (!coachesService.existsById(ticket.getCoachesId())){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Không tìm thấy chuyến xe id", "")
+            );
+        }
+        if (!userService.existsById(ticket.getUserId())){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Không tìm thấy người dùng id", "")
+            );
+        }
+        if(!coachesStopByService.existsByCoachesAndStopBy(ticket.getCoachesId(), ticket.getPickUpId())
+                ||!coachesStopByService.existsByCoachesAndStopBy(ticket.getCoachesId(), ticket.getDropOffId())){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Không tìm thấy điểm dừng/trả id", "")
+            );
+        }
+        if (ticket.getAmount()>coachesService.getEmptySeatByCoachesId(ticket.getCoachesId())){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Số lượng ghế còn lại không đủ", "")
+            );
+        }
+        if (!ticketService.addTicket(ticket)){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Đặt vé xe thất bại", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Đặt vé xe thành công", "")
+        );
+    }
+
+    //Coach garage
+    @PostMapping("/coachgarage/request")
+    ResponseEntity<ResponseObject> requestAddCoachGarage(@RequestBody CoachGarage coachGarage){
+        System.out.println(coachGarage.getUserId());
+        if (userService.existsById(coachGarage.getUserId())){
+            if (districtService.getDistrictById(coachGarage.getDistrictId()).isPresent()){
+                coachGarage.setStatus(2);
+                if (coachGarageService.addCoachGarage(coachGarage)){
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                            new ResponseObject(200, "Gửi yêu cầu xác nhận nhà xe thành công", "")
+                    );
+                }
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(400, "Gửi yêu cầu xác nhận nhà xe thất bại", "")
+                );
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Không tìm thấy quận/huyện id", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Không tìm thấy người dùng id", "")
+        );
+    }
 
     private boolean isFieldMissing(User user) {
         if (user.getPhone() == null || user.getPassword() == null
@@ -133,27 +195,6 @@ public class UserController {
         }
         return false;
     }
-//    @PostMapping("/add")
-//    ResponseEntity<ResponseObject> addCoachGarage(@RequestBody CoachGarage coachGarage){
-//        if (userService.existsById(coachGarage.getUserId())){
-//            if (districtService.getDistrictById(coachGarage.getDistrictId()).isPresent()){
-//                if (coachGarageService.addCoachGarage(coachGarage)){
-//                    return ResponseEntity.status(HttpStatus.OK).body(
-//                            new ResponseObject(200, "Tạo nhà xe thành công", coachGarage)
-//                    );
-//                }
-//                return ResponseEntity.status(HttpStatus.OK).body(
-//                        new ResponseObject(400, "Thêm nhà xe thất bại", "")
-//                );
-//            }
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject(400, "Không tìm thấy quận/huyện id", "")
-//            );
-//        }
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject(400, "Không tìm thấy người dùng id", "")
-//        );
-//    }
 }
 @Data
 class UserRes {

@@ -9,7 +9,7 @@ import java.util.Optional;
 @Service
 public interface CoachGarageService {
     List<CoachGarage> getCoachGarage();
-    List<CoachGarage> getRequestCoachGarage();
+    List<CoachGarage> getCoachGarageByStatus(int status);
     List<CoachGarage> getCoachGarageByUserId(int id);
     Optional<CoachGarage> getCoachGarageById(int id);
     boolean acceptCoachGarage(CoachGarage coachGarage);
