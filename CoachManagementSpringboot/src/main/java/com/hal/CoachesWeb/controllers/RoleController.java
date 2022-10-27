@@ -46,7 +46,7 @@ public class RoleController {
                 new ResponseObject(400, "Can not add role", "")
         );
     }
-    @PutMapping("/delete/update")
+    @PutMapping("/update")
     ResponseEntity<ResponseObject> updateRole(@RequestBody Role role){
         if (roleService.getRoleById(role.getId()).isPresent()){
             if (roleService.updateRole(role)){
@@ -64,7 +64,7 @@ public class RoleController {
                 new ResponseObject(400, "Can not found role id= "+role.getId(),"")
         );
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<ResponseObject> deleteRole(@PathVariable int id){
         if (roleService.getRoleById(id).isPresent()){
             if (roleService.deleteRole(id)){

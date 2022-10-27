@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.Coaches;
+import com.hal.CoachesWeb.entity.StopBy;
 import com.hal.CoachesWeb.model.request.CoachesReq;
 import com.hal.CoachesWeb.repositories.*;
 import com.hal.CoachesWeb.service.CoachService;
@@ -62,9 +63,64 @@ public class CoachesServiceImpl implements CoachesService {
 
     @Override
     public Page<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable){
-        Page<Coaches> coaches= coachesRepository.findAllByStartTimeBetween(startTime, endTime, pageable);
-        return coaches;
+        return coachesRepository.findAllByStartTimeBetween(startTime, endTime, pageable);
+
     }
+
+    @Override
+    public List<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, int startPoint
+            , int endPoint, int minPrice, int maxPrice, Integer pickUp, Integer dropOff
+            , Integer emptySeat, Integer coachGarage, int status) {
+        List<Coaches> coaches;
+        if (emptySeat!=null){
+            coaches = coachesRepository.findAllByStartTimeBetweenAndEmptySeatIsGreaterThanAndStartPointAndEndPointAndPriceBetweenAndStatus(
+                    startTime, endTime, emptySeat, startPoint, endPoint, minPrice, maxPrice, 1);
+        } else {
+            coaches = coachesRepository.findAllByStartTimeBetweenAndEmptySeatIsGreaterThanAndStartPointAndEndPointAndPriceBetweenAndStatus(
+                    startTime, endTime, 0, startPoint, endPoint, minPrice, maxPrice, 1);
+        }
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        if (coachGarage!=null){
+            coachRepository.findAllByCoachGarageId(coachGarage).forEach(coach -> {
+                arrayList.add(coach.getId());
+            });
+            System.out.println("Coach garage "+arrayList);
+            coaches.removeIf(c -> (!arrayList.contains(c.getCoachId())));
+            arrayList.clear();
+        }
+        System.out.println("Clear "+arrayList);
+        if (pickUp!=null){
+            ArrayList<Integer> coachesId = new ArrayList<>();
+            coaches.forEach(c -> {
+                coachesId.add(c.getId());
+            });
+            System.out.println("Coaches Id: pickup "+coachesId);
+            coachesStopByRepository.findAllByCoachesIdInAndStatus(coachesId, 3).forEach(coachesStopBy -> {
+                if (coachesStopBy.getStopById()==pickUp){
+                    arrayList.add(coachesStopBy.getCoachesId());
+                }
+            });
+            coaches.removeIf(c->(!arrayList.contains(c.getId())));
+            arrayList.clear();
+        }
+        System.out.println("Clear "+arrayList);
+        if (dropOff!=null){
+            ArrayList<Integer> coachesId = new ArrayList<>();
+            coaches.forEach(c -> {
+                coachesId.add(c.getId());
+            });
+            coachesStopByRepository.findAllByCoachesIdInAndStatus(coachesId, 4).forEach(coachesStopBy -> {
+                if (coachesStopBy.getStopById()==dropOff){
+                    arrayList.add(coachesStopBy.getCoachesId());
+                }
+            });
+            System.out.println("drop off Id: "+arrayList);
+            coaches.removeIf(c->(!arrayList.contains(c.getId())));
+        }
+        return coaches;
+
+    }
+
     @Override
     public Optional<Coaches> getCoachesById(int id){
         return coachesRepository.findById(id);
@@ -202,6 +258,16 @@ public class CoachesServiceImpl implements CoachesService {
     public boolean existsById(int id){
         return coachesRepository.existsById(id);
     }
+
+    @Override
+    public boolean isActive(int id) {
+        Optional<Coaches> coaches = coachesRepository.findById(id);
+        if (coaches.isPresent() && coaches.get().getStatus()==1){
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public int getEmptySeatByCoachesId(int id){
         return coachesRepository.getById(id).getEmptySeat();

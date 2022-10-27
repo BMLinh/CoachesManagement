@@ -32,6 +32,8 @@ public class CommonController {
     private StopByService stopByService;
     @Autowired
     private CoachesService coachesService;
+    @Autowired
+    private CommentService commentService;
 
     //Category
     @GetMapping("/category/getall")
@@ -57,15 +59,35 @@ public class CommonController {
     @GetMapping("/coachgarage")
     ResponseEntity<ResponseObject> getCoachGarage(){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200,"Lấy nhà xe thành công", coachGarageService.getCoachGarageByStatus(1))
+                new ResponseObject(200,"Lấy nhà xe thành công"
+                        , coachGarageService.getCoachGarageByStatus(1))
         );
     }
 
     //Coaches
-    @GetMapping("/date")
-    ResponseEntity<ResponseObject> getAllCoachesByStartDate(@PathParam(value = "page") int page, @PathParam(value = "size") int size, @PathParam(value = "startTime") String startTime, @PathParam(value = "endTime")String endTime){
+    @GetMapping("coaches/")
+    ResponseEntity<ResponseObject> getAllCoachesByStartDate(@PathParam(value = "startTime") String startTime
+            , @PathParam(value = "endTime")String endTime
+            , @PathParam(value = "endPoint") int endPoint, @PathParam(value = "startPoint") int startPoint
+            , @PathParam(value = "minPrice") int minPrice, @PathParam(value = "maxPrice") int maxPrice
+            , @PathParam(value = "pickUp") Integer pickUp, @PathParam(value = "dropOff") Integer dropOff
+            , @PathParam(value = "emptySeat") Integer emptySeat, @PathParam(value = "coachGarage") Integer coachGarage){
+        System.out.println(pickUp+" "+dropOff+" "+emptySeat+" "+coachGarage);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByStartDate(LocalDateTime.parse(startTime), LocalDateTime.parse(endTime), PageRequest.of(page, size)).get())
+                new ResponseObject(200, "Lấy tất cả chuyến xe thành công"
+                        , coachesService.getAllCoachesByStartDate(LocalDateTime.parse(startTime)
+                        , LocalDateTime.parse(endTime), startPoint, endPoint, minPrice, maxPrice
+                        , pickUp, dropOff, emptySeat, coachGarage, 1))
+        );
+    }
+
+    //Comment
+    @GetMapping("comment/coach/")
+    ResponseEntity<ResponseObject> getCommentByCoachAndRating(@PathParam(value = "page") int page
+            , @PathParam(value = "size") int size, @PathParam(value = "coachId") int coachId, @PathParam(value = "rating") int rating){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy tất cả bình luận thành công"
+                        , commentService.getCommentByCoachAndRating(coachId, rating, PageRequest.of(page, size)).get())
         );
     }
 
@@ -110,7 +132,7 @@ public class CommonController {
                 new ResponseObject(200, "Lấy tất cả điểm dừng thành công", stopByService.getAllStopBy())
         );
     }
-    @GetMapping("/stopby/coachesid/{id}")
+    @GetMapping("/stopby/coaches/{id}")
     ResponseEntity<ResponseObject> getStopByCoachesId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy tất cả điểm dừng thành công", stopByService.getAllStopByCoachesId(id, 3))
