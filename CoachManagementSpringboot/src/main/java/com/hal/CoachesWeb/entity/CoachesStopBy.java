@@ -13,11 +13,9 @@ import java.util.Objects;
 @Table(name = "coaches_stop_by", schema = "coachesmanagementdb", catalog = "")
 @IdClass(CoachesStopByPK.class)
 public class CoachesStopBy {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "coaches_id", nullable = false)
     private int coachesId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "stop_by_id", nullable = false)
     private int stopById;

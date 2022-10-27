@@ -10,11 +10,9 @@ import java.util.Objects;
 public class CoachesStopByPK implements Serializable {
     @Column(name = "coaches_id", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int coachesId;
     @Column(name = "stop_by_id", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int stopById;
 
     public int getCoachesId() {

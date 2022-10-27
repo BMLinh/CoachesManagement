@@ -16,5 +16,6 @@ public interface CoachesRepository extends JpaRepository<Coaches, Integer>, JpaS
     List<Coaches> findAllByCoachIdAndStatusNot (int id, int status);
     Page<Coaches> findAllByStartTimeBetween (LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
     List<Coaches> findAllByStartTimeBetween (LocalDateTime startTime, LocalDateTime endTime);
+    Coaches findTopByCoachIdOrderByIdDesc (int id);
     boolean existsByCoachId (int id);
 }
