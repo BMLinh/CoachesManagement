@@ -182,7 +182,7 @@ public class UserServiceimpl implements UserService, UserDetailsService {
     }
     @Override
     public boolean existsById(int id){
-        return userRepository.existsByIdAndStatusIs(id, 1);
+        return userRepository.existsById(id);
     }
     @Override
     public boolean isCorrectPassword(String phone, String password){
@@ -190,10 +190,18 @@ public class UserServiceimpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public boolean isActive(String phone) {
+    public boolean isActiveByPhone(String phone) {
         Optional<User> user = userRepository.getUserByPhone(phone);
-        if (user.get().getStatus()!=1)
-            return false;
-        return true;
+        if (user.isPresent() && user.get().getStatus()==1)
+            return true;
+        return false;
+    }
+
+    @Override
+    public boolean isActiveById(int id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent() && user.get().getStatus()==1)
+            return true;
+        return false;
     }
 }

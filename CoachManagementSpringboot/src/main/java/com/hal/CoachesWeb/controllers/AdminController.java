@@ -41,6 +41,8 @@ public class AdminController {
     private CoachesStopByService coachesStopByService;
     @Autowired
     private StopByService stopByService;
+    @Autowired
+    private ShippingService shippingService;
 
     //Category
     @GetMapping("/category/getall")
@@ -626,6 +628,85 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(400, "Không tìm thấy người dùng", "")
         );
+    }
+
+    //Shipping
+    @GetMapping("/shipping/coaches/{id}")
+    ResponseEntity<ResponseObject> getShippingByCoachesId(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy thông tin kiện hàng thành công", shippingService.getShippingByCoaches(id))
+        );
+    }
+    @GetMapping("/shipping/{id}")
+    ResponseEntity<ResponseObject> getShippingById(@PathVariable int id){
+        Optional<Shipping> shipping = shippingService.getShippingById(id);
+        if (shipping.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Lấy thông tin kiện hàng thành công", shipping)
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Không tìm thấy thông tin kiện hàng", "")
+        );
+    }
+    @PostMapping("/shipping/add")
+    ResponseEntity<ResponseObject> addShipping(@RequestBody Shipping shipping){
+        if (!coachesService.existsById(shipping.getCoachesId())){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Không tìm thấy chuyến xe", "")
+            );
+        }
+        if (!userService.existsById(shipping.getUserId())){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Không tìm thấy người dùng", "")
+            );
+        }
+        if (shippingService.addShipping(shipping)){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Thêm kiện hàng thành công", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Thêm kiện hàng thất bại", "")
+        );
+    }
+    @PutMapping("/shipping/update")
+    ResponseEntity<ResponseObject> updateShipping(@RequestBody Shipping shipping){
+        if (!shippingService.existsById(shipping.getId())){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Không tìm thấy kiện hàng", "")
+            );
+        }
+        if (!coachesService.existsById(shipping.getCoachesId())){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Không tìm thấy chuyến xe", "")
+            );
+        }
+        if (shippingService.updateShipping(shipping)){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Cập nhật kiện hàng thành công", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Cập nhật kiện hàng thất bại","")
+        );
+    }
+    @DeleteMapping("/shipping/delete/{id}")
+    ResponseEntity<ResponseObject> deleteShipping(@PathVariable int id){
+        if (!shippingService.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Không tìm thấy kiện hàng", "")
+            );
+        }
+        if (shippingService.deleteShipping(id)) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Xóa kiện hàng thành công", "")
+            );
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Xóa kiện hàng thất bại", "")
+            );
+        }
     }
 
     private ResponseEntity<ResponseObject> coachesChecking(CoachesReq coachesReq){

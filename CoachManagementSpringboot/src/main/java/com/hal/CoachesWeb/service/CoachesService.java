@@ -18,6 +18,9 @@ public interface CoachesService {
     List<Coaches> getAllCoaches();
     List<Coaches> getAllCoachesByCoachId(int id);
     Page<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
+    List<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, int startPoint, int endPoint
+            , int minPrice, int maxPrice, Integer pickUp, Integer dropOff, Integer emptySeat
+            , Integer coachGarage, int status);
     List<Coaches> getAllCoachesInDay(LocalDate startTime);
     Optional<Coaches> getCoachesById(int id);
     boolean addCoaches(CoachesReq coachesReq);
@@ -25,5 +28,6 @@ public interface CoachesService {
 //    boolean updateStatus(Coaches coaches);
     boolean deleteCoaches(int id);
     boolean existsById(int id);
+    boolean isActive(int id);
     int getEmptySeatByCoachesId(int id);
 }

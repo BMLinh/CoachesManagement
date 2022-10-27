@@ -3,6 +3,7 @@ package com.hal.CoachesWeb.controllers;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.hal.CoachesWeb.entity.CoachGarage;
+import com.hal.CoachesWeb.entity.Comment;
 import com.hal.CoachesWeb.entity.Ticket;
 import com.hal.CoachesWeb.entity.User;
 import com.hal.CoachesWeb.model.request.UserSignIn;
@@ -42,30 +43,19 @@ public class UserController {
     private DistrictService districtService;
     @Autowired
     private CoachGarageService coachGarageService;
+    @Autowired
+    private CommentService commentService;
 
-    @PutMapping("/refund/{id}")
-    ResponseEntity<ResponseObject> requestRefundTicket(@PathVariable int id) {
-        Optional<Ticket> ticket = ticketService.getTicketById(id);
-        if (ticket.isPresent()){
-            if (ticket.get().getStatus()==2){
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(200, "Thông tin đã được gửi", "")
-                );
-            }
-            if (ticket.get().getCoachesByCoachesId().getStartTime().minusDays(1).isBefore(LocalDateTime.now())){
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(400, "Vé đã quá hạn hủy", "")
-                );
-            }
-            ticket.get().setStatus(2);
-            if (ticketService.updateTicket(ticket.get())){
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(200, "Gửi yêu cầu thành công", "")
-                );
-            }
+    //Comment
+    @PostMapping("comment/add")
+    ResponseEntity<ResponseObject> addComment(@RequestBody Comment comment){
+        if (commentService.addComment(comment)){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Thêm bình luận thành công", "")
+            );
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(400, "Gửi yêu cầu thất bại", "")
+                new ResponseObject(400, "Thêm bình luận thất bại", "")
         );
     }
 
@@ -148,6 +138,31 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Đặt vé xe thành công", "")
+        );
+    }
+    @PutMapping("/refund/{id}")
+    ResponseEntity<ResponseObject> requestRefundTicket(@PathVariable int id) {
+        Optional<Ticket> ticket = ticketService.getTicketById(id);
+        if (ticket.isPresent()){
+            if (ticket.get().getStatus()==2){
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(200, "Thông tin đã được gửi", "")
+                );
+            }
+            if (ticket.get().getCoachesByCoachesId().getStartTime().minusDays(1).isBefore(LocalDateTime.now())){
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(400, "Vé đã quá hạn hủy", "")
+                );
+            }
+            ticket.get().setStatus(2);
+            if (ticketService.updateTicket(ticket.get())){
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(200, "Gửi yêu cầu thành công", "")
+                );
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(400, "Gửi yêu cầu thất bại", "")
         );
     }
 

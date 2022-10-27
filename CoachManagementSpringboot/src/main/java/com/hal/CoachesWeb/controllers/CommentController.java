@@ -19,27 +19,6 @@ import java.util.List;
 public class CommentController {
     @Autowired
     private CommentService commentService;
-
-    @GetMapping("/coach/")
-    ResponseEntity<ResponseObject> getCommentByCoachAndRating(@PathParam(value = "page") int page
-            , @PathParam(value = "size") int size, @PathParam(value = "coachId") int coachId, @PathParam(value = "rating") int rating){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả bình luận thành công"
-                        , commentService.getCommentByCoachAndRating(coachId, rating, PageRequest.of(page, size)).get())
-        );
-    }
-
-    @PostMapping("/add")
-    ResponseEntity<ResponseObject> addComment(@RequestBody Comment comment){
-        if (commentService.addComment(comment)){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(200, "Thêm bình luận thành công", "")
-            );
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(400, "Thêm bình luận thất bại", "")
-        );
-    }
     @DeleteMapping("/delete/{id}")
     ResponseEntity<ResponseObject> addComment(@PathVariable int id){
         if (commentService.deleteCommentById(id)){
