@@ -158,7 +158,6 @@ public class UserController {
     //Coach garage
     @PostMapping("/coachgarage/request")
     ResponseEntity<ResponseObject> requestAddCoachGarage(@RequestBody CoachGarage coachGarage){
-        System.out.println(coachGarage.getUserId());
         if (userService.existsById(coachGarage.getUserId())){
             if (districtService.getDistrictById(coachGarage.getDistrictId()).isPresent()){
                 coachGarage.setStatus(2);
@@ -195,19 +194,4 @@ public class UserController {
         }
         return false;
     }
-}
-@Data
-class UserRes {
-    private int id;
-    private String fullname;
-    private String avartar;
-    private String phone;
-    private String role;
-    private String accessToken;
-    private Long expiredTime;
-}
-@Data
-class TokenRes {
-    private String accessToken;
-    private Long expiredTime;
 }

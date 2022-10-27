@@ -18,18 +18,6 @@ public class DistrictController {
     @Autowired
     private CountryService countryService;
 
-    @GetMapping("")
-    ResponseEntity<ResponseObject> getAllDistrict(){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả quận/huyện thành công", districtService.getAllDistrict())
-        );
-    }
-    @GetMapping("/country/{id}")
-    ResponseEntity<ResponseObject> getDistrictByCountryId(@PathVariable int id){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy quận/huyện thành công", districtService.getDistrictByCountryId(id))
-        );
-    }
     @PostMapping("/add")
     ResponseEntity<ResponseObject> addDistrict(@RequestBody District district){
         if (countryService.getCountryById(district.getCountryId()).isPresent()){

@@ -30,6 +30,9 @@ public class Ticket {
     @Column(name = "phone", nullable = true, length = 11)
     private String phone;
     @Basic
+    @Column(name = "name", nullable = true, length = 45)
+    private String name;
+    @Basic
     @Column(name = "amount", nullable = false)
     private int amount;
     @Basic
@@ -117,6 +120,14 @@ public class Ticket {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getAmount() {

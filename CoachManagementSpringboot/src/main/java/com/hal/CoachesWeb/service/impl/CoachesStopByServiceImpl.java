@@ -45,6 +45,6 @@ public class CoachesStopByServiceImpl implements CoachesStopByService {
 
     @Override
     public boolean existsByCoachesAndStopBy(int coachesId, int stopById) {
-        return coachesStopByRepository.existsByCoachesIdAndStopById(coachesId, stopById);
+        return coachesStopByRepository.existsByCoachesIdAndStopByIdIs(coachesId, stopById);
     }
 }

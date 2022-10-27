@@ -18,30 +18,6 @@ public class StopByController {
     @Autowired
     private DistrictService districtService;
 
-    @GetMapping("")
-    ResponseEntity<ResponseObject> getAllStopBy(){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả điểm dừng thành công", stopByService.getAllStopBy())
-        );
-    }
-    @GetMapping("/CoachesId/{id}")
-    ResponseEntity<ResponseObject> getStopByCoachesId(@PathVariable int id){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả điểm dừng thành công", stopByService.getAllStopByCoachesId(id, 3))
-        );
-    }
-    @GetMapping("/country/{id}")
-    ResponseEntity<ResponseObject> getStopByByCountryId(@PathVariable int id){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy điểm dừng thành công", stopByService.getAllStopByCountryId(id))
-        );
-    }
-    @GetMapping("/country-with-district/{id}")
-    ResponseEntity<ResponseObject> getStopByResCountryId(@PathVariable int id){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy điểm dừng thành công", stopByService.getAllStopByResCountryId(id))
-        );
-    }
     @PostMapping("/add")
     ResponseEntity<ResponseObject> addStopBy(@RequestBody StopBy stopBy){
         if (districtService.getDistrictById(stopBy.getDistrictId()).isPresent()){

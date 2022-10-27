@@ -33,6 +33,11 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public List<Ticket> getTicketByCoachesAndStatus(int id, int status) {
+        return ticketRepository.findAllByCoachesIdAndStatusIs(id, status);
+    }
+
+    @Override
     public List<Ticket> getTicketByCoaches(int id) {
         return ticketRepository.findAllByCoachesId(id);
     }
@@ -91,6 +96,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional
     public boolean addTicket(Ticket ticket){
         String text = "Các mã vé của bạn là:";
         try {
@@ -121,11 +127,12 @@ public class TicketServiceImpl implements TicketService {
     public boolean updateTicket(Ticket ticket){
         try {
             Ticket oldTicket = ticketRepository.getById(ticket.getId());
-            ticket.setCoachesId(oldTicket.getCoachesId());
-            ticket.setCreateDate(oldTicket.getCreateDate());
-            ticket.setUserId(oldTicket.getUserId());
-            ticket.setPrice(oldTicket.getPrice());
-            ticketRepository.save(ticket);
+            oldTicket.setPhone(ticket.getPhone());
+            oldTicket.setEmail(ticket.getEmail());
+            oldTicket.setDropOffId(ticket.getDropOffId());
+            oldTicket.setPickUpId(ticket.getPickUpId());
+            oldTicket.setStatus(ticket.getStatus());
+            ticketRepository.save(oldTicket);
             return true;
         } catch (HibernateException ex){
             System.out.println(ex.getMessage());
@@ -134,8 +141,13 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional
     public boolean deleteTicket(int id){
+        Ticket ticket = ticketRepository.getById(id);
         try {
+            Coaches coaches = coachesRepository.getById(ticket.getCoachesId());
+            coaches.setEmptySeat(coaches.getEmptySeat()+ticket.getAmount());
+            coachesRepository.save(coaches);
             ticketRepository.deleteById(id);
             return true;
         } catch (HibernateException ex){
