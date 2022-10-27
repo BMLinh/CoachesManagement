@@ -51,19 +51,19 @@ public class Ticket {
     @Column(name = "status", nullable = true)
     private Integer status;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coaches_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Coaches coachesByCoachesId;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private User userByUserId;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pick_up_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private StopBy stopByByPickUpId;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drop_off_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private StopBy stopByByDropOffId;
 

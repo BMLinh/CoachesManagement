@@ -28,7 +28,7 @@ public class District {
     @OneToMany(mappedBy = "districtByDistrictId")
     private Collection<CoachGarage> coachGaragesById;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Country countryByCountryId;
     @JsonIgnore

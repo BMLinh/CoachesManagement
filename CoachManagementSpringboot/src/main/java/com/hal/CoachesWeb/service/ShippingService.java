@@ -9,6 +9,8 @@ import java.util.Optional;
 @Service
 public interface ShippingService {
     List<Shipping> getShippingByCoaches(int id);
+    List<Shipping> getShippingByCoachesAndStatus(int id, int status);
+    List<Shipping> getShippingByUserId(int id);
     Optional<Shipping> getShippingById(int id);
     boolean addShipping(Shipping shipping);
     boolean updateShipping(Shipping shipping);

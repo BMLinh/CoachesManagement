@@ -74,7 +74,6 @@ public class CommonController {
             , @PathParam(value = "minPrice") int minPrice, @PathParam(value = "maxPrice") int maxPrice
             , @PathParam(value = "pickUp") Integer pickUp, @PathParam(value = "dropOff") Integer dropOff
             , @PathParam(value = "emptySeat") Integer emptySeat, @PathParam(value = "coachGarage") Integer coachGarage){
-        System.out.println(pickUp+" "+dropOff+" "+emptySeat+" "+coachGarage);
         try {
             LocalDate start = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             return ResponseEntity.status(HttpStatus.OK).body(
@@ -89,7 +88,6 @@ public class CommonController {
                     new ResponseObject(400, "Error", ex.getMessage())
             );
         }
-
     }
 
     @GetMapping("/coaches/{id}")

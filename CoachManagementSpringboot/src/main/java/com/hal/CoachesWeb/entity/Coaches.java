@@ -51,15 +51,15 @@ public class Coaches {
     @Column(name = "status", nullable = true)
     private int status;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coach_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Coach coachByCoachId;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "start_point", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Country countryByStartPoint;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "end_point", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Country countryByEndPoint;
     @JsonIgnore

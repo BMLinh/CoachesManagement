@@ -220,7 +220,7 @@ public class CoachGarageController {
     @GetMapping("/coachgarage/coaches/shipping/{id}")
     ResponseEntity<ResponseObject> getShippingByCoachesId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy giao hàng thành công", shippingService.getShippingByCoaches(id))
+                new ResponseObject(200, "Lấy giao hàng thành công", shippingService.getShippingByCoachesAndStatus(id, 1))
         );
     }
 
