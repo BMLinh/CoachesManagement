@@ -104,7 +104,7 @@ public class TicketServiceImpl implements TicketService {
             coaches.setEmptySeat(coaches.getEmptySeat()-ticket.getAmount());
             coachesRepository.save(coaches);
             ticketRepository.save(new Ticket(ticket.getPrice(), ticket.getEmail()
-                    , ticket.getPhone(), ticket.getAmount(), ticket.getCoachesId(), ticket.getUserId()
+                    , ticket.getPhone(), ticket.getName(), ticket.getAmount(), ticket.getCoachesId(), ticket.getUserId()
                     , ticket.getPickUpId(), ticket.getDropOffId(), 1));
                     text = text.concat(" "+ticketRepository.findTopByEmailOrderByIdDesc(ticket.getEmail()).getId());
             SimpleMailMessage message = new SimpleMailMessage();
@@ -128,6 +128,7 @@ public class TicketServiceImpl implements TicketService {
         try {
             Ticket oldTicket = ticketRepository.getById(ticket.getId());
             oldTicket.setPhone(ticket.getPhone());
+            oldTicket.setName(ticket.getName());
             oldTicket.setEmail(ticket.getEmail());
             oldTicket.setDropOffId(ticket.getDropOffId());
             oldTicket.setPickUpId(ticket.getPickUpId());

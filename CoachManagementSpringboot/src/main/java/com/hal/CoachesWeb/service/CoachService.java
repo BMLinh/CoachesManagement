@@ -13,7 +13,7 @@ public interface CoachService {
     List<Coach> getAllCoachByGarageId(int id);
     List<Coach> getAllCoachByGarageIdNoDelete(int id);
     Optional<Coach> getCoachById(int id);
-    boolean addCoach(Coach coach, List<MultipartFile> pictures);
+    boolean addCoach(Coach coach);
 //    boolean updateStatus(Coach coach);
     boolean updateCoach(Coach coach);
     boolean deleteCoach(int id);

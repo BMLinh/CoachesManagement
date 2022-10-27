@@ -3,11 +3,13 @@ package com.hal.CoachesWeb.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -48,6 +50,9 @@ public class Coach {
     @JsonIgnore
     @OneToMany(mappedBy = "coachByCoachId")
     private Collection<Picture> picturesById;
+
+    @Transient
+    private List<MultipartFile> picture;
 
     public Coach() {
     }
@@ -106,6 +111,14 @@ public class Coach {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public List<MultipartFile> getPicture() {
+        return picture;
+    }
+
+    public void setPicture(List<MultipartFile> picture) {
+        this.picture = picture;
     }
 
     @Override

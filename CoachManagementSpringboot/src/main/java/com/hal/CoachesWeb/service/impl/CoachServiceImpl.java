@@ -23,11 +23,7 @@ public class CoachServiceImpl implements CoachService {
     @Autowired
     private CoachRepository coachRepository;
     @Autowired
-    private CoachesServiceImpl coachesService;
-    @Autowired
     private CoachesRepository coachesRepository;
-    @Autowired
-    private CommentRepository commentRepository;
     @Autowired
     private PictureRepository pictureRepository;
 
@@ -50,15 +46,17 @@ public class CoachServiceImpl implements CoachService {
         return coachRepository.findById(id);
     }
     @Override
-    public boolean addCoach(Coach coach, List<MultipartFile> pictures){
+    public boolean addCoach(Coach coach){
         try {
             coachRepository.save(new Coach(coach.getLicensePlates(), coach.getDescription()
                     , coach.getCoachGarageId(), coach.getCategoryId(), coach.getStatus()));
-            if (!pictures.isEmpty()){
-                pictures.forEach(picture -> {
+            if (!coach.getPicture().isEmpty()){
+                int id = coachRepository.findTopByCoachGarageIdOrderByIdDesc(coach.getCoachGarageId()).getId();
+                coach.getPicture().forEach(picture -> {
                     try {
                         pictureRepository.save(new Picture(cloudinary.uploader().upload(picture.getBytes()
-                                , ObjectUtils.emptyMap()).get("secure_url").toString(), coach.getId(), 1));
+                                , ObjectUtils.emptyMap()).get("secure_url").toString()
+                                , id , 1));
                     } catch (Exception ex){
                         System.out.println(ex);
                     }
@@ -95,6 +93,18 @@ public class CoachServiceImpl implements CoachService {
     public boolean updateCoach(Coach coach){
         try {
             coachRepository.save(coach);
+            if (!coach.getPicture().isEmpty()){
+                pictureRepository.deleteAllByCoachId(coach.getId());
+                coach.getPicture().forEach(picture -> {
+                    try {
+                        pictureRepository.save(new Picture(cloudinary.uploader().upload(picture.getBytes()
+                                , ObjectUtils.emptyMap()).get("secure_url").toString()
+                                , coach.getId(), 1));
+                    } catch (Exception ex){
+                        System.out.println(ex);
+                    }
+                });
+            }
             return true;
         } catch (HibernateException ex){
             System.out.println(ex);
