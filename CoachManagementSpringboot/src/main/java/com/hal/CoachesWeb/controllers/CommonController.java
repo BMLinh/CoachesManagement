@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @RestController
@@ -67,17 +69,33 @@ public class CommonController {
     //Coaches
     @GetMapping("coaches/")
     ResponseEntity<ResponseObject> getAllCoachesByStartDate(@PathParam(value = "startTime") String startTime
-            , @PathParam(value = "endTime")String endTime
+            , @PathParam(value = "endTime")String endTime, @PathParam(value = "startDate") String startDate
             , @PathParam(value = "endPoint") int endPoint, @PathParam(value = "startPoint") int startPoint
             , @PathParam(value = "minPrice") int minPrice, @PathParam(value = "maxPrice") int maxPrice
             , @PathParam(value = "pickUp") Integer pickUp, @PathParam(value = "dropOff") Integer dropOff
             , @PathParam(value = "emptySeat") Integer emptySeat, @PathParam(value = "coachGarage") Integer coachGarage){
         System.out.println(pickUp+" "+dropOff+" "+emptySeat+" "+coachGarage);
+        try {
+            LocalDate start = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Lấy tất cả chuyến xe thành công"
+                            , coachesService.getAllCoachesByStartDate(startTime
+                            , endTime, start, startPoint, endPoint, minPrice, maxPrice
+                            , pickUp, dropOff, emptySeat, coachGarage, 1))
+            );
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Error", ex.getMessage())
+            );
+        }
+
+    }
+
+    @GetMapping("/coaches/{id}")
+    ResponseEntity<ResponseObject> getCoachesById(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả chuyến xe thành công"
-                        , coachesService.getAllCoachesByStartDate(LocalDateTime.parse(startTime)
-                        , LocalDateTime.parse(endTime), startPoint, endPoint, minPrice, maxPrice
-                        , pickUp, dropOff, emptySeat, coachGarage, 1))
+                new ResponseObject(200, "Lấy chuyến xe thành công", coachesService.getCoachesById(id))
         );
     }
 
@@ -148,6 +166,19 @@ public class CommonController {
     ResponseEntity<ResponseObject> getStopByResCountryId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy điểm dừng thành công", stopByService.getAllStopByResCountryId(id))
+        );
+    }
+    //StopBy
+    @GetMapping("/coaches/pickup/{id}")
+    ResponseEntity<ResponseObject> getPickUpByCoachesId(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy tất cả điểm đón thành công", stopByService.getAllStopByCoachesId(id, 3))
+        );
+    }
+    @GetMapping("/coaches/dropoff/{id}")
+    ResponseEntity<ResponseObject> getDropOffByCoachesId(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy tất cả điểm trả thành công", stopByService.getAllStopByCoachesId(id, 4))
         );
     }
 }

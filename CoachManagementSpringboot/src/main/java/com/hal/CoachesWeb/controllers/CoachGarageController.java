@@ -1,21 +1,15 @@
 package com.hal.CoachesWeb.controllers;
 
-import com.hal.CoachesWeb.entity.Category;
 import com.hal.CoachesWeb.entity.Coach;
-import com.hal.CoachesWeb.entity.CoachGarage;
-import com.hal.CoachesWeb.entity.Coaches;
-import com.hal.CoachesWeb.model.request.CoachReq;
 import com.hal.CoachesWeb.model.request.CoachesReq;
 import com.hal.CoachesWeb.model.response.CoachRes;
 import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.time.LocalDateTime;
 import java.util.Optional;
 

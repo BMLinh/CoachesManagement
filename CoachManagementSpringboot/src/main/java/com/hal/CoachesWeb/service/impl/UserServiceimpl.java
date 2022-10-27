@@ -81,6 +81,12 @@ public class UserServiceimpl implements UserService, UserDetailsService {
         }
         return null;
     }
+
+    @Override
+    public Optional<User> findById(int id) {
+        return userRepository.findById(id);
+    }
+
     @Override
     public UserDto getUserDtoByPhone(String phone){
         Optional<User> user = userRepository.getUserByPhone(phone);
@@ -118,7 +124,7 @@ public class UserServiceimpl implements UserService, UserDetailsService {
     }
     @Override
     public boolean updateUser(User user){
-        if (!user.getAvatarPic().isEmpty()){
+        if (user.getAvatarPic()!=null){
             try {
                 user.setAvatar(cloudinary.uploader().upload(user.getAvatarPic().getBytes()
                         , ObjectUtils.emptyMap()).get("secure_url").toString());
