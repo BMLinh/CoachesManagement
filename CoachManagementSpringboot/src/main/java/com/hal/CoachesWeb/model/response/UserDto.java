@@ -103,7 +103,7 @@ public class UserDto {
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
                 ", gender=" + gender +
-                ", avata='" + avatar + '\'' +
+                ", avatar='" + avatar + '\'' +
                 ", createdDate=" + createdDate +
                 ", role=" + role +
                 ", status=" + status +

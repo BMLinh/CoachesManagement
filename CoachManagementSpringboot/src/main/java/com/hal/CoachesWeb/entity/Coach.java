@@ -52,7 +52,7 @@ public class Coach {
     private Collection<Picture> picturesById;
 
     @Transient
-    private List<MultipartFile> picture;
+    private List<MultipartFile> pictures;
 
     public Coach() {
     }
@@ -114,11 +114,11 @@ public class Coach {
     }
 
     public List<MultipartFile> getPicture() {
-        return picture;
+        return pictures;
     }
 
     public void setPicture(List<MultipartFile> picture) {
-        this.picture = picture;
+        this.pictures = picture;
     }
 
     @Override
