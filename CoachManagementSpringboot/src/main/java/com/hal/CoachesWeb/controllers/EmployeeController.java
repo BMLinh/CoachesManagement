@@ -48,6 +48,11 @@ public class EmployeeController {
     //Ticket
     @GetMapping("/ticket/coaches/{id}")
     ResponseEntity<ResponseObject> getTicketByCoaches(@PathVariable int id){
+        if (!coachesService.isActive(id)){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Không tìm thấy nhà xe", "")
+            );
+        }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy vé xe thành công", ticketService.getTicketByCoachesAndStatus(id, 1))
         );
@@ -55,7 +60,7 @@ public class EmployeeController {
     @GetMapping("/ticket/{id}")
     ResponseEntity<ResponseObject> getTicketById(@PathVariable int id){
         Optional<Ticket> ticket = ticketService.getTicketById(id);
-        if (ticket.get().getStatus()==1){
+        if (ticket.isPresent() && ticket.get().getStatus()==1){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Lấy vé xe thành công", ticket.get())
             );
@@ -121,7 +126,7 @@ public class EmployeeController {
     @GetMapping("/shipping/{id}")
     ResponseEntity<ResponseObject> getShippingById(@PathVariable int id){
         Optional<Shipping> shipping = shippingService.getShippingById(id);
-        if (shipping.isPresent()){
+        if (shipping.isPresent()&&shipping.get().getStatus()==1){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Lấy thông tin kiện hàng thành công", shipping)
             );

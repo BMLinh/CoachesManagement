@@ -86,9 +86,7 @@ public class CoachesServiceImpl implements CoachesService {
         }
         ArrayList<Integer> arrayList = new ArrayList<>();
         if (coachGarage!=null){
-            coachRepository.findAllByCoachGarageId(coachGarage).forEach(coach -> {
-                arrayList.add(coach.getId());
-            });
+            coachRepository.findAllByCoachGarageId(coachGarage).forEach(coach -> arrayList.add(coach.getId()));
             coaches.removeIf(c -> (!arrayList.contains(c.getCoachId())));
             arrayList.clear();
         }
@@ -160,7 +158,7 @@ public class CoachesServiceImpl implements CoachesService {
     public List<Coaches> getAllCoachesInDay(LocalDate startTime) {
         LocalDateTime start = LocalDateTime.of(startTime.getYear(), startTime.getMonth(), startTime.getDayOfMonth(), 0, 0);
         LocalDateTime end = start.plusDays(1).minusSeconds(1);
-        return coachesRepository.findAllByStartTimeBetween(start, end);
+        return coachesRepository.findAllByStartTimeBetweenAndStatus(start, end, 1);
     }
 
     @Override
@@ -175,7 +173,7 @@ public class CoachesServiceImpl implements CoachesService {
         try {
             coachesRepository.save(newCoaches);
         } catch (HibernateException ex){
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
             return false;
         }
         int id = coachesRepository.findTopByCoachIdOrderByIdDesc(coachesReq.getCoachId()).getId();
@@ -224,7 +222,7 @@ public class CoachesServiceImpl implements CoachesService {
             coachesStopByRepository.saveAll(coachesReq.getDropOff());
             return true;
         } catch (HibernateException ex){
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
             return false;
         }
     }
@@ -270,7 +268,7 @@ public class CoachesServiceImpl implements CoachesService {
                 coachesRepository.deleteById(id);
                 return true;
             } catch (HibernateException ex) {
-                System.out.println(ex);
+                System.out.println(ex.getMessage());
                 return false;
             }
         }
@@ -279,7 +277,7 @@ public class CoachesServiceImpl implements CoachesService {
             coachesRepository.save(coaches);
             return true;
         } catch (HibernateException ex){
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
             return false;
         }
 
@@ -291,11 +289,7 @@ public class CoachesServiceImpl implements CoachesService {
 
     @Override
     public boolean isActive(int id) {
-        Optional<Coaches> coaches = coachesRepository.findById(id);
-        if (coaches.isPresent() && coaches.get().getStatus()==1){
-            return true;
-        }
-        return false;
+        return coachesRepository.existsByIdAndStatusIs(id, 1);
     }
 
     @Override
