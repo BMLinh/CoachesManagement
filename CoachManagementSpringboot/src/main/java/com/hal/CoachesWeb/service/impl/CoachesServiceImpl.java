@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -68,11 +69,9 @@ public class CoachesServiceImpl implements CoachesService {
     }
 
     @Override
-    public List<Coaches> getAllCoachesInDay(LocalDateTime startTime) {
+    public List<Coaches> getAllCoachesInDay(LocalDate startTime) {
         LocalDateTime start = LocalDateTime.of(startTime.getYear(), startTime.getDayOfMonth(), startTime.getDayOfMonth(), 0, 0);
         LocalDateTime end = start.plusDays(1).minusSeconds(1);
-        System.out.println(start);
-        System.out.println(end);
         return coachesRepository.findAllByStartTimeBetween(start, end);
     }
 

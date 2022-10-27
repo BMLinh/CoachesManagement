@@ -6,6 +6,7 @@ import com.hal.CoachesWeb.entity.User;
 import com.hal.CoachesWeb.model.request.UserSignIn;
 import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.service.UserService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class AuthController {
     ResponseEntity<ResponseObject> signIn(@Valid @RequestBody UserSignIn userSignin) {
         if (userService.existsByPhone(userSignin.getPhone())){
             if (userService.isCorrectPassword(userSignin.getPhone(), userSignin.getPassword())){
-                if (userService.isActive(userSignin.getPhone())){
+                if (!userService.isActive(userSignin.getPhone())){
                     return ResponseEntity.status(HttpStatus.OK).body(
                             new ResponseObject(400, "Tài khoản của bạn không còn tồn tại hoặc đã bị khóa", "")
                     );
@@ -154,4 +155,19 @@ public class AuthController {
         }
         return false;
     }
+}
+@Data
+class UserRes {
+    private int id;
+    private String fullname;
+    private String avartar;
+    private String phone;
+    private String role;
+    private String accessToken;
+    private Long expiredTime;
+}
+@Data
+class TokenRes {
+    private String accessToken;
+    private Long expiredTime;
 }

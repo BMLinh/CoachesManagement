@@ -485,20 +485,21 @@ public class AdminController {
 
     @PostMapping("/ticket/update")
     ResponseEntity<ResponseObject> updateTicket(@PathVariable Ticket ticket){
-        if (ticketService.existsById(ticket.getId())){
-            if(!coachesStopByService.existsByCoachesAndStopBy(ticket.getCoachesId(), ticket.getPickUpId())
-                    ||!coachesStopByService.existsByCoachesAndStopBy(ticket.getCoachesId(), ticket.getDropOffId())){
+        Optional<Ticket> old = ticketService.getTicketById(ticket.getId());
+        if (old.isPresent()){
+            if(coachesStopByService.existsByCoachesAndStopBy(old.get().getCoachesId(), ticket.getPickUpId())
+                    && coachesStopByService.existsByCoachesAndStopBy(old.get().getCoachesId(), ticket.getDropOffId())){
+                if (!ticketService.updateTicket(ticket)){
+                    return ResponseEntity.status(HttpStatus.OK).body(
+                            new ResponseObject(400, "Cập nhật vé xe thất bại", "")
+                    );
+                }
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(400, "Không tìm thấy điểm dừng/trả id", "")
-                );
-            }
-            if (ticketService.updateTicket(ticket)){
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(400, "Cập nhật vé xe thất bại", "")
+                        new ResponseObject(200, "Cập nhật vé xe thành công", "")
                 );
             }
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(200, "Cập nhật vé xe thành công", "")
+                    new ResponseObject(400, "Không tìm thấy điểm dừng/trả thuộc chuyến xe", "")
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(

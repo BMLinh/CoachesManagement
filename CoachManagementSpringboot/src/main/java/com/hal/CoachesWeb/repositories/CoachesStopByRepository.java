@@ -9,7 +9,6 @@ import java.util.List;
 public interface CoachesStopByRepository extends JpaRepository<CoachesStopBy, CoachesStopByPK> {
     List<CoachesStopBy> findAllByCoachesId(int id);
     List<CoachesStopBy> findAllByCoachesIdAndStatusIs (int id, int status);
-    boolean existsByCoachesIdAndStopById (int coachesId, int stopById);
-
+    boolean existsByCoachesIdAndStopByIdIs (int coachesId, int stopById);
     boolean existsByCoachesId (int id);
 }

@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface TicketService {
     Page<Ticket> getAllTicket(Pageable pageable);
     List<Ticket> getTicketByCoaches(int id);
+    List<Ticket> getTicketByCoachesAndStatus(int id, int status);
     List<Ticket> getRequestTicket();
     Optional<Ticket> getTicketById(int id);
     boolean acceptRefundTicket (Ticket ticket);

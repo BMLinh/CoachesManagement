@@ -26,31 +26,6 @@ public class CoachesController {
     @Autowired
     private CountryService countryService;
 
-    @GetMapping("/")
-    ResponseEntity<ResponseObject> getAllCoaches(@PathParam(value = "page") int page, @PathParam(value = "size") int size){
-        PageRequest pageRequest = PageRequest.of(page, size);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoaches(pageRequest).get())
-        );
-    }
-    @GetMapping("/coach/")
-    ResponseEntity<ResponseObject> getAllCoachesByCoachId(@PathParam(value = "page") int page, @PathParam(value = "size") int size, @PathParam(value = "id") int id){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByCoachId(id, PageRequest.of(page, size)).get())
-        );
-    }
-    @GetMapping("/{id}")
-    ResponseEntity<ResponseObject> getCoachesById(@PathVariable int id){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy chuyến xe thành công", coachesService.getCoachesById(id))
-        );
-    }
-    @GetMapping("/date/")
-    ResponseEntity<ResponseObject> getAllCoachesByStartDate(@PathParam(value = "page") int page, @PathParam(value = "size") int size, @PathParam(value = "startTime") String startTime, @PathParam(value = "endTime")String endTime){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByStartDate(LocalDateTime.parse(startTime), LocalDateTime.parse(endTime), PageRequest.of(page, size)).get())
-        );
-    }
     @PostMapping("/add")
     ResponseEntity<ResponseObject> addCoaches(@RequestBody Coaches coaches){
         ResponseEntity<ResponseObject> res = coachesChecking(coaches);

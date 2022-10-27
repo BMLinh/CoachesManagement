@@ -8,6 +8,7 @@ import java.util.List;
 public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     List<Ticket> findAllByUserId (int id);
     List<Ticket> findAllByCoachesId(int id);
+    List<Ticket> findAllByCoachesIdAndStatusIs(int id, int status);
     List<Ticket> findAllByStatus (int status);
     Ticket findTopByEmailOrderByIdDesc(String email);
     boolean existsByCoachesId (int id);

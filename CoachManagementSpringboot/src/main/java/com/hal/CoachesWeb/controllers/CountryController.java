@@ -17,24 +17,6 @@ public class CountryController {
     @Autowired
     private CountryService countryService;
 
-    @GetMapping("")
-    ResponseEntity<ResponseObject> getAllCountry(){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200,"Lấy tất cả tỉnh/thành phố tỉnh/thành công", countryService.getAllCountry())
-        );
-    }
-    @GetMapping("/{id}")
-    ResponseEntity<ResponseObject> getCountryById(@PathVariable int id){
-        Optional<Country> country = countryService.getCountryById(id);
-        if (country.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(200, "Lấy tỉnh/thành phố tỉnh/thành công", country)
-            );
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(400, "Không tìm thấy tỉnh/thành phố id", "")
-        );
-    }
     @PostMapping("/add")
     ResponseEntity<ResponseObject> addCountry(@RequestBody Country country){
         if (countryService.addCountry(country)){
