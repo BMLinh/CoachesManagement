@@ -71,12 +71,12 @@ public class CoachesServiceImpl implements CoachesService {
     public List<Coaches> getAllCoachesByStartDate(String startTime, String endTime, LocalDate startDate
             , int startPoint, int endPoint, int minPrice, int maxPrice, Integer pickUp, Integer dropOff
             , Integer emptySeat, Integer coachGarage, int status) {
-        List<Coaches> coaches;
         if (startTime==null || endTime==null){
             LocalDateTime start = LocalDateTime.of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(), 0, 0);
             LocalDateTime end = start.plusDays(1).minusSeconds(1);
             return coachesRepository.findAllByStartTimeBetweenAndEndPointAndStartPointAndStatus(start, end, startPoint, endPoint, status);
         }
+        List<Coaches> coaches;
         if (emptySeat!=null){
             coaches = coachesRepository.findAllByStartTimeBetweenAndEmptySeatIsGreaterThanAndStartPointAndEndPointAndPriceBetweenAndStatus(
                     LocalDateTime.parse(startTime), LocalDateTime.parse(endTime), emptySeat, startPoint, endPoint, minPrice, maxPrice, 1);
