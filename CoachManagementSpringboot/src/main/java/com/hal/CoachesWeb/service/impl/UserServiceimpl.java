@@ -118,6 +118,15 @@ public class UserServiceimpl implements UserService, UserDetailsService {
     }
     @Override
     public boolean updateUser(User user){
+        if (!user.getAvatarPic().isEmpty()){
+            try {
+                user.setAvatar(cloudinary.uploader().upload(user.getAvatarPic().getBytes()
+                        , ObjectUtils.emptyMap()).get("secure_url").toString());
+            } catch (Exception ex){
+                System.out.println(ex);
+                return false;
+            }
+        }
         try {
             user.setCreatedDate(userRepository.getById(user.getId()).getCreatedDate());
             userRepository.save(user);

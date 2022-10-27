@@ -56,7 +56,7 @@ public class AuthController {
                 UserRes userRes = new UserRes();
                 userRes.setId(user.getId());
                 userRes.setFullname(user.getFullname());
-                userRes.setAvartar(user.getAvatar());
+                userRes.setAvatar(user.getAvatar());
                 userRes.setPhone(user.getPhone());
                 userRes.setRole(user.getRoleByRoleId().getName());
                 userRes.setAccessToken(access_token);
@@ -160,7 +160,7 @@ public class AuthController {
 class UserRes {
     private int id;
     private String fullname;
-    private String avartar;
+    private String avatar;
     private String phone;
     private String role;
     private String accessToken;
