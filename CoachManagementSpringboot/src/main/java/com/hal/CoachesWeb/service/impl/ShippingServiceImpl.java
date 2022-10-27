@@ -27,7 +27,7 @@ public class ShippingServiceImpl implements ShippingService {
 
     @Override
     public List<Shipping> getShippingByUserId(int id) {
-        return shippingRepository.findAllByUserId(id);
+        return shippingRepository.findAllByUserIdAndStatus(id, 1);
     }
 
     @Override

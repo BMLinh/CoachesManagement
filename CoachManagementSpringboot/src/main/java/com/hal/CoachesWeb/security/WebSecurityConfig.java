@@ -1,7 +1,5 @@
 package com.hal.CoachesWeb.security;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import com.hal.CoachesWeb.security.Filter.CustomAuthorizationFilter;
 import com.hal.CoachesWeb.service.impl.UserServiceimpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers( "/api/admin/**").hasAuthority("admin");
         http.authorizeRequests().antMatchers( "/api/garageowner/**").hasAuthority("coachGarage");
         http.authorizeRequests().antMatchers( "/api/employee/**").hasAuthority("employee");
-//        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().anyRequest().authenticated();
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
