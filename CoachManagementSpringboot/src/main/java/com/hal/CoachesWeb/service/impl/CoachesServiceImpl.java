@@ -1,12 +1,11 @@
 package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.Coaches;
-import com.hal.CoachesWeb.entity.StopBy;
 import com.hal.CoachesWeb.model.request.CoachesReq;
+import com.hal.CoachesWeb.model.response.CoachesRes;
+import com.hal.CoachesWeb.model.response.StopByDetailRes;
 import com.hal.CoachesWeb.repositories.*;
-import com.hal.CoachesWeb.service.CoachService;
 import com.hal.CoachesWeb.service.CoachesService;
-import com.hal.CoachesWeb.service.CoachesStopByService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +31,8 @@ public class CoachesServiceImpl implements CoachesService {
     private TicketRepository ticketRepository;
     @Autowired
     private ShippingRepository shippingRepository;
+    @Autowired
+    private PictureRepository pictureRepository;
 
     @Override
     public Page<Coaches> getAllCoaches(Pageable pageable){
@@ -68,16 +68,21 @@ public class CoachesServiceImpl implements CoachesService {
     }
 
     @Override
-    public List<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, int startPoint
-            , int endPoint, int minPrice, int maxPrice, Integer pickUp, Integer dropOff
+    public List<Coaches> getAllCoachesByStartDate(String startTime, String endTime, LocalDate startDate
+            , int startPoint, int endPoint, int minPrice, int maxPrice, Integer pickUp, Integer dropOff
             , Integer emptySeat, Integer coachGarage, int status) {
         List<Coaches> coaches;
+        if (startTime==null || endTime==null){
+            LocalDateTime start = LocalDateTime.of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(), 0, 0);
+            LocalDateTime end = start.plusDays(1).minusSeconds(1);
+            return coachesRepository.findAllByStartTimeBetweenAndEndPointAndStartPointAndStatus(start, end, startPoint, endPoint, status);
+        }
         if (emptySeat!=null){
             coaches = coachesRepository.findAllByStartTimeBetweenAndEmptySeatIsGreaterThanAndStartPointAndEndPointAndPriceBetweenAndStatus(
-                    startTime, endTime, emptySeat, startPoint, endPoint, minPrice, maxPrice, 1);
+                    LocalDateTime.parse(startTime), LocalDateTime.parse(endTime), emptySeat, startPoint, endPoint, minPrice, maxPrice, 1);
         } else {
             coaches = coachesRepository.findAllByStartTimeBetweenAndEmptySeatIsGreaterThanAndStartPointAndEndPointAndPriceBetweenAndStatus(
-                    startTime, endTime, 0, startPoint, endPoint, minPrice, maxPrice, 1);
+                    LocalDateTime.parse(startTime), LocalDateTime.parse(endTime), 0, startPoint, endPoint, minPrice, maxPrice, 1);
         }
         ArrayList<Integer> arrayList = new ArrayList<>();
         if (coachGarage!=null){
@@ -122,8 +127,37 @@ public class CoachesServiceImpl implements CoachesService {
     }
 
     @Override
-    public Optional<Coaches> getCoachesById(int id){
-        return coachesRepository.findById(id);
+    public CoachesRes getCoachesById(int id){
+        Optional<Coaches> c = coachesRepository.findById(id);
+        if (!c.isPresent()){
+            return null;
+        }
+        Coaches coaches = c.get();
+        CoachesRes coachesRes = new CoachesRes(coaches.getId()
+                , coaches.getCoachByCoachId().getCategoryByCategoryId().getName()
+                , coaches.getCoachByCoachId().getCoachGarageByCoachGarageId().getName()
+                , coaches.getCoachByCoachId().getCoachGarageByCoachGarageId().getPhone()
+                , coaches.getStartTime(), coaches.getEndTime(), coaches.getDescription()
+                , coaches.getPrice(), coaches.getEmptySeat(), coaches.isShipping(), coaches.getCoachId()
+                , coaches.getStartPoint(), coaches.getEndPoint(), coaches.getStatus());
+        List<StopByDetailRes> stopBy = new ArrayList<>();
+        coachesStopByRepository.findAllByCoachesIdAndStatusIs(coaches.getId(), 3).forEach(coachesStopBy -> {
+            stopBy.add(new StopByDetailRes(coachesStopBy.getStopById()
+                    , coachesStopBy.getStopByByStopById().getName(), coachesStopBy.getTime()));
+        });
+        coachesRes.setPickUp(stopBy);
+        stopBy.clear();
+        coachesStopByRepository.findAllByCoachesIdAndStatusIs(coaches.getId(), 4).forEach(coachesStopBy -> {
+            stopBy.add(new StopByDetailRes(coachesStopBy.getStopById()
+                    , coachesStopBy.getStopByByStopById().getName(), coachesStopBy.getTime()));
+        });
+        coachesRes.setDropOff(stopBy);
+        List<String> pictures = new ArrayList<>();
+        pictureRepository.findAllByCoachId(coaches.getCoachId()).forEach(picture -> {
+            pictures.add(picture.getUrl());
+        });
+        coachesRes.setPictures(pictures);
+        return coachesRes;
     }
 
     @Override

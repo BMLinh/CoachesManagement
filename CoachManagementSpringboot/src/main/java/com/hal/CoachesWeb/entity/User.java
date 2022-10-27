@@ -70,7 +70,7 @@ public class User {
     private Role roleByRoleId;
 
     @Transient
-    private MultipartFile avatarPic;
+    private MultipartFile avataPic;
 
     public User() {
     }
@@ -167,11 +167,11 @@ public class User {
     }
 
     public MultipartFile getAvatarPic() {
-        return avatarPic;
+        return avataPic;
     }
 
     public void setAvatarPic(MultipartFile avatarPic) {
-        this.avatarPic = avatarPic;
+        this.avataPic = avatarPic;
     }
 
     @Override

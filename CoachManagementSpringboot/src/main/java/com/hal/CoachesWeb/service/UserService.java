@@ -5,12 +5,14 @@ import com.hal.CoachesWeb.model.response.UserDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface UserService {
     List<UserDto> getAllUser();
 
     UserDto getUserById(int id);
+    Optional<User> findById(int id);
 
     UserDto getUserDtoByPhone(String phone);
     User getUserByPhone(String phone);

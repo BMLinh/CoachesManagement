@@ -1,7 +1,6 @@
 package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.*;
-import com.hal.CoachesWeb.model.request.CoachReq;
 import com.hal.CoachesWeb.model.request.CoachesReq;
 import com.hal.CoachesWeb.model.response.CoachRes;
 import com.hal.CoachesWeb.model.response.ResponseObject;
@@ -278,20 +277,6 @@ public class AdminController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(400, "Xóa chuyến xe thất bại", "")
-        );
-    }
-
-    //StopBy
-    @GetMapping("/coaches/pickup/{id}")
-    ResponseEntity<ResponseObject> getPickUpByCoachesId(@PathVariable int id){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả điểm đón thành công", stopByService.getAllStopByCoachesId(id, 3))
-        );
-    }
-    @GetMapping("/coaches/dropoff/{id}")
-    ResponseEntity<ResponseObject> getDropOffByCoachesId(@PathVariable int id){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả điểm trả thành công", stopByService.getAllStopByCoachesId(id, 4))
         );
     }
 

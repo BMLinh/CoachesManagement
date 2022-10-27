@@ -1,44 +1,44 @@
 package com.hal.CoachesWeb.model.response;
 
-import com.hal.CoachesWeb.entity.Picture;
-import com.hal.CoachesWeb.entity.StopBy;
-import com.hal.CoachesWeb.model.DTO.PictureDTO;
-import com.hal.CoachesWeb.model.DTO.StopByDTO;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class CoachesRes {
     private int id;
-    private String coach_garage_name;
-    private String category_name;
-    private int price;
-    private int empty_seat;
-    private boolean isShip;
-    private String image;
-    private String start;
-    private String end;
-    private String License_plate;
+    private String name;
+    private String category;
+    private String phone;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String description;
-    private List<PictureDTO> pictures;
-    private List<StopByDTO> stopByDTOS;
+    private int price;
+    private int emptySeat;
+    private boolean isShipping;
+    private int coachId;
+    private int startPoint;
+    private int endPoint;
+    private int status;
+    private List<StopByDetailRes> pickUp;
+    private List<StopByDetailRes> dropOff;
+    private List<String> pictures;
 
-    public CoachesRes() {
-    }
-
-    public CoachesRes(int id, String coach_garage_name, String category_name, int price, int empty_seat, boolean isShip, String image, String start, String end, String license_plate, String description, List<PictureDTO> pictures, List<StopByDTO> stopByDTOS) {
+    public CoachesRes(int id, String name, String category, String phone, LocalDateTime startTime
+            , LocalDateTime endTime, String description, int price, int emptySeat, boolean isShipping, int coachId
+            , int startPoint, int endPoint, int status) {
         this.id = id;
-        this.coach_garage_name = coach_garage_name;
-        this.category_name = category_name;
-        this.price = price;
-        this.empty_seat = empty_seat;
-        this.isShip = isShip;
-        this.image = image;
-        this.start = start;
-        this.end = end;
-        License_plate = license_plate;
+        this.name = name;
+        this.category = category;
+        this.phone = phone;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.description = description;
-        this.pictures = pictures;
-        this.stopByDTOS = stopByDTOS;
+        this.price = price;
+        this.emptySeat = emptySeat;
+        this.isShipping = isShipping;
+        this.coachId = coachId;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.status = status;
     }
 
     public int getId() {
@@ -49,76 +49,44 @@ public class CoachesRes {
         this.id = id;
     }
 
-    public String getCoach_garage_name() {
-        return coach_garage_name;
+    public String getName() {
+        return name;
     }
 
-    public void setCoach_garage_name(String coach_garage_name) {
-        this.coach_garage_name = coach_garage_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCategory_name() {
-        return category_name;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCategory_name(String category_name) {
-        this.category_name = category_name;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public int getPrice() {
-        return price;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public int getEmpty_seat() {
-        return empty_seat;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setEmpty_seat(int empty_seat) {
-        this.empty_seat = empty_seat;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
-    public boolean isShip() {
-        return isShip;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
-    public void setShip(boolean ship) {
-        isShip = ship;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getStart() {
-        return start;
-    }
-
-    public void setStart(String start) {
-        this.start = start;
-    }
-
-    public String getEnd() {
-        return end;
-    }
-
-    public void setEnd(String end) {
-        this.end = end;
-    }
-
-    public String getLicense_plate() {
-        return License_plate;
-    }
-
-    public void setLicense_plate(String license_plate) {
-        License_plate = license_plate;
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public String getDescription() {
@@ -129,19 +97,83 @@ public class CoachesRes {
         this.description = description;
     }
 
-    public List<PictureDTO> getPictures() {
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getEmptySeat() {
+        return emptySeat;
+    }
+
+    public void setEmptySeat(int emptySeat) {
+        this.emptySeat = emptySeat;
+    }
+
+    public boolean isShipping() {
+        return isShipping;
+    }
+
+    public void setShipping(boolean shipping) {
+        isShipping = shipping;
+    }
+
+    public int getCoachId() {
+        return coachId;
+    }
+
+    public void setCoachId(int coachId) {
+        this.coachId = coachId;
+    }
+
+    public int getStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(int startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public int getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(int endPoint) {
+        this.endPoint = endPoint;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public List<StopByDetailRes> getPickUp() {
+        return pickUp;
+    }
+
+    public void setPickUp(List<StopByDetailRes> pickUp) {
+        this.pickUp = pickUp;
+    }
+
+    public List<StopByDetailRes> getDropOff() {
+        return dropOff;
+    }
+
+    public void setDropOff(List<StopByDetailRes> dropOff) {
+        this.dropOff = dropOff;
+    }
+
+    public List<String> getPictures() {
         return pictures;
     }
 
-    public void setPictures(List<PictureDTO> pictures) {
+    public void setPictures(List<String> pictures) {
         this.pictures = pictures;
-    }
-
-    public List<StopByDTO> getStopByDTOS() {
-        return stopByDTOS;
-    }
-
-    public void setStopByDTOS(List<StopByDTO> stopByDTOS) {
-        this.stopByDTOS = stopByDTOS;
     }
 }

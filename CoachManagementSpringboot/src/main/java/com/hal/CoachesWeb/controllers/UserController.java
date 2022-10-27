@@ -19,6 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,8 +33,6 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private RoleService roleService;
-    @Autowired
     private TicketService ticketService;
     @Autowired
     private CoachesService coachesService;
@@ -45,6 +44,10 @@ public class UserController {
     private CoachGarageService coachGarageService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
     //Comment
     @PostMapping("comment/add")
@@ -84,16 +87,27 @@ public class UserController {
                     new ResponseObject(400, "Dữ liệu không được để trống", "")
             );
         }
-        UserDto userDto = userService.getUserById(newUser.getId());
-        if (userDto!=null){
-            if (!userDto.getPhone().equals(newUser.getPhone())){
+        Optional<User> user = userService.findById(newUser.getId());
+        if (user.isPresent()&&user.get().getStatus()==1){
+            if (!passwordEncoder().matches(newUser.getPassword(), user.get().getPassword())){
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(400, "Mật khẩu cũ không đúng", "")
+                );
+            }
+            if (!user.get().getPhone().equals(newUser.getPhone())){
                if (userService.existsByPhone(newUser.getPhone())){
                    return ResponseEntity.status(HttpStatus.OK).body(
                            new ResponseObject(400, "Số điện thoại đã có tài khoản", "")
                    );
                }
             }
-            if (userService.updateUser(newUser)){
+            user.get().setPassword(passwordEncoder().encode(newUser.getPassword()));
+            user.get().setAvatarPic(newUser.getAvatarPic());
+            user.get().setFullname(newUser.getFullname());
+            user.get().setPhone(newUser.getPhone());
+            user.get().setEmail(newUser.getEmail());
+            user.get().setGender(newUser.getGender());
+            if (userService.updateUser(user.get())){
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(200, "Cập nhật thành công", userService.getUserById(newUser.getId()))
                 );
