@@ -3,7 +3,7 @@ package com.hal.CoachesWeb.model.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class CoachesRes {
+public class CoachesDetailRes {
     private int id;
     private String name;
     private String category;
@@ -22,7 +22,7 @@ public class CoachesRes {
     private List<StopByDetailRes> dropOff;
     private List<String> pictures;
 
-    public CoachesRes(int id, String name, String category, String phone, LocalDateTime startTime
+    public CoachesDetailRes(int id, String name, String category, String phone, LocalDateTime startTime
             , LocalDateTime endTime, String description, int price, int emptySeat, boolean isShipping, int coachId
             , int startPoint, int endPoint, int status) {
         this.id = id;

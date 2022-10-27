@@ -14,6 +14,7 @@ public interface CoachService {
     List<Coach> getAllCoachByGarageIdNoDelete(int id);
     Optional<Coach> getCoachById(int id);
     boolean addCoach(Coach coach);
+    List<Coach> getAllCoachByUserId(int id);
 //    boolean updateStatus(Coach coach);
     boolean updateCoach(Coach coach);
     boolean deleteCoach(int id);

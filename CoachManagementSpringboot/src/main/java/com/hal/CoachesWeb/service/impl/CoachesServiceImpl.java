@@ -2,7 +2,7 @@ package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.Coaches;
 import com.hal.CoachesWeb.model.request.CoachesReq;
-import com.hal.CoachesWeb.model.response.CoachesRes;
+import com.hal.CoachesWeb.model.response.CoachesDetailRes;
 import com.hal.CoachesWeb.model.response.StopByDetailRes;
 import com.hal.CoachesWeb.repositories.*;
 import com.hal.CoachesWeb.service.CoachesService;
@@ -69,7 +69,7 @@ public class CoachesServiceImpl implements CoachesService {
 
     @Override
     public List<Coaches> getAllCoachesByStartDate(String startTime, String endTime, LocalDate startDate
-            , int startPoint, int endPoint, int minPrice, int maxPrice, Integer pickUp, Integer dropOff
+            , int startPoint, int endPoint, Integer minPrice, Integer maxPrice, Integer pickUp, Integer dropOff
             , Integer emptySeat, Integer coachGarage, int status) {
         if (startTime==null || endTime==null){
             LocalDateTime start = LocalDateTime.of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(), 0, 0);
@@ -121,13 +121,13 @@ public class CoachesServiceImpl implements CoachesService {
     }
 
     @Override
-    public CoachesRes getCoachesById(int id){
+    public CoachesDetailRes getCoachesById(int id){
         Optional<Coaches> c = coachesRepository.findById(id);
         if (!c.isPresent()){
             return null;
         }
         Coaches coaches = c.get();
-        CoachesRes coachesRes = new CoachesRes(coaches.getId()
+        CoachesDetailRes coachesDetailRes = new CoachesDetailRes(coaches.getId()
                 , coaches.getCoachByCoachId().getCoachGarageByCoachGarageId().getName()
                 , coaches.getCoachByCoachId().getCategoryByCategoryId().getName()
                 , coaches.getCoachByCoachId().getCoachGarageByCoachGarageId().getPhone()
@@ -139,19 +139,19 @@ public class CoachesServiceImpl implements CoachesService {
             stopBy.add(new StopByDetailRes(coachesStopBy.getStopById()
                     , coachesStopBy.getStopByByStopById().getName(), coachesStopBy.getTime()));
         });
-        coachesRes.setPickUp(stopBy);
+        coachesDetailRes.setPickUp(stopBy);
         stopBy.clear();
         coachesStopByRepository.findAllByCoachesIdAndStatusIs(coaches.getId(), 4).forEach(coachesStopBy -> {
             stopBy.add(new StopByDetailRes(coachesStopBy.getStopById()
                     , coachesStopBy.getStopByByStopById().getName(), coachesStopBy.getTime()));
         });
-        coachesRes.setDropOff(stopBy);
+        coachesDetailRes.setDropOff(stopBy);
         List<String> pictures = new ArrayList<>();
         pictureRepository.findAllByCoachId(coaches.getCoachId()).forEach(picture -> {
             pictures.add(picture.getUrl());
         });
-        coachesRes.setPictures(pictures);
-        return coachesRes;
+        coachesDetailRes.setPictures(pictures);
+        return coachesDetailRes;
     }
 
     @Override

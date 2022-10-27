@@ -98,6 +98,7 @@ public class CoachGarageServiceImpl implements CoachGarageService {
     }
 
     @Override
+    @Transactional
     public boolean addCoachGarage(CoachGarage coachGarage){
         try {
             coachGarageRepository.save(new CoachGarage

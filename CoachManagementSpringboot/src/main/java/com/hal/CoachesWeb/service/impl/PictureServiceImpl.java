@@ -8,6 +8,7 @@ import com.hal.CoachesWeb.service.PictureService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
+    @Transactional
     public boolean addPicture(int coachId, int status, List<MultipartFile> multipartFiles){
         multipartFiles.forEach(multipartFile -> {
             try {

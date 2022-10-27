@@ -1,11 +1,7 @@
 package com.hal.CoachesWeb.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -70,7 +66,7 @@ public class User {
     private Role roleByRoleId;
 
     @Transient
-    private MultipartFile avataPic;
+    private MultipartFile avatarPic;
 
     public User() {
     }
@@ -167,11 +163,11 @@ public class User {
     }
 
     public MultipartFile getAvatarPic() {
-        return avataPic;
+        return avatarPic;
     }
 
     public void setAvatarPic(MultipartFile avatarPic) {
-        this.avataPic = avatarPic;
+        this.avatarPic = avatarPic;
     }
 
     @Override

@@ -5,12 +5,15 @@ import com.cloudinary.utils.ObjectUtils;
 import com.hal.CoachesWeb.entity.Coach;
 import com.hal.CoachesWeb.entity.Picture;
 import com.hal.CoachesWeb.repositories.*;
+import com.hal.CoachesWeb.service.CoachGarageService;
 import com.hal.CoachesWeb.service.CoachService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +29,8 @@ public class CoachServiceImpl implements CoachService {
     private CoachesRepository coachesRepository;
     @Autowired
     private PictureRepository pictureRepository;
+    @Autowired
+    private CoachGarageRepository coachGarageRepository;
 
     @Override
     public List<Coach> getAllCoach(){
@@ -34,6 +39,12 @@ public class CoachServiceImpl implements CoachService {
     @Override
     public List<Coach> getAllCoachByGarageId(int id){
         return coachRepository.findAllByCoachGarageId(id);
+    }
+    @Override
+    public List<Coach> getAllCoachByUserId(int id){
+        List<Integer> coachGarageIds = new ArrayList<>();
+        coachGarageRepository.findAllByUserId(id).forEach(coachGarage -> coachGarageIds.add(coachGarage.getId()));
+        return coachRepository.findAllByCoachGarageIdIn(coachGarageIds);
     }
 
     @Override
@@ -46,11 +57,12 @@ public class CoachServiceImpl implements CoachService {
         return coachRepository.findById(id);
     }
     @Override
+    @Transactional
     public boolean addCoach(Coach coach){
         try {
             coachRepository.save(new Coach(coach.getLicensePlates(), coach.getDescription()
                     , coach.getCoachGarageId(), coach.getCategoryId(), coach.getStatus()));
-            if (!coach.getPicture().isEmpty()){
+            if (coach.getPicture()!=null){
                 int id = coachRepository.findTopByCoachGarageIdOrderByIdDesc(coach.getCoachGarageId()).getId();
                 coach.getPicture().forEach(picture -> {
                     try {
@@ -90,6 +102,7 @@ public class CoachServiceImpl implements CoachService {
 //    }
 
     @Override
+    @Transactional
     public boolean updateCoach(Coach coach){
         try {
             coachRepository.save(coach);

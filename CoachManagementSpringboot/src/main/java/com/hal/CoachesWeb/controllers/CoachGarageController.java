@@ -69,6 +69,13 @@ public class CoachGarageController {
                         , coachService.getAllCoachByGarageId(id))
         );
     }
+    @GetMapping("/coachgarage/coach/user/{id}")
+    ResponseEntity<ResponseObject> getCoachByUserId(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy danh sách xe thành công"
+                        , coachService.getAllCoachByUserId(id))
+        );
+    }
 
     @GetMapping("/coachgarage/coach/{id}")
     ResponseEntity<ResponseObject> getCoachById(@PathVariable int id){

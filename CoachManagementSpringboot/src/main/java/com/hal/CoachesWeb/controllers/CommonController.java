@@ -71,7 +71,7 @@ public class CommonController {
     ResponseEntity<ResponseObject> getAllCoachesByStartDate(@PathParam(value = "startTime") String startTime
             , @PathParam(value = "endTime")String endTime, @PathParam(value = "startDate") String startDate
             , @PathParam(value = "endPoint") int endPoint, @PathParam(value = "startPoint") int startPoint
-            , @PathParam(value = "minPrice") int minPrice, @PathParam(value = "maxPrice") int maxPrice
+            , @PathParam(value = "minPrice") Integer minPrice, @PathParam(value = "maxPrice") Integer maxPrice
             , @PathParam(value = "pickUp") Integer pickUp, @PathParam(value = "dropOff") Integer dropOff
             , @PathParam(value = "emptySeat") Integer emptySeat, @PathParam(value = "coachGarage") Integer coachGarage){
         try {
