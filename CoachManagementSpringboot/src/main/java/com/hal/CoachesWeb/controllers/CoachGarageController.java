@@ -173,27 +173,27 @@ public class CoachGarageController {
         if (res!=null){
             return res;
         }
-//        if (!coachesService.addCoaches(coaches)){
-//            return ResponseEntity.status(HttpStatus.OK).body(
-//                    new ResponseObject(400, "Thêm chuyến xe thất bại", "")
-//            );
-//        }
+        if (!coachesService.addCoaches(coachesReq)){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Thêm chuyến xe thất bại", "")
+            );
+        }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Thêm chuyến xe thành công", "")
         );
     }
     @PutMapping("/coachgarage/coaches/update")
-    ResponseEntity<ResponseObject> updateCoaches(@RequestBody Coaches coaches){
-        if (!coachesService.existsById(coaches.getId())){
+    ResponseEntity<ResponseObject> updateCoaches(@RequestBody CoachesReq coachesReq){
+        if (!coachesService.existsById(coachesReq.getId())){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Không tìm thấy chuyến xe id", "")
             );
         }
-//        ResponseEntity<ResponseObject> res = coachesChecking(coaches);
-//        if (res!=null){
-//            return res;
-//        }
-        if (!coachesService.updateCoaches(coaches)){
+        ResponseEntity<ResponseObject> res = coachesChecking(coachesReq);
+        if (res!=null){
+            return res;
+        }
+        if (!coachesService.updateCoaches(coachesReq)){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Cập nhật chuyến xe thất bại", "")
             );

@@ -2,6 +2,7 @@ package com.hal.CoachesWeb.controllers;
 
 import com.hal.CoachesWeb.entity.*;
 import com.hal.CoachesWeb.model.request.CoachReq;
+import com.hal.CoachesWeb.model.request.CoachesReq;
 import com.hal.CoachesWeb.model.response.CoachRes;
 import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.model.response.UserDto;
@@ -232,12 +233,12 @@ public class AdminController {
 //        );
 //    }
     @PostMapping("/coaches/add")
-    ResponseEntity<ResponseObject> addCoaches(@RequestBody Coaches coaches){
-        ResponseEntity<ResponseObject> res = coachesChecking(coaches);
+    ResponseEntity<ResponseObject> addCoaches(@RequestBody CoachesReq coachesReq){
+        ResponseEntity<ResponseObject> res = coachesChecking(coachesReq);
         if (res!=null){
             return res;
         }
-        if (!coachesService.addCoaches(coaches)){
+        if (!coachesService.addCoaches(coachesReq)){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Thêm chuyến xe thất bại", "")
             );
@@ -247,17 +248,17 @@ public class AdminController {
         );
     }
     @PutMapping("/coaches/update")
-    ResponseEntity<ResponseObject> updateCoaches(@RequestBody Coaches coaches){
-        if (!coachesService.existsById(coaches.getId())){
+    ResponseEntity<ResponseObject> updateCoaches(@RequestBody CoachesReq coachesReq){
+        if (!coachesService.existsById(coachesReq.getId())){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Không tìm thấy chuyến xe id", "")
             );
         }
-        ResponseEntity<ResponseObject> res = coachesChecking(coaches);
+        ResponseEntity<ResponseObject> res = coachesChecking(coachesReq);
         if (res!=null){
             return res;
         }
-        if (coachesService.updateCoaches(coaches)){
+        if (coachesService.updateCoaches(coachesReq)){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Cập nhật chuyến xe thành công", "")
             );
@@ -544,7 +545,7 @@ public class AdminController {
             );
     }
     @PostMapping("/user/add")
-    ResponseEntity<ResponseObject> addUser(@RequestBody User newUser) {
+    ResponseEntity<ResponseObject> addUser(@ModelAttribute User newUser) {
         if (isFieldMissing(newUser)){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Thiếu trường dữ liệu", "")
@@ -627,28 +628,36 @@ public class AdminController {
         );
     }
 
-    private ResponseEntity<ResponseObject> coachesChecking(Coaches coaches){
-        if (!coachService.existsById(coaches.getCoachId())){
+    private ResponseEntity<ResponseObject> coachesChecking(CoachesReq coachesReq){
+        if (!coachService.existsById(coachesReq.getCoachId())){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Không tìm thấy xe id", "")
             );
         }
-        if (!countryService.existsById(coaches.getStartPoint()) || !countryService.existsById(coaches.getEndPoint())){
+        if (!countryService.existsById(coachesReq.getStartPoint()) || !countryService.existsById(coachesReq.getEndPoint())){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Không tìm thấy thành phố id", "")
             );
         }
-        if (coaches.getStartTime().isAfter(coaches.getEndTime())){
+        try {
+            if (LocalDateTime.parse(coachesReq.getStartTime()).isAfter(LocalDateTime.parse(coachesReq.getEndTime()))){
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(400, "Ngày/giờ kết thúc phải lớn hơn xuất phát", "")
+                );
+            }
+            if (LocalDateTime.parse(coachesReq.getStartTime()).isBefore(LocalDateTime.now())
+                    || LocalDateTime.parse(coachesReq.getEndTime()).isBefore(LocalDateTime.now())){
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(400, "Ngày/giờ xuất phát phải lớn hơn hiện tại", "")
+                );
+            }
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(400, "Ngày/giờ kết thúc phải lớn hơn xuất phát", "")
+                    new ResponseObject(400, "Error", ex.getMessage())
             );
         }
-        if (coaches.getStartTime().isBefore(LocalDateTime.now()) || coaches.getEndTime().isBefore(LocalDateTime.now())){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(400, "Ngày/giờ xuất phát phải lớn hơn hiện tại", "")
-            );
-        }
-        if (coaches.getPrice()<0){
+        if (coachesReq.getPrice()<0){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Số tiền vé phải lớn hơn 0", "")
             );

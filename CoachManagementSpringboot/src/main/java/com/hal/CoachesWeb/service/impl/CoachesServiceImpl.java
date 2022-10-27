@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.Coaches;
+import com.hal.CoachesWeb.model.request.CoachesReq;
 import com.hal.CoachesWeb.repositories.*;
 import com.hal.CoachesWeb.service.CoachService;
 import com.hal.CoachesWeb.service.CoachesService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -76,28 +78,64 @@ public class CoachesServiceImpl implements CoachesService {
     }
 
     @Override
-    public boolean addCoaches(Coaches coaches){
-        Coaches newCoaches = new Coaches(coaches.getStartTime(), coaches.getEndTime()
-                , coaches.getDescription(), coaches.getPrice()
-                , coachRepository.getById(coaches.getCoachId()).getCategoryByCategoryId().getSeat(), coaches.isShipping()
-                , coaches.getCoachId(), coaches.getStartPoint(), coaches.getEndPoint(), coaches.getStatus());
+    @Transactional
+    public boolean addCoaches(CoachesReq coachesReq){
+        Coaches newCoaches = new Coaches(LocalDateTime.parse(coachesReq.getStartTime())
+                , LocalDateTime.parse(coachesReq.getEndTime())
+                , coachesReq.getDescription(), coachesReq.getPrice()
+                , coachRepository.getById(coachesReq.getCoachId()).getCategoryByCategoryId().getSeat()
+                , coachesReq.isShipping(), coachesReq.getCoachId(), coachesReq.getStartPoint()
+                , coachesReq.getEndPoint(), coachesReq.getStatus());
         try {
             coachesRepository.save(newCoaches);
-            return true;
         } catch (HibernateException ex){
             System.out.println(ex);
             return false;
         }
+        int id = coachesRepository.findTopByCoachIdOrderByIdDesc(coachesReq.getCoachId()).getId();
+        coachesReq.getPickUp().forEach(pickUp -> {
+            pickUp.setCoachesId(id);
+            pickUp.setStatus(3);
+        });
+        coachesReq.getDropOff().forEach(dropOff -> {
+            dropOff.setCoachesId(id);
+            dropOff.setStatus(4);
+        });
+        try {
+            coachesStopByRepository.saveAll(coachesReq.getPickUp());
+            coachesStopByRepository.saveAll(coachesReq.getDropOff());
+        } catch (HibernateException ex){
+            System.out.println(ex.getMessage());
+            return false;
+        }
+        return true;
     }
     @Override
-    public boolean updateCoaches(Coaches newCoaches){
-        Coaches coaches = coachesRepository.getById(newCoaches.getId());
-        newCoaches.setCreateDate(coaches.getCreateDate());
-        newCoaches.setCoachByCoachId(coaches.getCoachByCoachId());
-        newCoaches.setCountryByEndPoint(coaches.getCountryByEndPoint());
-        newCoaches.setCountryByStartPoint(coaches.getCountryByStartPoint());
+    @Transactional
+    public boolean updateCoaches(CoachesReq coachesReq){
+        Coaches coaches = coachesRepository.getById(coachesReq.getId());
+        coaches.setStatus(coachesReq.getStatus());
+        coaches.setPrice(coachesReq.getPrice());
+        coaches.setCoachId(coachesReq.getCoachId());
+        coaches.setDescription(coachesReq.getDescription());
+        coaches.setEndTime(LocalDateTime.parse(coachesReq.getEndTime()));
+        coaches.setStartTime(LocalDateTime.parse(coachesReq.getStartTime()));
+        coaches.setShipping(coachesReq.isShipping());
+        coaches.setStartPoint(coaches.getStartPoint());
+        coaches.setEndPoint(coaches.getEndPoint());
+        coachesReq.getPickUp().forEach(pickUp -> {
+            pickUp.setCoachesId(coachesReq.getId());
+            pickUp.setStatus(3);
+        });
+        coachesReq.getDropOff().forEach(dropOff -> {
+            dropOff.setCoachesId(coachesReq.getId());
+            dropOff.setStatus(4);
+        });
         try {
-            coachesRepository.save(newCoaches);
+            coachesRepository.save(coaches);
+            coachesStopByRepository.deleteAll(coachesStopByRepository.findAllByCoachesId(coachesReq.getId()));
+            coachesStopByRepository.saveAll(coachesReq.getPickUp());
+            coachesStopByRepository.saveAll(coachesReq.getDropOff());
             return true;
         } catch (HibernateException ex){
             System.out.println(ex);
@@ -151,7 +189,13 @@ public class CoachesServiceImpl implements CoachesService {
             }
         }
         coaches.setStatus(0);
-        return updateCoaches(coaches);
+        try {
+            coachesRepository.save(coaches);
+            return true;
+        } catch (HibernateException ex){
+            System.out.println(ex);
+            return false;
+        }
 
     }
     @Override
