@@ -72,7 +72,7 @@ public class CoachesServiceImpl implements CoachesService {
 
     @Override
     public List<Coaches> getAllCoachesInDay(LocalDate startTime) {
-        LocalDateTime start = LocalDateTime.of(startTime.getYear(), startTime.getDayOfMonth(), startTime.getDayOfMonth(), 0, 0);
+        LocalDateTime start = LocalDateTime.of(startTime.getYear(), startTime.getMonth(), startTime.getDayOfMonth(), 0, 0);
         LocalDateTime end = start.plusDays(1).minusSeconds(1);
         return coachesRepository.findAllByStartTimeBetween(start, end);
     }

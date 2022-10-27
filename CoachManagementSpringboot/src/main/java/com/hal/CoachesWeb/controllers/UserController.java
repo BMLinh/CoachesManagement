@@ -103,10 +103,6 @@ public class UserController {
                    );
                }
             }
-            newUser.setRoleId(roleService.getRoleByName(userDto.getRole()).getId());
-            newUser.setStatus(userDto.getStatus());
-            newUser.setCreatedDate(userDto.getCreatedDate());
-            newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
             if (userService.updateUser(newUser)){
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(200, "Cập nhật thành công", userService.getUserById(newUser.getId()))
