@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    ResponseEntity<ResponseObject> updateUser(@RequestBody User newUser) {
+    ResponseEntity<ResponseObject> updateUser(@ModelAttribute User newUser) {
         if (isFieldMissing(newUser)){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Thiếu trường dữ liệu", "")

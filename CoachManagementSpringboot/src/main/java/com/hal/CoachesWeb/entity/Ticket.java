@@ -70,10 +70,11 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Integer price, String email, String phone,int amount, int coachesId, int userId, int pickUpId, int dropOffId, Integer status) {
+    public Ticket(Integer price, String email, String phone, String name, int amount, int coachesId, int userId, int pickUpId, int dropOffId, Integer status) {
         this.price = price;
         this.email = email;
         this.phone = phone;
+        this.name = name;
         this.amount = amount;
         this.coachesId = coachesId;
         this.userId = userId;

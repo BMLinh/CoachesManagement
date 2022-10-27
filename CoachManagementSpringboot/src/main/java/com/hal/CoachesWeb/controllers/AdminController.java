@@ -133,10 +133,10 @@ public class AdminController {
         );
     }
     @PostMapping("/coach/add")
-    ResponseEntity<ResponseObject> addCoach(@RequestBody CoachReq coachReq){
-        if (coachGarageService.existsById(coachReq.getCoach().getCoachGarageId())){
-            if (categoryService.existsById(coachReq.getCoach().getCategoryId())){
-                if (coachService.addCoach(coachReq.getCoach(), coachReq.getPictures())){
+    ResponseEntity<ResponseObject> addCoach(@ModelAttribute Coach coach){
+        if (coachGarageService.existsById(coach.getCoachGarageId())){
+            if (categoryService.existsById(coach.getCategoryId())){
+                if (coachService.addCoach(coach)){
                     return ResponseEntity.status(HttpStatus.OK).body(
                             new ResponseObject(200, "Thêm xe thành công", "")
                     );
@@ -154,7 +154,7 @@ public class AdminController {
         );
     }
     @PutMapping("/coach/update")
-    ResponseEntity<ResponseObject> updateCoach(@RequestBody Coach coach){
+    ResponseEntity<ResponseObject> updateCoach(@ModelAttribute Coach coach){
         Optional<Coach> optCoach = coachService.getCoachById(coach.getId());
         if (optCoach.isPresent()){
             if (coachGarageService.existsById(coach.getCoachGarageId())){
