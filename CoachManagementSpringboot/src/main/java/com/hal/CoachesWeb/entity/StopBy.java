@@ -32,7 +32,7 @@ public class StopBy {
     @OneToMany(mappedBy = "stopByByStopById")
     private Collection<CoachesStopBy> coachesStopBIESById;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "district_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private District districtByDistrictId;
     @OneToMany(mappedBy = "stopByByPickUpId")

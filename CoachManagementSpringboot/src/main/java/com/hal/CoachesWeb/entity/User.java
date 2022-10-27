@@ -65,7 +65,7 @@ public class User {
     @OneToMany(mappedBy = "userByUserId")
     private Collection<Ticket> ticketsById;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
     private Role roleByRoleId;
 

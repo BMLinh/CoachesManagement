@@ -43,6 +43,11 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public List<Ticket> getTicketByUserId(int id) {
+        return ticketRepository.findAllByUserId(id);
+    }
+
+    @Override
     public List<Ticket> getRequestTicket() {
         return ticketRepository.findAllByStatus(2);
     }
@@ -103,7 +108,7 @@ public class TicketServiceImpl implements TicketService {
             Coaches coaches = coachesRepository.getById(ticket.getCoachesId());
             coaches.setEmptySeat(coaches.getEmptySeat()-ticket.getAmount());
             coachesRepository.save(coaches);
-            ticketRepository.save(new Ticket(ticket.getPrice(), ticket.getEmail()
+            ticketRepository.save(new Ticket(ticket.getCoachesByCoachesId().getPrice()*ticket.getAmount(), ticket.getEmail()
                     , ticket.getPhone(), ticket.getName(), ticket.getAmount(), ticket.getCoachesId(), ticket.getUserId()
                     , ticket.getPickUpId(), ticket.getDropOffId(), 1));
                     text = text.concat(" "+ticketRepository.findTopByEmailOrderByIdDesc(ticket.getEmail()).getId());

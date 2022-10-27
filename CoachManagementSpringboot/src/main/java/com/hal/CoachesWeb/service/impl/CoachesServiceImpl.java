@@ -89,17 +89,14 @@ public class CoachesServiceImpl implements CoachesService {
             coachRepository.findAllByCoachGarageId(coachGarage).forEach(coach -> {
                 arrayList.add(coach.getId());
             });
-            System.out.println("Coach garage "+arrayList);
             coaches.removeIf(c -> (!arrayList.contains(c.getCoachId())));
             arrayList.clear();
         }
-        System.out.println("Clear "+arrayList);
         if (pickUp!=null){
             ArrayList<Integer> coachesId = new ArrayList<>();
             coaches.forEach(c -> {
                 coachesId.add(c.getId());
             });
-            System.out.println("Coaches Id: pickup "+coachesId);
             coachesStopByRepository.findAllByCoachesIdInAndStatus(coachesId, 3).forEach(coachesStopBy -> {
                 if (coachesStopBy.getStopById()==pickUp){
                     arrayList.add(coachesStopBy.getCoachesId());
@@ -108,7 +105,6 @@ public class CoachesServiceImpl implements CoachesService {
             coaches.removeIf(c->(!arrayList.contains(c.getId())));
             arrayList.clear();
         }
-        System.out.println("Clear "+arrayList);
         if (dropOff!=null){
             ArrayList<Integer> coachesId = new ArrayList<>();
             coaches.forEach(c -> {
@@ -134,8 +130,8 @@ public class CoachesServiceImpl implements CoachesService {
         }
         Coaches coaches = c.get();
         CoachesRes coachesRes = new CoachesRes(coaches.getId()
-                , coaches.getCoachByCoachId().getCategoryByCategoryId().getName()
                 , coaches.getCoachByCoachId().getCoachGarageByCoachGarageId().getName()
+                , coaches.getCoachByCoachId().getCategoryByCategoryId().getName()
                 , coaches.getCoachByCoachId().getCoachGarageByCoachGarageId().getPhone()
                 , coaches.getStartTime(), coaches.getEndTime(), coaches.getDescription()
                 , coaches.getPrice(), coaches.getEmptySeat(), coaches.isShipping(), coaches.getCoachId()

@@ -34,11 +34,11 @@ public class Coach {
     @Column(name = "status", nullable = false)
     private int status;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coach_garage_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private CoachGarage coachGarageByCoachGarageId;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Category categoryByCategoryId;
     @JsonIgnore

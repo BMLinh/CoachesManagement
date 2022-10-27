@@ -21,6 +21,16 @@ public class ShippingServiceImpl implements ShippingService {
     }
 
     @Override
+    public List<Shipping> getShippingByCoachesAndStatus(int id, int status) {
+        return shippingRepository.findAllByCoachesIdAndStatus(id, status);
+    }
+
+    @Override
+    public List<Shipping> getShippingByUserId(int id) {
+        return shippingRepository.findAllByUserId(id);
+    }
+
+    @Override
     public Optional<Shipping> getShippingById(int id) {
         return shippingRepository.findById(id);
     }

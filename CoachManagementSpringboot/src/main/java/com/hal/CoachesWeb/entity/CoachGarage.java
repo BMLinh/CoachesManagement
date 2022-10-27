@@ -47,11 +47,11 @@ public class CoachGarage {
     @OneToMany(mappedBy = "coachGarageByCoachGarageId")
     private Collection<Coach> coachesById;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "district_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private District districtByDistrictId;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private User userByUserId;
 

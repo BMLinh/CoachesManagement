@@ -45,6 +45,8 @@ public class UserController {
     @Autowired
     private CommentService commentService;
     @Autowired
+    private ShippingService shippingService;
+    @Autowired
     private PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
@@ -122,6 +124,12 @@ public class UserController {
     }
 
     //Ticket
+    @GetMapping("/ticket/user/{id}")
+    ResponseEntity<ResponseObject> getTicketByUserId(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy lịch sử vé thành công", ticketService.getTicketByUserId(id))
+        );
+    }
     @PostMapping("/ticket/add")
     ResponseEntity<ResponseObject> addTicket(@Valid @RequestBody Ticket ticket){
         if (!coachesService.existsById(ticket.getCoachesId())){
@@ -203,6 +211,15 @@ public class UserController {
                 new ResponseObject(400, "Không tìm thấy người dùng id", "")
         );
     }
+
+    //Shipping
+    @GetMapping("/shipping/user/{id}")
+    ResponseEntity<ResponseObject> getShippingByUserId(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy lịch sử giao hàng thành công", shippingService.getShippingByUserId(id))
+        );
+    }
+
 
     private boolean isFieldMissing(User user) {
         if (user.getPhone() == null || user.getPassword() == null
