@@ -10,6 +10,7 @@ import java.util.Optional;
 @Service
 public interface StopByService {
     List<StopBy> getAllStopBy();
+    List<StopBy> getAllActiveStopBy();
     List<StopBy> getAllStopByCoachesId(int id, int status);
     List<StopBy> getAllStopByCountryId(int id);
     List<StopByRes> getAllStopByResCountryId(int id);
