@@ -44,6 +44,15 @@ public class StopByServiceImpl implements StopByService {
     }
 
     @Override
+    public List<StopBy> getAllStopByCoachesId(int id) {
+        List<Integer> stopById = new ArrayList<>();
+        coachesStopByRepository.findAllByCoachesId(id).forEach(coachesStopBy -> {
+            stopById.add(coachesStopBy.getStopById());
+        });
+        return stopByRepository.findAllByIdInAndStatus(stopById, 1);
+    }
+
+    @Override
     public List<StopBy> getAllStopByCountryId(int id){
         List<StopBy> stopBy = new ArrayList<>();
         districtRepository.findAllByCountryIdAndStatus(id, 1).forEach(district -> {

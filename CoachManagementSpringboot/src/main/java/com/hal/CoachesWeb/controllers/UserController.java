@@ -82,12 +82,12 @@ public class UserController {
             );
         }
         Optional<User> user = userService.findById(newUser.getId());
-        if (user.isPresent()&&user.get().getStatus()==1){
-//            if (!passwordEncoder().matches(newUser.getPassword(), user.get().getPassword())){
-//                return ResponseEntity.status(HttpStatus.OK).body(
-//                        new ResponseObject(400, "Mật khẩu cũ không đúng", "")
-//                );
-//            }
+        if (user.isPresent()){
+            if (!passwordEncoder().matches(newUser.getPassword(), user.get().getPassword())){
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(400, "Mật khẩu cũ không đúng", "")
+                );
+            }
             if (!user.get().getPhone().equals(newUser.getPhone())){
                if (userService.existsByPhone(newUser.getPhone())){
                    return ResponseEntity.status(HttpStatus.OK).body(
@@ -119,17 +119,17 @@ public class UserController {
     @GetMapping("/ticket/user/{id}")
     ResponseEntity<ResponseObject> getTicketByUserId(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy lịch sử vé thành công", ticketService.getAllActiveTicketByUserId(id))
+                new ResponseObject(200, "Lấy lịch sử vé thành công", ticketService.getAllTicketByUserId(id))
         );
     }
     @PostMapping("/ticket/add")
     ResponseEntity<ResponseObject> addTicket(@Valid @RequestBody Ticket ticket){
-        if (!coachesService.existsById(ticket.getCoachesId())){
+        if (!coachesService.isActive(ticket.getCoachesId())){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Không tìm thấy chuyến xe id", "")
             );
         }
-        if (!userService.existsById(ticket.getUserId())){
+        if (!userService.isActiveById(ticket.getUserId())){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Không tìm thấy người dùng id", "")
             );

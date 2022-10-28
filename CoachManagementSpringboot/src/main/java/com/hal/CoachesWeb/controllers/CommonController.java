@@ -148,7 +148,7 @@ public class CommonController {
     @GetMapping("/stopby/coaches/{id}")
     ResponseEntity<ResponseObject> getStopByCoachesId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả điểm dừng thành công", stopByService.getAllStopByCoachesId(id, 3))
+                new ResponseObject(200, "Lấy tất cả điểm dừng thành công", stopByService.getAllStopByCoachesId(id))
         );
     }
     @GetMapping("/stopby/country/{id}")
