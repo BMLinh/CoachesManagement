@@ -184,8 +184,8 @@ public class TicketServiceImpl implements TicketService {
     public Collection<Quarter> getQuarterStat(int quarter, int year) {
         return ticketRepository.getBetweenStat( quarter*3-2, quarter*3, year);
     }
-//    @Override
-//    public Collection<Quarter> getYearStat(int quarter, int year) {
-//        return ticketRepository.getBetweenStat( quarter*3-2, quarter*3, year);
-//    }
+    @Override
+    public Collection<Quarter> getYearStat(int year) {
+        return ticketRepository.getYearStat(year);
+    }
 }

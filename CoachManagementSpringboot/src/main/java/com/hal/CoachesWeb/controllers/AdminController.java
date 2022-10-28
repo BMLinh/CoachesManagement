@@ -728,6 +728,17 @@ public class AdminController {
                 new ResponseObject(200, "Lấy thống kê thành công", ticketService.getQuarterStat(quarter,year))
         );
     }
+    @GetMapping("/stat/year")
+    ResponseEntity<ResponseObject> getStatByYear(@PathParam(value = "year") Integer year) {
+        if (year == null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Dữ liệu không được để trống", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy thống kê thành công", ticketService.getYearStat(year))
+        );
+    }
 
     private ResponseEntity<ResponseObject> coachesChecking(CoachesReq coachesReq){
         if (!coachService.existsById(coachesReq.getCoachId())){

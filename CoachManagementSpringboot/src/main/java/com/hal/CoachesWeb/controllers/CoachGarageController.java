@@ -171,7 +171,7 @@ public class CoachGarageController {
     @GetMapping("/coachgarage/coaches/user/{id}")
     ResponseEntity<ResponseObject> getCoachesByUserId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy chuyến xe thành công", coachesService.getCoachesById(id))
+                new ResponseObject(200, "Lấy chuyến xe thành công", coachesService.getCoachesByUserId(id))
         );
     }
     @PostMapping("/coachgarage/coaches/add")

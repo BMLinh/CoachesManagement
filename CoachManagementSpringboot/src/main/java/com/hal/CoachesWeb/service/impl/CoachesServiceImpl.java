@@ -9,6 +9,7 @@ import com.hal.CoachesWeb.model.response.CoachesGetRes;
 import com.hal.CoachesWeb.model.response.PictureRes;
 import com.hal.CoachesWeb.model.response.StopByDetailRes;
 import com.hal.CoachesWeb.repositories.*;
+import com.hal.CoachesWeb.service.CoachGarageService;
 import com.hal.CoachesWeb.service.CoachesService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ import java.util.Optional;
 public class CoachesServiceImpl implements CoachesService {
     @Autowired
     private CoachesRepository coachesRepository;
+    @Autowired
+    private CoachGarageRepository coachGarageRepository;
     @Autowired
     private CoachRepository coachRepository;
     @Autowired
@@ -60,7 +63,15 @@ public class CoachesServiceImpl implements CoachesService {
 
     @Override
     public List<Coaches> getCoachesByUserId(int id) {
-        return null;
+        List<Integer> coachGarageIds = new ArrayList<>();
+        coachGarageRepository.findAllByUserId(id).forEach(coachGarage -> {
+            coachGarageIds.add(coachGarage.getId());
+        });
+        List<Integer> ids = new ArrayList<>();
+        coachRepository.findAllByCoachGarageIdIn(coachGarageIds).forEach(coach -> {
+            ids.add(coach.getId());
+        });
+        return coachesRepository.findAllByCoachIdIn(ids);
     }
 
     @Override
