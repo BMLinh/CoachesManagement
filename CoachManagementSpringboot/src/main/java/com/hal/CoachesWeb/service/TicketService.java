@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,5 +24,5 @@ public interface TicketService {
     boolean updateTicket(Ticket ticket);
     boolean deleteTicket(int id);
     boolean existsById(int id);
-    List<MonthStat> getMonthStat(int month, int year);
+    Collection<MonthStat> getMonthStat(int month, int year);
 }

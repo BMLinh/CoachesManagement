@@ -5,6 +5,8 @@ import com.hal.CoachesWeb.model.response.MonthStat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket, Integer> {
@@ -17,6 +19,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     boolean existsByCoachesId (int id);
     boolean existsByUserId (int id);
 
-    @Query(value = "select SUM(price), DATE(create_date) from ticket where create_date between ?1 and ?2 GROUP BY date(create_date)", nativeQuery = true)
-    List<MonthStat> getMonthStat(String start, String end);
+    @Query(value = "select SUM(price) as total , DATE(create_date) as date from ticket where create_date between ?1 and ?2 GROUP BY date(create_date)", nativeQuery = true)
+    Collection<MonthStat> getMonthStat(LocalDate start, LocalDate end);
 }

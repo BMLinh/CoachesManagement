@@ -206,7 +206,7 @@ public class AdminController {
         }
         PageRequest pageRequest = PageRequest.of(page, size);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoaches(pageRequest).get())
+                new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoaches(pageRequest))
         );
     }
     @GetMapping("/coaches/coach/")
@@ -217,7 +217,7 @@ public class AdminController {
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByCoachId(id, PageRequest.of(page, size)).get())
+                new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByCoachId(id, PageRequest.of(page, size)))
         );
     }
     @GetMapping("/coaches/{id}")
@@ -696,9 +696,9 @@ public class AdminController {
 
     //Stat
     @GetMapping("/stat/month")
-    ResponseEntity<ResponseObject> getStatByMonth() {
+    ResponseEntity<ResponseObject> getStatByMonth(@PathParam(value = "month") int month, @PathParam(value = "year") int year) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy thống kê thành công", ticketService.getMonthStat(10,2))
+                new ResponseObject(200, "Lấy thống kê thành công", ticketService.getMonthStat(month,year))
         );
     }
 

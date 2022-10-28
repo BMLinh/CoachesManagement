@@ -40,7 +40,7 @@ public class StopByServiceImpl implements StopByService {
         coachesStopByRepository.findAllByCoachesIdAndStatusIs(id, status).forEach(coachesStopBy -> {
             stopById.add(coachesStopBy.getStopById());
         });
-        return stopByRepository.findAllByIdInAndStatus(stopById, 1);
+        return stopByRepository.findAllByIdIn(stopById);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class StopByServiceImpl implements StopByService {
         coachesStopByRepository.findAllByCoachesId(id).forEach(coachesStopBy -> {
             stopById.add(coachesStopBy.getStopById());
         });
-        return stopByRepository.findAllByIdInAndStatus(stopById, 1);
+        return stopByRepository.findAllByIdIn(stopById);
     }
 
     @Override

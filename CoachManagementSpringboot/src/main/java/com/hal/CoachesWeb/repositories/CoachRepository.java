@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface CoachRepository extends JpaRepository<Coach, Integer> {
     List<Coach> findAllByCoachGarageId(int id);
     List<Coach> findAllByCoachGarageIdAndStatus(int id, int status);
-    List<Coach> findAllByCoachGarageIdInAndStatusIsNot (List<Integer> ids, int status);
+    List<Coach> findAllByCoachGarageIdIn(List<Integer> ids);
     Optional<Coach> findByIdAndStatus (int id, int status);
     Coach findTopByCoachGarageIdOrderByIdDesc(int id);
     boolean existsByIdAndStatus (int id, int status);
