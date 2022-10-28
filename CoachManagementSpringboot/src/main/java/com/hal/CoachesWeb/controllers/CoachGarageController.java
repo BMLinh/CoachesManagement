@@ -66,7 +66,7 @@ public class CoachGarageController {
     ResponseEntity<ResponseObject> getCoachByGarageId(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy danh sách xe thành công"
-                        , coachService.getAllActiveCoachByGarageId(id))
+                        , coachService.getAllCoachByGarageId(id))
         );
     }
     @GetMapping("/coachgarage/coach/user/{id}")
@@ -79,7 +79,7 @@ public class CoachGarageController {
 
     @GetMapping("/coachgarage/coach/{id}")
     ResponseEntity<ResponseObject> getCoachById(@PathVariable int id){
-        Optional<Coach> coach = coachService.getActiveCoachById(id);
+        Optional<Coach> coach = coachService.getCoachById(id);
         if (coach.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Lấy xe thành công", new CoachRes(coach.get()))
@@ -112,7 +112,7 @@ public class CoachGarageController {
     }
     @PutMapping("/coachgarage/coach/update")
     ResponseEntity<ResponseObject> updateCoach(@ModelAttribute Coach coach){
-        Optional<Coach> optCoach = coachService.getActiveCoachById(coach.getId());
+        Optional<Coach> optCoach = coachService.getCoachById(coach.getId());
         if (optCoach.isPresent()){
             if (coachGarageService.isActive(coach.getCoachGarageId())){
                 if (categoryService.isActive(coach.getCategoryId())){
@@ -185,7 +185,7 @@ public class CoachGarageController {
     }
     @PutMapping("/coachgarage/coaches/update")
     ResponseEntity<ResponseObject> updateCoaches(@RequestBody CoachesReq coachesReq){
-        if (!coachesService.isActive(coachesReq.getId())){
+        if (!coachesService.existsById(coachesReq.getId())){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Không tìm thấy chuyến xe id", "")
             );

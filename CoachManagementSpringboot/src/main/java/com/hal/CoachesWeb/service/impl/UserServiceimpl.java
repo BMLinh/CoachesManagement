@@ -126,7 +126,7 @@ public class UserServiceimpl implements UserService, UserDetailsService {
     }
     @Override
     public boolean updateUser(User user){
-        if (user.getAvatarPic()!=null){
+        if (user.getAvatarPic()!=null && !user.getAvatarPic().isEmpty()){
             try {
                 user.setAvatar(cloudinary.uploader().upload(user.getAvatarPic().getBytes()
                         , ObjectUtils.emptyMap()).get("secure_url").toString());
