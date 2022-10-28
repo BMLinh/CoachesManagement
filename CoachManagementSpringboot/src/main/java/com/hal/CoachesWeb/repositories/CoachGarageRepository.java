@@ -11,4 +11,5 @@ public interface CoachGarageRepository extends JpaRepository<CoachGarage, Intege
     List<CoachGarage> findAllByUserIdAndStatus(int id, int status);
     List<CoachGarage> findAllByStatus (int status);
     List<CoachGarage> findAllByStatusIsNot (int status);
+    boolean existsByIdAndStatus (int id, int status);
 }

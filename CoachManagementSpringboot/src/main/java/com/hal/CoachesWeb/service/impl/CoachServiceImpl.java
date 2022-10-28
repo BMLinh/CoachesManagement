@@ -38,21 +38,28 @@ public class CoachServiceImpl implements CoachService {
     public List<Coach> getAllCoachByGarageId(int id){
         return coachRepository.findAllByCoachGarageId(id);
     }
+
+    @Override
+    public List<Coach> getAllActiveCoachByGarageId(int id) {
+        return coachRepository.findAllByCoachGarageIdAndStatus(id, 1);
+    }
+
     @Override
     public List<Coach> getAllCoachByUserId(int id){
         List<Integer> coachGarageIds = new ArrayList<>();
         coachGarageRepository.findAllByUserIdAndStatus(id, 1).forEach(coachGarage -> coachGarageIds.add(coachGarage.getId()));
+        System.out.println(coachGarageIds);
+        System.out.println(coachRepository.findAllByCoachGarageIdInAndStatusIsNot(coachGarageIds, 0));
         return coachRepository.findAllByCoachGarageIdInAndStatusIsNot(coachGarageIds, 0);
-    }
-
-    @Override
-    public List<Coach> getAllCoachByGarageIdNoDelete(int id) {
-        return coachRepository.findAllByCoachGarageIdAndStatusIsNot(id, 0);
     }
 
     @Override
     public Optional<Coach> getCoachById(int id){
         return coachRepository.findById(id);
+    }
+    @Override
+    public Optional<Coach> getActiveCoachById(int id){
+        return coachRepository.findByIdAndStatus(id, 1);
     }
     @Override
     @Transactional
@@ -140,5 +147,10 @@ public class CoachServiceImpl implements CoachService {
     @Override
     public boolean existsById(int id){
         return coachRepository.existsById(id);
+    }
+
+    @Override
+    public boolean isActive(int id) {
+        return coachRepository.existsByIdAndStatus(id, 1);
     }
 }

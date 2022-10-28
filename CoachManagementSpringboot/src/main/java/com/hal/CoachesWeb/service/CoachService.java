@@ -11,12 +11,14 @@ import java.util.Optional;
 public interface CoachService {
     List<Coach> getAllCoach();
     List<Coach> getAllCoachByGarageId(int id);
-    List<Coach> getAllCoachByGarageIdNoDelete(int id);
+    List<Coach> getAllActiveCoachByGarageId(int id);
     Optional<Coach> getCoachById(int id);
+    Optional<Coach> getActiveCoachById(int id);
     boolean addCoach(Coach coach);
     List<Coach> getAllCoachByUserId(int id);
 //    boolean updateStatus(Coach coach);
     boolean updateCoach(Coach coach);
     boolean deleteCoach(int id);
     boolean existsById(int id);
+    boolean isActive(int id);
 }

@@ -19,4 +19,5 @@ public interface CoachGarageService {
 //    boolean updateStatus(CoachGarage coachGarage);
     boolean deleteCoachGarage(int id);
     boolean existsById(int id);
+    boolean isActive(int id);
 }

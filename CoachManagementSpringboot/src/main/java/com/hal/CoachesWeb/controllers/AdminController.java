@@ -213,7 +213,7 @@ public class AdminController {
     ResponseEntity<ResponseObject> getAllCoachesByCoachId(@PathParam(value = "page") int page, @PathParam(value = "size") int size, @PathParam(value = "id") int id){
         if (page==0 || size==0){
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getCoachesById(id))
+                    new ResponseObject(200, "Lấy tất cả chuyến xe thành công", coachesService.getAllCoachesByCoachId(id))
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -425,7 +425,7 @@ public class AdminController {
     @GetMapping("/ticket/coaches/{id}")
     ResponseEntity<ResponseObject> getTicketByCoaches(@PathVariable int id){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy vé xe thành công", ticketService.getTicketByCoaches(id))
+                new ResponseObject(200, "Lấy vé xe thành công", ticketService.getAllTicketByCoaches(id))
         );
     }
     @GetMapping("/ticket/{id}")

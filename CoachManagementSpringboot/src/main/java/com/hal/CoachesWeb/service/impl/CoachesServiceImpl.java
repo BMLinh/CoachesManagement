@@ -2,6 +2,7 @@ package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.CoachGarage;
 import com.hal.CoachesWeb.entity.Coaches;
+import com.hal.CoachesWeb.entity.Picture;
 import com.hal.CoachesWeb.model.request.CoachesReq;
 import com.hal.CoachesWeb.model.response.CoachesDetailRes;
 import com.hal.CoachesWeb.model.response.CoachesGetRes;
@@ -60,7 +61,7 @@ public class CoachesServiceImpl implements CoachesService {
 //            }
 //        });
 //        return coaches;
-        return coachesRepository.findAllByCoachId(id);
+        return coachesRepository.findAllByCoachIdAndStatus(id, 1);
     }
 
     @Override
@@ -77,12 +78,9 @@ public class CoachesServiceImpl implements CoachesService {
         if (startTime==null || endTime==null){
             LocalDateTime start = LocalDateTime.of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(), 0, 0);
             LocalDateTime end = start.plusDays(1).minusSeconds(1);
-            System.out.println(start+" "+end);
-            System.out.println(coachesRepository.findAllByStartTimeBetweenAndStartPointAndEndPointAndStatus(start, end, startPoint, endPoint, status).get(0));
             coachesRepository.findAllByStartTimeBetweenAndStartPointAndEndPointAndStatus
-                    (start, end, endPoint, startPoint, status).forEach(coaches -> {
+                    (start, end, startPoint, endPoint, status).forEach(coaches -> {
                 coachesGetRes.add(convertFromCoaches(coaches));
-                System.out.println(coachesGetRes);
             });
             return coachesGetRes;
         }
@@ -96,7 +94,7 @@ public class CoachesServiceImpl implements CoachesService {
         }
         ArrayList<Integer> arrayList = new ArrayList<>();
         if (coachGarage!=null){
-            coachRepository.findAllByCoachGarageId(coachGarage).forEach(coach -> arrayList.add(coach.getId()));
+            coachRepository.findAllByCoachGarageIdAndStatus(coachGarage, 1).forEach(coach -> arrayList.add(coach.getId()));
             coaches.removeIf(c -> (!arrayList.contains(c.getCoachId())));
             arrayList.clear();
         }
@@ -131,9 +129,13 @@ public class CoachesServiceImpl implements CoachesService {
         return coachesGetRes;
 
     }
+    @Override
+    public Optional<Coaches> getCoachesById(int id){
+        return coachesRepository.findById(id);
+    }
 
     @Override
-    public CoachesDetailRes getCoachesById(int id){
+    public CoachesDetailRes getCoachesDetailById(int id){
         Optional<Coaches> c = coachesRepository.findById(id);
         if (!c.isPresent()){
             return null;
@@ -311,11 +313,18 @@ public class CoachesServiceImpl implements CoachesService {
 
     public CoachesGetRes convertFromCoaches(Coaches coaches){
         CoachGarage c = coaches.getCoachByCoachId().getCoachGarageByCoachGarageId();
+        Optional<Picture> picture = pictureRepository.findFirstByCoachId(coaches.getCoachId());
+        if (picture.isPresent()){
+            return new CoachesGetRes(coaches.getId(), c.getName()
+                    , coaches.getCoachByCoachId().getCategoryByCategoryId().getName(), c.getPhone()
+                    , coaches.getStartTime(), coaches.getEndTime(), coaches.getDescription(), coaches.getPrice()
+                    , coaches.getEmptySeat(), coaches.isShipping(), coaches.getCoachId()
+                    , coaches.getStartPoint(), coaches.getEndPoint(), coaches.getStatus(), picture.get().getUrl());
+        }
         return new CoachesGetRes(coaches.getId(), c.getName()
                 , coaches.getCoachByCoachId().getCategoryByCategoryId().getName(), c.getPhone()
                 , coaches.getStartTime(), coaches.getEndTime(), coaches.getDescription(), coaches.getPrice()
                 , coaches.getEmptySeat(), coaches.isShipping(), coaches.getCoachId()
-                , coaches.getStartPoint(), coaches.getEndPoint(), coaches.getStatus()
-                , pictureRepository.findFirstByCoachId(coaches.getCoachId()).get().getUrl());
+                , coaches.getStartPoint(), coaches.getEndPoint(), coaches.getStatus(), null);
     }
 }

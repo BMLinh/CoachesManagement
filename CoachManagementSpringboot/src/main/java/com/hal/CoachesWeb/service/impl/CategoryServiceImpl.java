@@ -68,4 +68,8 @@ public class CategoryServiceImpl implements CategoryService {
     public boolean existsById(int id){
         return categoryRepository.existsById(id);
     }
+    @Override
+    public boolean isActive(int id){
+        return categoryRepository.existsByIdAndStatus(id, 1);
+    }
 }

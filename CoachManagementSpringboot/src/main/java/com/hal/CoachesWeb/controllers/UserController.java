@@ -1,23 +1,15 @@
 package com.hal.CoachesWeb.controllers;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.hal.CoachesWeb.entity.CoachGarage;
 import com.hal.CoachesWeb.entity.Comment;
 import com.hal.CoachesWeb.entity.Ticket;
 import com.hal.CoachesWeb.entity.User;
-import com.hal.CoachesWeb.model.request.UserSignIn;
 import com.hal.CoachesWeb.model.response.ResponseObject;
 import com.hal.CoachesWeb.model.response.UserDto;
 import com.hal.CoachesWeb.service.*;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -127,7 +119,7 @@ public class UserController {
     @GetMapping("/ticket/user/{id}")
     ResponseEntity<ResponseObject> getTicketByUserId(@PathVariable int id) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy lịch sử vé thành công", ticketService.getTicketByUserId(id))
+                new ResponseObject(200, "Lấy lịch sử vé thành công", ticketService.getAllActiveTicketByUserId(id))
         );
     }
     @PostMapping("/ticket/add")

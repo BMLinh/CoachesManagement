@@ -15,4 +15,5 @@ public interface CategoryService {
     boolean updateCategory(Category category);
     boolean deleteCategory(int id);
     boolean existsById(int id);
+    boolean isActive(int id);
 }

@@ -41,7 +41,7 @@ public class CoachGarageServiceImpl implements CoachGarageService {
 
     @Override
     public List<CoachGarage> getCoachGarageByUserId(int id) {
-        return coachGarageRepository.findAllByUserId(id);
+        return coachGarageRepository.findAllByUserIdAndStatus(id, 1);
     }
 
     @Override
@@ -167,5 +167,10 @@ public class CoachGarageServiceImpl implements CoachGarageService {
     @Override
     public boolean existsById(int id){
         return coachGarageRepository.existsById(id);
+    }
+
+    @Override
+    public boolean isActive(int id) {
+        return coachGarageRepository.existsByIdAndStatus(id, 1);
     }
 }
