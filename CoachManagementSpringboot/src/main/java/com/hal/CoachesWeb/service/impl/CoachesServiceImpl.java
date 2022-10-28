@@ -85,6 +85,12 @@ public class CoachesServiceImpl implements CoachesService {
             , int startPoint, int endPoint, Integer minPrice, Integer maxPrice, Integer pickUp, Integer dropOff
             , Integer emptySeat, Integer coachGarage, int status) {
         List<CoachesGetRes> coachesGetRes = new ArrayList<>();
+        if (pickUp!=null||dropOff!=null||emptySeat!=null||coachGarage!=null){
+            startTime = LocalDateTime.of(startDate.getYear(), startDate.getMonth()
+                    , startDate.getDayOfMonth(), 0, 0).toString();
+            endTime = LocalDateTime.of(startDate.getYear(), startDate.getMonth()
+                    , startDate.getDayOfMonth(), 0, 0).plusDays(1).minusSeconds(1).toString();
+        }
         if (startTime==null || endTime==null){
             LocalDateTime start = LocalDateTime.of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(), 0, 0);
             LocalDateTime end = start.plusDays(1).minusSeconds(1);
