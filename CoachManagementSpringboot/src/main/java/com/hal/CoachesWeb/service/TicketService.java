@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.service;
 
 import com.hal.CoachesWeb.entity.Ticket;
+import com.hal.CoachesWeb.model.response.MonthStat;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,5 @@ public interface TicketService {
     boolean updateTicket(Ticket ticket);
     boolean deleteTicket(int id);
     boolean existsById(int id);
-//    List<MonthStat> getMonthStat(int month, int year);
+    List<MonthStat> getMonthStat(int month, int year);
 }

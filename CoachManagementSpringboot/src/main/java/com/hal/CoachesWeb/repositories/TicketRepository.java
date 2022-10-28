@@ -17,6 +17,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     boolean existsByCoachesId (int id);
     boolean existsByUserId (int id);
 
-//    @Query(value = "select sum(price), date(create_date) from ticket where create_date between ?1 and ?2 GROUP BY date(create_date)")
-//    List<MonthStat> getMonthStat()
+    @Query(value = "select SUM(price), DATE(create_date) from ticket where create_date between ?1 and ?2 GROUP BY date(create_date)", nativeQuery = true)
+    List<MonthStat> getMonthStat(String start, String end);
 }

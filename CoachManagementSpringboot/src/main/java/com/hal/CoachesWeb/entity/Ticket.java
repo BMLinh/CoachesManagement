@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -66,6 +67,9 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "drop_off_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private StopBy stopByByDropOffId;
+
+    @Transient
+    private LocalDateTime startDate;
 
     public Ticket() {
     }
@@ -177,6 +181,14 @@ public class Ticket {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 
     @Override
