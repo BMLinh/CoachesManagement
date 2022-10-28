@@ -168,6 +168,12 @@ public class CoachGarageController {
                 new ResponseObject(200, "Lấy chuyến xe thành công", coachesService.getCoachesDetailById(id))
         );
     }
+    @GetMapping("/coachgarage/coaches/user/{id}")
+    ResponseEntity<ResponseObject> getCoachesByUserId(@PathVariable int id){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy chuyến xe thành công", coachesService.getCoachesById(id))
+        );
+    }
     @PostMapping("/coachgarage/coaches/add")
     ResponseEntity<ResponseObject> addCoaches(@RequestBody CoachesReq coachesReq){
         ResponseEntity<ResponseObject> res = coachesChecking(coachesReq);

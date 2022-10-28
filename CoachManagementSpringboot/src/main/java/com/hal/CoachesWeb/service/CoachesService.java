@@ -19,6 +19,7 @@ public interface CoachesService {
     Page<Coaches> getAllCoachesByCoachId(int id, Pageable pageable);
     List<Coaches> getAllCoaches();
     List<Coaches> getAllCoachesByCoachId(int id);
+    List<Coaches> getCoachesByUserId(int id);
     Page<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
     List<CoachesGetRes> getAllCoachesByStartDate(String startTime, String endTime, LocalDate startDate, int startPoint, int endPoint
             , Integer minPrice, Integer maxPrice, Integer pickUp, Integer dropOff, Integer emptySeat
