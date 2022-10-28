@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface CoachesService {
@@ -23,7 +24,8 @@ public interface CoachesService {
             , Integer minPrice, Integer maxPrice, Integer pickUp, Integer dropOff, Integer emptySeat
             , Integer coachGarage, int status);
     List<Coaches> getAllCoachesInDay(LocalDate startTime);
-    CoachesDetailRes getCoachesById(int id);
+    Optional<Coaches> getCoachesById(int id);
+    CoachesDetailRes getCoachesDetailById(int id);
     boolean addCoaches(CoachesReq coachesReq);
     boolean updateCoaches(CoachesReq coachesReq);
 //    boolean updateStatus(Coaches coaches);

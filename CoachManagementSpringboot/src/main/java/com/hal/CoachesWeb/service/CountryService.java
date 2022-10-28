@@ -14,4 +14,5 @@ public interface CountryService {
     boolean updateCountry(Country country);
     boolean deleteCountry(int id);
     boolean existsById(int id);
+    boolean isActive(int id);
 }

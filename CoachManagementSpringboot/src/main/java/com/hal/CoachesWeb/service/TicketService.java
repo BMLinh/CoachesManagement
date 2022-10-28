@@ -11,8 +11,8 @@ import java.util.Optional;
 @Service
 public interface TicketService {
     Page<Ticket> getAllTicket(Pageable pageable);
-    List<Ticket> getTicketByCoaches(int id);
-    List<Ticket> getTicketByUserId(int id);
+    List<Ticket> getAllTicketByCoaches(int id);
+    List<Ticket> getAllActiveTicketByUserId(int id);
     List<Ticket> getTicketByCoachesAndStatus(int id, int status);
     List<Ticket> getRequestTicket();
     Optional<Ticket> getTicketById(int id);

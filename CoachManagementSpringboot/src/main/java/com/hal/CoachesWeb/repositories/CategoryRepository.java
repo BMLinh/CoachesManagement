@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
     List<Category> findAllByStatusIs (int status);
+    boolean existsByIdAndStatus (int id, int status);
 }
