@@ -6,6 +6,7 @@ import com.hal.CoachesWeb.entity.Picture;
 import com.hal.CoachesWeb.model.request.CoachesReq;
 import com.hal.CoachesWeb.model.response.CoachesDetailRes;
 import com.hal.CoachesWeb.model.response.CoachesGetRes;
+import com.hal.CoachesWeb.model.response.PictureRes;
 import com.hal.CoachesWeb.model.response.StopByDetailRes;
 import com.hal.CoachesWeb.repositories.*;
 import com.hal.CoachesWeb.service.CoachesService;
@@ -147,24 +148,20 @@ public class CoachesServiceImpl implements CoachesService {
                 , coaches.getCoachByCoachId().getCoachGarageByCoachGarageId().getPhone()
                 , coaches.getStartTime(), coaches.getEndTime(), coaches.getDescription()
                 , coaches.getPrice(), coaches.getEmptySeat(), coaches.isShipping(), coaches.getCoachId()
-                , coaches.getStartPoint(), coaches.getEndPoint(), coaches.getStatus());
-        List<StopByDetailRes> stopBy = new ArrayList<>();
+                , coaches.getStartPoint(), coaches.getEndPoint(), coaches.getStatus()
+                , new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         coachesStopByRepository.findAllByCoachesIdAndStatusIs(coaches.getId(), 3).forEach(coachesStopBy -> {
-            stopBy.add(new StopByDetailRes(coachesStopBy.getStopById()
+            coachesDetailRes.getPickUp().add(new StopByDetailRes(coachesStopBy.getStopById()
                     , coachesStopBy.getStopByByStopById().getName(), coachesStopBy.getTime()));
         });
-        coachesDetailRes.setPickUp(stopBy);
-        stopBy.clear();
         coachesStopByRepository.findAllByCoachesIdAndStatusIs(coaches.getId(), 4).forEach(coachesStopBy -> {
-            stopBy.add(new StopByDetailRes(coachesStopBy.getStopById()
+            coachesDetailRes.getDropOff().add(new StopByDetailRes(coachesStopBy.getStopById()
                     , coachesStopBy.getStopByByStopById().getName(), coachesStopBy.getTime()));
         });
-        coachesDetailRes.setDropOff(stopBy);
-        List<String> pictures = new ArrayList<>();
+        List<PictureRes> pictures = new ArrayList<>();
         pictureRepository.findAllByCoachId(coaches.getCoachId()).forEach(picture -> {
-            pictures.add(picture.getUrl());
+            coachesDetailRes.getPictures().add(new PictureRes(picture.getId(), picture.getUrl()));
         });
-        coachesDetailRes.setPictures(pictures);
         return coachesDetailRes;
     }
 
