@@ -695,12 +695,12 @@ public class AdminController {
     }
 
     //Stat
-//    @GetMapping("/stat/month")
-//    ResponseEntity<ResponseObject> getStatByMonth() {
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseObject(200, "Lấy tất cả người dùng thành công", ticketService.
-//        );
-//    }
+    @GetMapping("/stat/month")
+    ResponseEntity<ResponseObject> getStatByMonth() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy thống kê thành công", ticketService.getMonthStat(10,2))
+        );
+    }
 
     private ResponseEntity<ResponseObject> coachesChecking(CoachesReq coachesReq){
         if (!coachService.existsById(coachesReq.getCoachId())){

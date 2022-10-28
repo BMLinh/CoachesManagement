@@ -45,7 +45,11 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> getAllTicketByUserId(int id) {
-        return ticketRepository.findAllByUserId(id);
+        List<Ticket> tickets = ticketRepository.findAllByUserId(id);
+        tickets.forEach(ticket -> {
+            ticket.setStartDate(ticket.getCoachesByCoachesId().getStartTime());
+        });
+        return tickets;
     }
 
     @Override
@@ -167,8 +171,8 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.existsById(id);
     }
 
-//    @Override
-//    public List<MonthStat> getMonthStat(int month, int year) {
-//        return ticketRepository.;
-//    }
+    @Override
+    public List<MonthStat> getMonthStat(int month, int year) {
+        return ticketRepository.getMonthStat("2022-10-01", "2022-10-30");
+    }
 }
