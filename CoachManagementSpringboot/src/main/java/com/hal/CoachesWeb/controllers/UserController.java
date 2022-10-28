@@ -83,11 +83,11 @@ public class UserController {
         }
         Optional<User> user = userService.findById(newUser.getId());
         if (user.isPresent()&&user.get().getStatus()==1){
-            if (!passwordEncoder().matches(newUser.getPassword(), user.get().getPassword())){
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new ResponseObject(400, "Mật khẩu cũ không đúng", "")
-                );
-            }
+//            if (!passwordEncoder().matches(newUser.getPassword(), user.get().getPassword())){
+//                return ResponseEntity.status(HttpStatus.OK).body(
+//                        new ResponseObject(400, "Mật khẩu cũ không đúng", "")
+//                );
+//            }
             if (!user.get().getPhone().equals(newUser.getPhone())){
                if (userService.existsByPhone(newUser.getPhone())){
                    return ResponseEntity.status(HttpStatus.OK).body(
