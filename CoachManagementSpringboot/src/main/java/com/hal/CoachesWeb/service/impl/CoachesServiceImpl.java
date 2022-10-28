@@ -2,6 +2,7 @@ package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.CoachGarage;
 import com.hal.CoachesWeb.entity.Coaches;
+import com.hal.CoachesWeb.entity.CoachesStopBy;
 import com.hal.CoachesWeb.entity.Picture;
 import com.hal.CoachesWeb.model.request.CoachesReq;
 import com.hal.CoachesWeb.model.response.CoachesDetailRes;
@@ -180,18 +181,17 @@ public class CoachesServiceImpl implements CoachesService {
             System.out.println(ex.getMessage());
             return false;
         }
+        List<CoachesStopBy> coachesStopByList = new ArrayList<CoachesStopBy>();
         int id = coachesRepository.findTopByCoachIdOrderByIdDesc(coachesReq.getCoachId()).getId();
         coachesReq.getPickUp().forEach(pickUp -> {
-            pickUp.setCoachesId(id);
-            pickUp.setStatus(3);
+            coachesStopByList.add(new CoachesStopBy(id, pickUp.getId(), pickUp.getTime(), 3));
         });
         coachesReq.getDropOff().forEach(dropOff -> {
-            dropOff.setCoachesId(id);
-            dropOff.setStatus(4);
+            coachesStopByList.add(new CoachesStopBy(id, dropOff.getId(), dropOff.getTime(), 4));
         });
+        coachesStopByList.forEach(coachesStopBy -> System.out.println(coachesStopBy.getStopById()));
         try {
-            coachesStopByRepository.saveAll(coachesReq.getPickUp());
-            coachesStopByRepository.saveAll(coachesReq.getDropOff());
+            coachesStopByRepository.saveAll(coachesStopByList);
         } catch (HibernateException ex){
             System.out.println(ex.getMessage());
             return false;
@@ -211,19 +211,18 @@ public class CoachesServiceImpl implements CoachesService {
         coaches.setShipping(coachesReq.isShipping());
         coaches.setStartPoint(coaches.getStartPoint());
         coaches.setEndPoint(coaches.getEndPoint());
+        List<CoachesStopBy> coachesStopByList = new ArrayList<CoachesStopBy>();
         coachesReq.getPickUp().forEach(pickUp -> {
-            pickUp.setCoachesId(coachesReq.getId());
-            pickUp.setStatus(3);
+            coachesStopByList.add(new CoachesStopBy(coachesReq.getId(), pickUp.getId(), pickUp.getTime(), 3));
         });
         coachesReq.getDropOff().forEach(dropOff -> {
-            dropOff.setCoachesId(coachesReq.getId());
-            dropOff.setStatus(4);
+            coachesStopByList.add(new CoachesStopBy(coachesReq.getId(), dropOff.getId(), dropOff.getTime(), 4));
         });
+        coachesStopByList.forEach(coachesStopBy -> System.out.println(coachesStopBy.getStopById()));
         try {
             coachesRepository.save(coaches);
             coachesStopByRepository.deleteAll(coachesStopByRepository.findAllByCoachesId(coachesReq.getId()));
-            coachesStopByRepository.saveAll(coachesReq.getPickUp());
-            coachesStopByRepository.saveAll(coachesReq.getDropOff());
+            coachesStopByRepository.saveAll(coachesStopByList);
             return true;
         } catch (HibernateException ex){
             System.out.println(ex.getMessage());
