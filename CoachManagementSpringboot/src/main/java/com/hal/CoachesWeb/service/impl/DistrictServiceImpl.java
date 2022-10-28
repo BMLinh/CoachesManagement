@@ -21,7 +21,7 @@ public class DistrictServiceImpl implements DistrictService {
     }
     @Override
     public List<District> getDistrictByCountryId(int id){
-        return districtRepository.findAllByCountryId(id);
+        return districtRepository.findAllByCountryIdAndStatus(id, 0);
     }
     @Override
     public Optional<District> getDistrictById(int id){

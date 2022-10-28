@@ -30,27 +30,32 @@ public class StopByServiceImpl implements StopByService {
     }
 
     @Override
+    public List<StopBy> getAllActiveStopBy() {
+        return stopByRepository.findAllByStatus(1);
+    }
+
+    @Override
     public List<StopBy> getAllStopByCoachesId(int id, int status) {
         List<Integer> stopById = new ArrayList<>();
         coachesStopByRepository.findAllByCoachesIdAndStatusIs(id, status).forEach(coachesStopBy -> {
             stopById.add(coachesStopBy.getStopById());
         });
-        return stopByRepository.findAllByIdIn(stopById);
+        return stopByRepository.findAllByIdInAndStatus(stopById, 1);
     }
 
     @Override
     public List<StopBy> getAllStopByCountryId(int id){
         List<StopBy> stopBy = new ArrayList<>();
-        districtRepository.findAllByCountryId(id).forEach(district -> {
-            stopBy.addAll(stopByRepository.findAllByDistrictId(district.getId()));
+        districtRepository.findAllByCountryIdAndStatus(id, 1).forEach(district -> {
+            stopBy.addAll(stopByRepository.findAllByDistrictIdAndStatus(district.getId(), 1));
         });
         return stopBy;
     }
     @Override
     public List<StopByRes> getAllStopByResCountryId(int id){
         List<StopByRes> stopByRes = new ArrayList<>();
-        districtRepository.findAllByCountryId(id).forEach(district -> {
-            stopByRes.add(new StopByRes(district.getName(), stopByRepository.findAllByDistrictId(district.getId())));
+        districtRepository.findAllByCountryIdAndStatus(id, 1).forEach(district -> {
+            stopByRes.add(new StopByRes(district.getName(), stopByRepository.findAllByDistrictIdAndStatus(district.getId(), 1)));
         });
         return stopByRes;
     }
