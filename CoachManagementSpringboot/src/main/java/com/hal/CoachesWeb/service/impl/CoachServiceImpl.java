@@ -5,13 +5,11 @@ import com.cloudinary.utils.ObjectUtils;
 import com.hal.CoachesWeb.entity.Coach;
 import com.hal.CoachesWeb.entity.Picture;
 import com.hal.CoachesWeb.repositories.*;
-import com.hal.CoachesWeb.service.CoachGarageService;
 import com.hal.CoachesWeb.service.CoachService;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +41,8 @@ public class CoachServiceImpl implements CoachService {
     @Override
     public List<Coach> getAllCoachByUserId(int id){
         List<Integer> coachGarageIds = new ArrayList<>();
-        coachGarageRepository.findAllByUserId(id).forEach(coachGarage -> coachGarageIds.add(coachGarage.getId()));
-        return coachRepository.findAllByCoachGarageIdIn(coachGarageIds);
+        coachGarageRepository.findAllByUserIdAndStatus(id, 1).forEach(coachGarage -> coachGarageIds.add(coachGarage.getId()));
+        return coachRepository.findAllByCoachGarageIdInAndStatusIsNot(coachGarageIds, 0);
     }
 
     @Override
@@ -62,9 +60,9 @@ public class CoachServiceImpl implements CoachService {
         try {
             coachRepository.save(new Coach(coach.getLicensePlates(), coach.getDescription()
                     , coach.getCoachGarageId(), coach.getCategoryId(), coach.getStatus()));
-            if (coach.getPicture()!=null){
+            if (coach.getPictures()!=null){
                 int id = coachRepository.findTopByCoachGarageIdOrderByIdDesc(coach.getCoachGarageId()).getId();
-                coach.getPicture().forEach(picture -> {
+                coach.getPictures().forEach(picture -> {
                     try {
                         pictureRepository.save(new Picture(cloudinary.uploader().upload(picture.getBytes()
                                 , ObjectUtils.emptyMap()).get("secure_url").toString()
@@ -106,9 +104,9 @@ public class CoachServiceImpl implements CoachService {
     public boolean updateCoach(Coach coach){
         try {
             coachRepository.save(coach);
-            if (!coach.getPicture().isEmpty()){
+            if (coach.getPictures()!=null){
                 pictureRepository.deleteAllByCoachId(coach.getId());
-                coach.getPicture().forEach(picture -> {
+                coach.getPictures().forEach(picture -> {
                     try {
                         pictureRepository.save(new Picture(cloudinary.uploader().upload(picture.getBytes()
                                 , ObjectUtils.emptyMap()).get("secure_url").toString()

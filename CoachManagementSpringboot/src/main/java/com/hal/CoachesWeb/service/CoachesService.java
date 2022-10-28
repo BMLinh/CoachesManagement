@@ -3,6 +3,7 @@ package com.hal.CoachesWeb.service;
 import com.hal.CoachesWeb.entity.Coaches;
 import com.hal.CoachesWeb.model.request.CoachesReq;
 import com.hal.CoachesWeb.model.response.CoachesDetailRes;
+import com.hal.CoachesWeb.model.response.CoachesGetRes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public interface CoachesService {
     List<Coaches> getAllCoaches();
     List<Coaches> getAllCoachesByCoachId(int id);
     Page<Coaches> getAllCoachesByStartDate(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
-    List<Coaches> getAllCoachesByStartDate(String startTime, String endTime, LocalDate startDate,int startPoint, int endPoint
+    List<CoachesGetRes> getAllCoachesByStartDate(String startTime, String endTime, LocalDate startDate, int startPoint, int endPoint
             , Integer minPrice, Integer maxPrice, Integer pickUp, Integer dropOff, Integer emptySeat
             , Integer coachGarage, int status);
     List<Coaches> getAllCoachesInDay(LocalDate startTime);

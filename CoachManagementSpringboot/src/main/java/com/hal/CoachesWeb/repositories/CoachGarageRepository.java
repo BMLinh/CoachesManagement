@@ -8,7 +8,7 @@ import java.util.List;
 public interface CoachGarageRepository extends JpaRepository<CoachGarage, Integer> {
     //    CoachGarage getTopByOrderByIdDesc (int id);
     List<CoachGarage> findAllByUserId (int id);
-    List<CoachGarage> findAllByUserIdAndStatusNot (int id, int status);
+    List<CoachGarage> findAllByUserIdAndStatus(int id, int status);
     List<CoachGarage> findAllByStatus (int status);
     List<CoachGarage> findAllByStatusIsNot (int status);
 }
