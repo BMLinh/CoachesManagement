@@ -189,7 +189,6 @@ public class CoachesServiceImpl implements CoachesService {
         coachesReq.getDropOff().forEach(dropOff -> {
             coachesStopByList.add(new CoachesStopBy(id, dropOff.getId(), dropOff.getTime(), 4));
         });
-        coachesStopByList.forEach(coachesStopBy -> System.out.println(coachesStopBy.getStopById()));
         try {
             coachesStopByRepository.saveAll(coachesStopByList);
         } catch (HibernateException ex){
@@ -218,7 +217,6 @@ public class CoachesServiceImpl implements CoachesService {
         coachesReq.getDropOff().forEach(dropOff -> {
             coachesStopByList.add(new CoachesStopBy(coachesReq.getId(), dropOff.getId(), dropOff.getTime(), 4));
         });
-        coachesStopByList.forEach(coachesStopBy -> System.out.println(coachesStopBy.getStopById()));
         try {
             coachesRepository.save(coaches);
             coachesStopByRepository.deleteAll(coachesStopByRepository.findAllByCoachesId(coachesReq.getId()));

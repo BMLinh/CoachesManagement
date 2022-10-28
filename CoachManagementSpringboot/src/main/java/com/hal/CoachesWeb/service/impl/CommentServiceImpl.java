@@ -18,22 +18,42 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Page<Comment> getCommentByCoachAndRating(int coachId, int rating, Pageable pageable){
-        return commentRepository.findAllByCoachIdAndRating(coachId, rating, pageable);
+        Page<Comment> comments = commentRepository.findAllByCoachIdAndRating(coachId, rating, pageable);
+        comments.get().forEach(comment -> {
+            comment.setFullName(comment.getUserByUserId().getFullname());
+            comment.setAvatar(comment.getUserByUserId().getAvatar());
+        });
+        return comments;
     }
 
     @Override
     public Page<Comment> getCommentByCoach(int coachId, Pageable pageable) {
-        return commentRepository.findAllByCoachId(coachId, pageable);
+        Page<Comment> comments = commentRepository.findAllByCoachId(coachId, pageable);
+        comments.get().forEach(comment -> {
+            comment.setFullName(comment.getUserByUserId().getFullname());
+            comment.setAvatar(comment.getUserByUserId().getAvatar());
+        });
+        return comments;
     }
 
     @Override
     public List<Comment> getAllByCoachesId(int id) {
-        return commentRepository.findAllByCoachId(id);
+        List<Comment> comments = commentRepository.findAllByCoachId(id);
+        comments.forEach(comment -> {
+            comment.setFullName(comment.getUserByUserId().getFullname());
+            comment.setAvatar(comment.getUserByUserId().getAvatar());
+        });
+        return comments;
     }
 
     @Override
     public List<Comment> getAllByCoachesIdAndRating(int id, int rating) {
-        return commentRepository.findAllByCoachIdAndRating(id, rating);
+        List<Comment> comments = commentRepository.findAllByCoachIdAndRating(id, rating);
+        comments.forEach(comment -> {
+            comment.setFullName(comment.getUserByUserId().getFullname());
+            comment.setAvatar(comment.getUserByUserId().getAvatar());
+        });
+        return comments;
     }
 
     @Override
