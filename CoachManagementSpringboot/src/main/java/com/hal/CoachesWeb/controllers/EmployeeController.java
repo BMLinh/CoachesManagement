@@ -60,7 +60,7 @@ public class EmployeeController {
     @GetMapping("/ticket/{id}")
     ResponseEntity<ResponseObject> getTicketById(@PathVariable int id){
         Optional<Ticket> ticket = ticketService.getTicketById(id);
-        if (ticket.isPresent() && ticket.get().getStatus()==1){
+        if (ticket.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Lấy vé xe thành công", ticket.get())
             );
@@ -73,7 +73,7 @@ public class EmployeeController {
     @PutMapping("/ticket/update")
     ResponseEntity<ResponseObject> updateTicket(@RequestBody Ticket ticket){
         Optional<Ticket> old = ticketService.getTicketById(ticket.getId());
-        if (old.isPresent() && old.get().getStatus()==1){
+        if (old.isPresent()){
             if(coachesStopByService.existsByCoachesAndStopBy(old.get().getCoachesId(), ticket.getPickUpId())
                     && coachesStopByService.existsByCoachesAndStopBy(old.get().getCoachesId(), ticket.getDropOffId())){
                 if (!ticketService.updateTicket(ticket)){
@@ -126,7 +126,7 @@ public class EmployeeController {
     @GetMapping("/shipping/{id}")
     ResponseEntity<ResponseObject> getShippingById(@PathVariable int id){
         Optional<Shipping> shipping = shippingService.getShippingById(id);
-        if (shipping.isPresent()&&shipping.get().getStatus()==1){
+        if (shipping.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Lấy thông tin kiện hàng thành công", shipping)
             );
