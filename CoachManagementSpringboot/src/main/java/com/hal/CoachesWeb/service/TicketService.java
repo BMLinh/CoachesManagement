@@ -27,4 +27,5 @@ public interface TicketService {
     boolean existsById(int id);
     Collection<MonthStat> getMonthStat(int month, int year);
     Collection<Quarter> getQuarterStat(int quarter, int year);
+    Collection<Quarter> getYearStat(int year);
 }

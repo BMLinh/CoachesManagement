@@ -96,12 +96,34 @@ public class CommonController {
 
     //Comment
     @GetMapping("comment/coach/")
-    ResponseEntity<ResponseObject> getCommentByCoachAndRating(@PathParam(value = "page") int page
-            , @PathParam(value = "size") int size, @PathParam(value = "coachId") int coachId, @PathParam(value = "rating") int rating){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject(200, "Lấy tất cả bình luận thành công"
-                        , commentService.getCommentByCoachAndRating(coachId, rating, PageRequest.of(page, size)))
-        );
+    ResponseEntity<ResponseObject> getCommentByCoachAndRating(@PathParam(value = "page") Integer page
+            , @PathParam(value = "size") Integer size, @PathParam(value = "coachId") Integer coachId
+            , @PathParam(value = "rating") Integer rating){
+        if (rating==null && page==null || size==null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Lấy tất cả bình luận thành công"
+                            , commentService.getAllByCoachesId(coachId))
+            );
+        }
+        if (rating==null && page!=null && size!=null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Lấy tất cả bình luận thành công"
+                            , commentService.getCommentByCoach(coachId, PageRequest.of(page, size)))
+            );
+        }
+        if (rating!=null && page!=null && size!=null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Lấy tất cả bình luận thành công"
+                            , commentService.getCommentByCoachAndRating(coachId, rating, PageRequest.of(page, size)))
+            );
+        }
+        if (rating!=null && page!=null && size!=null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(200, "Lấy tất cả bình luận thành công"
+                            , commentService.getAllByCoachesIdAndRating(coachId, rating))
+            );
+        }
+        return null;
     }
 
     //Country

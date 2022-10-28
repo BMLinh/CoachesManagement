@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentServiceImpl implements CommentService {
     @Autowired
@@ -18,6 +20,22 @@ public class CommentServiceImpl implements CommentService {
     public Page<Comment> getCommentByCoachAndRating(int coachId, int rating, Pageable pageable){
         return commentRepository.findAllByCoachIdAndRating(coachId, rating, pageable);
     }
+
+    @Override
+    public Page<Comment> getCommentByCoach(int coachId, Pageable pageable) {
+        return commentRepository.findAllByCoachId(coachId, pageable);
+    }
+
+    @Override
+    public List<Comment> getAllByCoachesId(int id) {
+        return commentRepository.findAllByCoachId(id);
+    }
+
+    @Override
+    public List<Comment> getAllByCoachesIdAndRating(int id, int rating) {
+        return commentRepository.findAllByCoachIdAndRating(id, rating);
+    }
+
     @Override
     public boolean addComment(Comment comment){
         try {

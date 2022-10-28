@@ -25,6 +25,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
 
     @Query(value = "select  sum(price) as total, month(create_date) as month from ticket where month(create_date) between ?1 and ?2 and year(create_date)=?3  GROUP BY month(create_date)", nativeQuery = true)
     Collection<Quarter> getBetweenStat(int monthStart, int monthEnd, int year);
-    @Query(value = "select  sum(price) as total, month(create_date) as month from ticket where month(create_date) between ?1 and ?2 and year(create_date)=?3  GROUP BY month(create_date)", nativeQuery = true)
+    @Query(value = "select  sum(price) as total, month(create_date) as month from ticket where year(create_date)=?1  GROUP BY month(create_date)", nativeQuery = true)
     Collection<Quarter> getYearStat(int year);
 }
