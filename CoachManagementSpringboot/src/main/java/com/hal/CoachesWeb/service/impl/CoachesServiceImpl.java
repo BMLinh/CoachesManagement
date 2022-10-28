@@ -1,8 +1,10 @@
 package com.hal.CoachesWeb.service.impl;
 
+import com.hal.CoachesWeb.entity.CoachGarage;
 import com.hal.CoachesWeb.entity.Coaches;
 import com.hal.CoachesWeb.model.request.CoachesReq;
 import com.hal.CoachesWeb.model.response.CoachesDetailRes;
+import com.hal.CoachesWeb.model.response.CoachesGetRes;
 import com.hal.CoachesWeb.model.response.StopByDetailRes;
 import com.hal.CoachesWeb.repositories.*;
 import com.hal.CoachesWeb.service.CoachesService;
@@ -68,13 +70,21 @@ public class CoachesServiceImpl implements CoachesService {
     }
 
     @Override
-    public List<Coaches> getAllCoachesByStartDate(String startTime, String endTime, LocalDate startDate
+    public List<CoachesGetRes> getAllCoachesByStartDate(String startTime, String endTime, LocalDate startDate
             , int startPoint, int endPoint, Integer minPrice, Integer maxPrice, Integer pickUp, Integer dropOff
             , Integer emptySeat, Integer coachGarage, int status) {
+        List<CoachesGetRes> coachesGetRes = new ArrayList<>();
         if (startTime==null || endTime==null){
             LocalDateTime start = LocalDateTime.of(startDate.getYear(), startDate.getMonth(), startDate.getDayOfMonth(), 0, 0);
             LocalDateTime end = start.plusDays(1).minusSeconds(1);
-            return coachesRepository.findAllByStartTimeBetweenAndEndPointAndStartPointAndStatus(start, end, startPoint, endPoint, status);
+            System.out.println(start+" "+end);
+            System.out.println(coachesRepository.findAllByStartTimeBetweenAndStartPointAndEndPointAndStatus(start, end, startPoint, endPoint, status).get(0));
+            coachesRepository.findAllByStartTimeBetweenAndStartPointAndEndPointAndStatus
+                    (start, end, endPoint, startPoint, status).forEach(coaches -> {
+                coachesGetRes.add(convertFromCoaches(coaches));
+                System.out.println(coachesGetRes);
+            });
+            return coachesGetRes;
         }
         List<Coaches> coaches;
         if (emptySeat!=null){
@@ -113,10 +123,12 @@ public class CoachesServiceImpl implements CoachesService {
                     arrayList.add(coachesStopBy.getCoachesId());
                 }
             });
-            System.out.println("drop off Id: "+arrayList);
             coaches.removeIf(c->(!arrayList.contains(c.getId())));
         }
-        return coaches;
+        coaches.forEach(c ->{
+            coachesGetRes.add(convertFromCoaches(c));
+        });
+        return coachesGetRes;
 
     }
 
@@ -295,5 +307,15 @@ public class CoachesServiceImpl implements CoachesService {
     @Override
     public int getEmptySeatByCoachesId(int id){
         return coachesRepository.getById(id).getEmptySeat();
+    }
+
+    public CoachesGetRes convertFromCoaches(Coaches coaches){
+        CoachGarage c = coaches.getCoachByCoachId().getCoachGarageByCoachGarageId();
+        return new CoachesGetRes(coaches.getId(), c.getName()
+                , coaches.getCoachByCoachId().getCategoryByCategoryId().getName(), c.getPhone()
+                , coaches.getStartTime(), coaches.getEndTime(), coaches.getDescription(), coaches.getPrice()
+                , coaches.getEmptySeat(), coaches.isShipping(), coaches.getCoachId()
+                , coaches.getStartPoint(), coaches.getEndPoint(), coaches.getStatus()
+                , pictureRepository.findFirstByCoachId(coaches.getCoachId()).get().getUrl());
     }
 }

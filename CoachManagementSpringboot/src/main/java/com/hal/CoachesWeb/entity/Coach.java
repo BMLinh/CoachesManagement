@@ -1,13 +1,9 @@
 package com.hal.CoachesWeb.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -113,11 +109,11 @@ public class Coach {
         this.status = status;
     }
 
-    public List<MultipartFile> getPicture() {
+    public List<MultipartFile> getPictures() {
         return pictures;
     }
 
-    public void setPicture(List<MultipartFile> picture) {
+    public void setPictures(List<MultipartFile> picture) {
         this.pictures = picture;
     }
 
