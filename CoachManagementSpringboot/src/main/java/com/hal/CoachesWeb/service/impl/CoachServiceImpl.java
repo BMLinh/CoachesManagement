@@ -47,8 +47,8 @@ public class CoachServiceImpl implements CoachService {
     @Override
     public List<Coach> getAllCoachByUserId(int id){
         List<Integer> coachGarageIds = new ArrayList<>();
-        coachGarageRepository.findAllByUserIdAndStatus(id, 1).forEach(coachGarage -> coachGarageIds.add(coachGarage.getId()));
-        return coachRepository.findAllByCoachGarageIdInAndStatusIsNot(coachGarageIds, 0);
+        coachGarageRepository.findAllByUserId(id).forEach(coachGarage -> coachGarageIds.add(coachGarage.getId()));
+        return coachRepository.findAllByCoachGarageIdIn(coachGarageIds);
     }
 
     @Override

@@ -44,7 +44,7 @@ public class CommonController {
     @GetMapping("/category/{id}")
     ResponseEntity<ResponseObject> getCategoryById(@PathVariable int id){
         Optional<Category> category = categoryService.getCategoryById(id);
-        if (category.isPresent() && category.get().getStatus() == 1) {
+        if (category.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Lấy loại xe thành công", category.get())
             );
@@ -100,7 +100,7 @@ public class CommonController {
             , @PathParam(value = "size") int size, @PathParam(value = "coachId") int coachId, @PathParam(value = "rating") int rating){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy tất cả bình luận thành công"
-                        , commentService.getCommentByCoachAndRating(coachId, rating, PageRequest.of(page, size)).get())
+                        , commentService.getCommentByCoachAndRating(coachId, rating, PageRequest.of(page, size)))
         );
     }
 

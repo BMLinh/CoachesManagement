@@ -8,5 +8,5 @@ import java.util.List;
 public interface StopByRepository extends JpaRepository<StopBy, Integer> {
     List<StopBy> findAllByStatus(int status);
     List<StopBy> findAllByDistrictIdAndStatus(int id, int status);
-    List<StopBy> findAllByIdInAndStatus (List<Integer> id, int status);
+    List<StopBy> findAllByIdIn (List<Integer> id);
 }

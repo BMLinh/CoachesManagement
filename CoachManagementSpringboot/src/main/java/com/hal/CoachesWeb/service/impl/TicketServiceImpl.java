@@ -16,6 +16,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -172,7 +175,9 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<MonthStat> getMonthStat(int month, int year) {
-        return ticketRepository.getMonthStat("2022-10-01", "2022-10-30");
+    public Collection<MonthStat> getMonthStat(int month, int year) {
+        LocalDate start = LocalDate.of(year, month, 1);
+        LocalDate end = start.plusMonths(1).minusDays(1);
+        return ticketRepository.getMonthStat(start, end);
     }
 }
