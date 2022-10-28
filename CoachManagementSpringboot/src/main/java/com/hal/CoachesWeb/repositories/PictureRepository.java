@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface PictureRepository extends JpaRepository<Picture, Integer> {
     List<Picture> findAllByCoachId(int id);
     Optional<Picture> findFirstByCoachId (int id);
-    Void deleteAllByCoachId(int id);
+    Integer deleteAllByCoachId(int id);
     boolean existsByCoachId (int id);
 }
