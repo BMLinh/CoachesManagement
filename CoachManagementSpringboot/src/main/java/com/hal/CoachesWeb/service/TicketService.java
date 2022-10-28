@@ -28,4 +28,8 @@ public interface TicketService {
     Collection<MonthStat> getMonthStat(int month, int year);
     Collection<Quarter> getQuarterStat(int quarter, int year);
     Collection<Quarter> getYearStat(int year);
+    Collection<MonthStat> getMonthStatByCoachGarage(int month, int year, int id);
+    Collection<Quarter> getQuarterStatByCoachGarage(int quarter, int year, int id);
+    Collection<Quarter> getYearStatByCoachGarage(int year, int id);
+
 }
