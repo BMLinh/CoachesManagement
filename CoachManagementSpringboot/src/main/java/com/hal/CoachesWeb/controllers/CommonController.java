@@ -99,31 +99,28 @@ public class CommonController {
     ResponseEntity<ResponseObject> getCommentByCoachAndRating(@PathParam(value = "page") Integer page
             , @PathParam(value = "size") Integer size, @PathParam(value = "coachId") Integer coachId
             , @PathParam(value = "rating") Integer rating){
-        if (rating==null && page==null || size==null){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(200, "Lấy tất cả bình luận thành công"
-                            , commentService.getAllByCoachesId(coachId))
-            );
-        }
-        if (rating==null && page!=null && size!=null){
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject(200, "Lấy tất cả bình luận thành công"
-                            , commentService.getCommentByCoach(coachId, PageRequest.of(page, size)))
-            );
-        }
-        if (rating!=null && page!=null && size!=null){
+        if (rating!=null){
+            if (page==null || size==null){
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ResponseObject(200, "Lấy tất cả bình luận thành công"
+                                , commentService.getAllByCoachesIdAndRating(coachId, rating))
+                );
+            }
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Lấy tất cả bình luận thành công"
                             , commentService.getCommentByCoachAndRating(coachId, rating, PageRequest.of(page, size)))
             );
         }
-        if (rating!=null && page!=null && size!=null){
+        if (page==null || size==null){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(200, "Lấy tất cả bình luận thành công"
-                            , commentService.getAllByCoachesIdAndRating(coachId, rating))
+                            , commentService.getAllByCoachesId(coachId))
             );
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy tất cả bình luận thành công"
+                        , commentService.getCommentByCoach(coachId, PageRequest.of(page, size)))
+        );
     }
 
     //Country
