@@ -20,11 +20,9 @@ public class CoachesDetailRes {
     private int status;
     private List<StopByDetailRes> pickUp;
     private List<StopByDetailRes> dropOff;
-    private List<String> pictures;
+    private List<PictureRes> pictures;
 
-    public CoachesDetailRes(int id, String name, String category, String phone, LocalDateTime startTime
-            , LocalDateTime endTime, String description, int price, int emptySeat, boolean isShipping, int coachId
-            , int startPoint, int endPoint, int status) {
+    public CoachesDetailRes(int id, String name, String category, String phone, LocalDateTime startTime, LocalDateTime endTime, String description, int price, int emptySeat, boolean isShipping, int coachId, int startPoint, int endPoint, int status, List<StopByDetailRes> pickUp, List<StopByDetailRes> dropOff, List<PictureRes> pictures) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -39,6 +37,9 @@ public class CoachesDetailRes {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.status = status;
+        this.pickUp = pickUp;
+        this.dropOff = dropOff;
+        this.pictures = pictures;
     }
 
     public int getId() {
@@ -169,11 +170,11 @@ public class CoachesDetailRes {
         this.dropOff = dropOff;
     }
 
-    public List<String> getPictures() {
+    public List<PictureRes> getPictures() {
         return pictures;
     }
 
-    public void setPictures(List<String> pictures) {
+    public void setPictures(List<PictureRes> pictures) {
         this.pictures = pictures;
     }
 }
