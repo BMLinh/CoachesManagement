@@ -188,4 +188,19 @@ public class TicketServiceImpl implements TicketService {
     public Collection<Quarter> getYearStat(int year) {
         return ticketRepository.getYearStat(year);
     }
+
+    @Override
+    public Collection<MonthStat> getMonthStatByCoachGarage(int month, int year, int id) {
+        return ticketRepository.getMonthStatByCoachGarage(month, year, id);
+    }
+
+    @Override
+    public Collection<Quarter> getQuarterStatByCoachGarage(int quarter, int year, int id) {
+        return ticketRepository.getBetweenStatByCoachGarage(quarter*3-2, quarter*3, year, id);
+    }
+
+    @Override
+    public Collection<Quarter> getYearStatByCoachGarage(int year, int id) {
+        return ticketRepository.getYearStatByCoachGarage(year, id);
+    }
 }
