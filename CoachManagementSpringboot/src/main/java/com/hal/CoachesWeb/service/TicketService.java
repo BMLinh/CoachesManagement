@@ -2,6 +2,7 @@ package com.hal.CoachesWeb.service;
 
 import com.hal.CoachesWeb.entity.Ticket;
 import com.hal.CoachesWeb.model.response.MonthStat;
+import com.hal.CoachesWeb.model.response.Quarter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,4 +26,5 @@ public interface TicketService {
     boolean deleteTicket(int id);
     boolean existsById(int id);
     Collection<MonthStat> getMonthStat(int month, int year);
+    Collection<Quarter> getQuarterStat(int quarter, int year);
 }

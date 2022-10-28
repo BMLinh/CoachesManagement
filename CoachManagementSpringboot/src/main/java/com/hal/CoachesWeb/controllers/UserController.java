@@ -83,7 +83,7 @@ public class UserController {
         }
         Optional<User> user = userService.findById(newUser.getId());
         if (user.isPresent()){
-            if (!passwordEncoder().matches(newUser.getPassword(), user.get().getPassword())){
+            if (!userService.isCorrectPassword(user.get().getPhone(), newUser.getPassword())){
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ResponseObject(400, "Mật khẩu cũ không đúng", "")
                 );

@@ -696,9 +696,36 @@ public class AdminController {
 
     //Stat
     @GetMapping("/stat/month")
-    ResponseEntity<ResponseObject> getStatByMonth(@PathParam(value = "month") int month, @PathParam(value = "year") int year) {
+    ResponseEntity<ResponseObject> getStatByMonth(@PathParam(value = "month") Integer month, @PathParam(value = "year") Integer year) {
+        if (month == null || year == null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Dữ liệu không được để trống", "")
+            );
+        }
+        if (month < 0 || month > 12){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Tháng phải trong phạm vi 1-12", "")
+            );
+        }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy thống kê thành công", ticketService.getMonthStat(month,year))
+        );
+    }
+
+    @GetMapping("/stat/quarter")
+    ResponseEntity<ResponseObject> getStatByQuarter(@PathParam(value = "quarter") Integer quarter, @PathParam(value = "year") Integer year) {
+        if (quarter == null || year == null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Dữ liệu không được để trống", "")
+            );
+        }
+        if (quarter < 0 || quarter > 4){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Quý phải trong phạm vi 1-4", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy thống kê thành công", ticketService.getQuarterStat(quarter,year))
         );
     }
 

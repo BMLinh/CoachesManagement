@@ -55,14 +55,12 @@ public class CoachesServiceImpl implements CoachesService {
 
     @Override
     public List<Coaches> getAllCoachesByCoachId(int id) {
-//        List<Coaches> coaches = new ArrayList<>();
-//        coachRepository.findAllByCoachGarageIdAndStatusIsNot(id, 0).forEach(coach -> {
-//            if (coach.getStatus()!=0){
-//                coaches.addAll(coachesRepository.findAllByCoachIdAndStatusNot(id, 0));
-//            }
-//        });
-//        return coaches;
-        return coachesRepository.findAllByCoachIdAndStatus(id, 1);
+        return coachesRepository.findAllByCoachId(id);
+    }
+
+    @Override
+    public List<Coaches> getCoachesByUserId(int id) {
+        return null;
     }
 
     @Override

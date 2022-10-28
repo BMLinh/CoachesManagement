@@ -3,6 +3,7 @@ package com.hal.CoachesWeb.service.impl;
 import com.hal.CoachesWeb.entity.Coaches;
 import com.hal.CoachesWeb.entity.Ticket;
 import com.hal.CoachesWeb.model.response.MonthStat;
+import com.hal.CoachesWeb.model.response.Quarter;
 import com.hal.CoachesWeb.repositories.CoachesRepository;
 import com.hal.CoachesWeb.repositories.TicketRepository;
 import com.hal.CoachesWeb.service.TicketService;
@@ -176,8 +177,15 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Collection<MonthStat> getMonthStat(int month, int year) {
-        LocalDate start = LocalDate.of(year, month, 1);
-        LocalDate end = start.plusMonths(1).minusDays(1);
-        return ticketRepository.getMonthStat(start, end);
+        return ticketRepository.getMonthStat(month, year);
     }
+
+    @Override
+    public Collection<Quarter> getQuarterStat(int quarter, int year) {
+        return ticketRepository.getBetweenStat( quarter*3-2, quarter*3, year);
+    }
+//    @Override
+//    public Collection<Quarter> getYearStat(int quarter, int year) {
+//        return ticketRepository.getBetweenStat( quarter*3-2, quarter*3, year);
+//    }
 }
