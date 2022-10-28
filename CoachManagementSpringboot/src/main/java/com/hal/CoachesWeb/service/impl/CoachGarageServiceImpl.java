@@ -41,7 +41,7 @@ public class CoachGarageServiceImpl implements CoachGarageService {
 
     @Override
     public List<CoachGarage> getCoachGarageByUserId(int id) {
-        return coachGarageRepository.findAllByUserIdAndStatus(id, 1);
+        return coachGarageRepository.findAllByUserId(id);
     }
 
     @Override

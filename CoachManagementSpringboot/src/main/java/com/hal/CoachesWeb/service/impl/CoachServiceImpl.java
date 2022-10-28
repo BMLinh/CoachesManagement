@@ -48,8 +48,6 @@ public class CoachServiceImpl implements CoachService {
     public List<Coach> getAllCoachByUserId(int id){
         List<Integer> coachGarageIds = new ArrayList<>();
         coachGarageRepository.findAllByUserIdAndStatus(id, 1).forEach(coachGarage -> coachGarageIds.add(coachGarage.getId()));
-        System.out.println(coachGarageIds);
-        System.out.println(coachRepository.findAllByCoachGarageIdInAndStatusIsNot(coachGarageIds, 0));
         return coachRepository.findAllByCoachGarageIdInAndStatusIsNot(coachGarageIds, 0);
     }
 
@@ -111,7 +109,7 @@ public class CoachServiceImpl implements CoachService {
     public boolean updateCoach(Coach coach){
         try {
             coachRepository.save(coach);
-            if (coach.getPictures()!=null){
+            if (coach.getPictures()!=null && !coach.getPictures().isEmpty()){
                 pictureRepository.deleteAllByCoachId(coach.getId());
                 coach.getPictures().forEach(picture -> {
                     try {
