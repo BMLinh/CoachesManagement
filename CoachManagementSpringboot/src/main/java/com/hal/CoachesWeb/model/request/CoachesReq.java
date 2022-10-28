@@ -1,6 +1,7 @@
 package com.hal.CoachesWeb.model.request;
 
 import com.hal.CoachesWeb.entity.CoachesStopBy;
+import com.hal.CoachesWeb.model.response.StopByDetailRes;
 
 import java.util.List;
 
@@ -16,8 +17,8 @@ public class CoachesReq {
     private int startPoint;
     private int endPoint;
     private int status;
-    private List<CoachesStopBy> pickUp;
-    private List<CoachesStopBy> dropOff;
+    private List<StopByDetailRes> pickUp;
+    private List<StopByDetailRes> dropOff;
 
     public int getId() {
         return id;
@@ -107,19 +108,19 @@ public class CoachesReq {
         this.status = status;
     }
 
-    public List<CoachesStopBy> getPickUp() {
+    public List<StopByDetailRes> getPickUp() {
         return pickUp;
     }
 
-    public void setPickUp(List<CoachesStopBy> pickUp) {
+    public void setPickUp(List<StopByDetailRes> pickUp) {
         this.pickUp = pickUp;
     }
 
-    public List<CoachesStopBy> getDropOff() {
+    public List<StopByDetailRes> getDropOff() {
         return dropOff;
     }
 
-    public void setDropOff(List<CoachesStopBy> dropOff) {
+    public void setDropOff(List<StopByDetailRes> dropOff) {
         this.dropOff = dropOff;
     }
 }

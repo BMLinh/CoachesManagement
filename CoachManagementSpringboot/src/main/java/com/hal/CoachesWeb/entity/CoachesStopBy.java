@@ -34,6 +34,16 @@ public class CoachesStopBy {
     @JoinColumn(name = "stop_by_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private StopBy stopByByStopById;
 
+    public CoachesStopBy() {
+    }
+
+    public CoachesStopBy(int coachesId, int stopById, Time time, int status) {
+        this.coachesId = coachesId;
+        this.stopById = stopById;
+        this.time = time;
+        this.status = status;
+    }
+
     public int getCoachesId() {
         return coachesId;
     }
