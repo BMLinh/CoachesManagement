@@ -209,11 +209,27 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Collection<FrequentlyMonthStatRes> getQuarterFrequentlyStat(int quarter, int year) {
-        return ticketRepository.getFrequentlyQuarterStat(quarter*3-2, quarter*3, year);
+        return ticketRepository.getFrequentlyBewteenMonthStat(quarter*3-2, quarter*3, year);
     }
 
     @Override
     public Collection<FrequentlyMonthStatRes> getYearFrequentlyStat(int year) {
         return ticketRepository.getFrequentlyYearStat(year);
     }
+
+    @Override
+    public Collection<FrequentlyMonthStatRes> getMonthFrequentlyStatByCoachGarage(int month, int year, int id) {
+        return ticketRepository.getFrequentlyMonthStatByUser(month, year, id);
+    }
+
+    @Override
+    public Collection<FrequentlyMonthStatRes> getQuarterFrequentlyStatByCoachGarage(int quarter, int year, int id) {
+        return ticketRepository.getFrequentlyBetweenMonthStatByUser(quarter*3-2, quarter*3, year, id);
+    }
+
+    @Override
+    public Collection<FrequentlyMonthStatRes> getYearFrequentlyStatByCoachGarage(int year, int id) {
+        return ticketRepository.getFrequentlyYearStatByUSer(year, id);
+    }
+
 }

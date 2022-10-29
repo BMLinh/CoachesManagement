@@ -35,5 +35,7 @@ public interface TicketService {
     Collection<FrequentlyMonthStatRes> getMonthFrequentlyStat(int month, int year);
     Collection<FrequentlyMonthStatRes> getQuarterFrequentlyStat(int quarter, int year);
     Collection<FrequentlyMonthStatRes> getYearFrequentlyStat(int year);
-
+    Collection<FrequentlyMonthStatRes> getMonthFrequentlyStatByCoachGarage(int month, int year, int id);
+    Collection<FrequentlyMonthStatRes> getQuarterFrequentlyStatByCoachGarage(int quarter, int year, int id);
+    Collection<FrequentlyMonthStatRes> getYearFrequentlyStatByCoachGarage(int year, int id);
 }
