@@ -2,8 +2,9 @@ package com.hal.CoachesWeb.service.impl;
 
 import com.hal.CoachesWeb.entity.Coaches;
 import com.hal.CoachesWeb.entity.Ticket;
+import com.hal.CoachesWeb.model.response.FrequentlyMonthStatRes;
 import com.hal.CoachesWeb.model.response.MonthStat;
-import com.hal.CoachesWeb.model.response.Quarter;
+import com.hal.CoachesWeb.model.response.YearStat;
 import com.hal.CoachesWeb.repositories.CoachesRepository;
 import com.hal.CoachesWeb.repositories.TicketRepository;
 import com.hal.CoachesWeb.service.TicketService;
@@ -17,9 +18,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -117,7 +116,7 @@ public class TicketServiceImpl implements TicketService {
             Coaches coaches = coachesRepository.getById(ticket.getCoachesId());
             coaches.setEmptySeat(coaches.getEmptySeat()-ticket.getAmount());
             coachesRepository.save(coaches);
-            ticketRepository.save(new Ticket(ticket.getCoachesByCoachesId().getPrice()*ticket.getAmount(), ticket.getEmail()
+            ticketRepository.save(new Ticket(coaches.getPrice()*ticket.getAmount(), ticket.getEmail()
                     , ticket.getPhone(), ticket.getName(), ticket.getAmount(), ticket.getCoachesId(), ticket.getUserId()
                     , ticket.getPickUpId(), ticket.getDropOffId(), 1));
                     text = text.concat(" "+ticketRepository.findTopByEmailOrderByIdDesc(ticket.getEmail()).getId());
@@ -181,11 +180,11 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Collection<Quarter> getQuarterStat(int quarter, int year) {
+    public Collection<YearStat> getQuarterStat(int quarter, int year) {
         return ticketRepository.getBetweenStat( quarter*3-2, quarter*3, year);
     }
     @Override
-    public Collection<Quarter> getYearStat(int year) {
+    public Collection<YearStat> getYearStat(int year) {
         return ticketRepository.getYearStat(year);
     }
 
@@ -195,12 +194,26 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Collection<Quarter> getQuarterStatByCoachGarage(int quarter, int year, int id) {
+    public Collection<YearStat> getQuarterStatByCoachGarage(int quarter, int year, int id) {
         return ticketRepository.getBetweenStatByCoachGarage(quarter*3-2, quarter*3, year, id);
     }
 
     @Override
-    public Collection<Quarter> getYearStatByCoachGarage(int year, int id) {
+    public Collection<YearStat> getYearStatByCoachGarage(int year, int id) {
         return ticketRepository.getYearStatByCoachGarage(year, id);
+    }
+    @Override
+    public Collection<FrequentlyMonthStatRes> getMonthFrequentlyStat(int month, int year) {
+        return ticketRepository.getFrequentlyMonthStat(month,year);
+    }
+
+    @Override
+    public Collection<FrequentlyMonthStatRes> getQuarterFrequentlyStat(int quarter, int year) {
+        return ticketRepository.getFrequentlyQuarterStat(quarter*3-2, quarter*3, year);
+    }
+
+    @Override
+    public Collection<FrequentlyMonthStatRes> getYearFrequentlyStat(int year) {
+        return ticketRepository.getFrequentlyYearStat(year);
     }
 }
