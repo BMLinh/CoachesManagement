@@ -39,8 +39,6 @@ public class AdminController {
     @Autowired
     private CoachesStopByService coachesStopByService;
     @Autowired
-    private StopByService stopByService;
-    @Autowired
     private ShippingService shippingService;
 
     //Category
@@ -737,6 +735,51 @@ public class AdminController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject(200, "Lấy thống kê thành công", ticketService.getYearStat(year))
+        );
+    }
+    @GetMapping("/stat/freq/month")
+    ResponseEntity<ResponseObject> getFreqStatByMonth(@PathParam(value = "month") Integer month, @PathParam(value = "year") Integer year) {
+        if (month == null || year == null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Dữ liệu không được để trống", "")
+            );
+        }
+        if (month < 0 || month > 12){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Tháng phải trong phạm vi 1-12", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy thống kê thành công",
+                        ticketService.getMonthFrequentlyStat(month, year))
+        );
+    }
+
+    @GetMapping("/stat/freq/quarter")
+    ResponseEntity<ResponseObject> getFreqStatByQuarter(@PathParam(value = "quarter") Integer quarter, @PathParam(value = "year") Integer year) {
+        if (quarter == null || year == null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Dữ liệu không được để trống", "")
+            );
+        }
+        if (quarter < 0 || quarter > 4){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Quý phải trong phạm vi 1-4", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy thống kê thành công", ticketService.getQuarterFrequentlyStat(quarter,year))
+        );
+    }
+    @GetMapping("/stat/freq/year")
+    ResponseEntity<ResponseObject> getFreqStatByYear(@PathParam(value = "year") Integer year) {
+        if (year == null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Dữ liệu không được để trống", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy thống kê thành công", ticketService.getYearFrequentlyStat(year))
         );
     }
 

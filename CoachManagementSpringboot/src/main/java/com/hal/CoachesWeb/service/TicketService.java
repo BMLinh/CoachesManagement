@@ -1,8 +1,9 @@
 package com.hal.CoachesWeb.service;
 
 import com.hal.CoachesWeb.entity.Ticket;
+import com.hal.CoachesWeb.model.response.FrequentlyMonthStatRes;
 import com.hal.CoachesWeb.model.response.MonthStat;
-import com.hal.CoachesWeb.model.response.Quarter;
+import com.hal.CoachesWeb.model.response.YearStat;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,10 +27,13 @@ public interface TicketService {
     boolean deleteTicket(int id);
     boolean existsById(int id);
     Collection<MonthStat> getMonthStat(int month, int year);
-    Collection<Quarter> getQuarterStat(int quarter, int year);
-    Collection<Quarter> getYearStat(int year);
+    Collection<YearStat> getQuarterStat(int quarter, int year);
+    Collection<YearStat> getYearStat(int year);
     Collection<MonthStat> getMonthStatByCoachGarage(int month, int year, int id);
-    Collection<Quarter> getQuarterStatByCoachGarage(int quarter, int year, int id);
-    Collection<Quarter> getYearStatByCoachGarage(int year, int id);
+    Collection<YearStat> getQuarterStatByCoachGarage(int quarter, int year, int id);
+    Collection<YearStat> getYearStatByCoachGarage(int year, int id);
+    Collection<FrequentlyMonthStatRes> getMonthFrequentlyStat(int month, int year);
+    Collection<FrequentlyMonthStatRes> getQuarterFrequentlyStat(int quarter, int year);
+    Collection<FrequentlyMonthStatRes> getYearFrequentlyStat(int year);
 
 }

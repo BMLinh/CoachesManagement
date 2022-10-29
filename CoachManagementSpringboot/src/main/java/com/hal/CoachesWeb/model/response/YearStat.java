@@ -1,6 +1,6 @@
 package com.hal.CoachesWeb.model.response;
 
-public interface Quarter {
+public interface YearStat {
     Long getTotal();
     int getMonth();
 }
