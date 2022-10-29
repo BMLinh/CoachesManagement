@@ -140,6 +140,11 @@ public class UserController {
                     new ResponseObject(400, "Không tìm thấy điểm dừng/trả id", "")
             );
         }
+        if ((Integer)ticket.getAmount() == null || ticket.getAmount()<1){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Số lượng ghế phải lớn hơn 0", "")
+            );
+        }
         if (ticket.getAmount()>coachesService.getEmptySeatByCoachesId(ticket.getCoachesId())){
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject(400, "Số lượng ghế còn lại không đủ", "")
