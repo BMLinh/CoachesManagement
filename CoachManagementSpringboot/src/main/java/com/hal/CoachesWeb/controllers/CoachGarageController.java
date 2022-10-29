@@ -290,6 +290,57 @@ public class CoachGarageController {
         );
     }
 
+    @GetMapping("/stat/freq/month")
+    ResponseEntity<ResponseObject> getFreqStatByMonth(@PathParam(value = "month") Integer month
+            , @PathParam(value = "year") Integer year, @PathParam(value = "id") Integer id) {
+        if (month == null || year == null || id==null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Dữ liệu không được để trống", "")
+            );
+        }
+        if (month < 0 || month > 12){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Tháng phải trong phạm vi 1-12", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy thống kê thành công",
+                        ticketService.getMonthFrequentlyStatByCoachGarage(month, year, id))
+        );
+    }
+
+    @GetMapping("/stat/freq/quarter")
+    ResponseEntity<ResponseObject> getFreqStatByQuarter(@PathParam(value = "quarter") Integer quarter
+            , @PathParam(value = "year") Integer year, @PathParam(value = "id") Integer id) {
+        if (quarter == null || year == null || id==null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Dữ liệu không được để trống", "")
+            );
+        }
+        if (quarter < 0 || quarter > 4){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Quý phải trong phạm vi 1-4", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy thống kê thành công"
+                        , ticketService.getQuarterFrequentlyStatByCoachGarage(quarter, year, id))
+        );
+    }
+    @GetMapping("/stat/freq/year")
+    ResponseEntity<ResponseObject> getFreqStatByYear(@PathParam(value = "year") Integer year
+            , @PathParam(value = "id") Integer id) {
+        if (year == null || id==null){
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject(400, "Dữ liệu không được để trống", "")
+            );
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject(200, "Lấy thống kê thành công"
+                        , ticketService.getYearFrequentlyStatByCoachGarage(year, id))
+        );
+    }
+
     private ResponseEntity<ResponseObject> coachesChecking(CoachesReq coachesReq){
         if (!coachService.isActive(coachesReq.getCoachId())){
             return ResponseEntity.status(HttpStatus.OK).body(

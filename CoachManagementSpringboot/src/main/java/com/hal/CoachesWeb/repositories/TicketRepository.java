@@ -24,20 +24,20 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
             "from ticket " +
             "where month(create_date) = ?1 and year(create_date) =?2 " +
             "GROUP BY date(create_date) " +
-            "order by Date(t.create_date)asc", nativeQuery = true)
+            "order by Date(create_date)asc", nativeQuery = true)
     Collection<MonthStat> getMonthStat(int month, int year);
 
     @Query(value = "select  sum(price) as total, month(create_date) as month " +
             "from ticket " +
             "where month(create_date) between ?1 and ?2 and year(create_date)=?3  " +
             "GROUP BY month(create_date) " +
-            "order by month(t.create_date)asc", nativeQuery = true)
+            "order by month(create_date)asc", nativeQuery = true)
     Collection<YearStat> getBetweenStat(int monthStart, int monthEnd, int year);
     @Query(value = "select  sum(price) as total, month(create_date) as month " +
             "from ticket " +
             "where year(create_date)=?1  " +
             "GROUP BY month(create_date) " +
-            "order by month(t.create_date)asc", nativeQuery = true)
+            "order by month(create_date)asc", nativeQuery = true)
     Collection<YearStat> getYearStat(int year);
 
     @Query(value = "select sum(t.price) as total , Date(t.create_date) as date " +
@@ -82,7 +82,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
             "where month(t.create_date) between ?1 and ?2 and year(t.create_date)=?3 " +
             "group by c.start_point " +
             "order by c.end_point desc, month(t.create_date) asc", nativeQuery = true)
-    Collection<FrequentlyMonthStatRes> getFrequentlyQuarterStat(int start, int end, int year);
+    Collection<FrequentlyMonthStatRes> getFrequentlyBewteenMonthStat(int start, int end, int year);
 
     @Query(value = "select year(t.create_date) as id, count(t.id) as amount, c1.name as startPoint, c2.name as endPoint " +
             "from coaches c " +
@@ -93,4 +93,43 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
             "group by c.start_point " +
             "order by c.end_point desc, month(t.create_date) asc", nativeQuery = true)
     Collection<FrequentlyMonthStatRes> getFrequentlyYearStat(int year);
+
+    @Query(value = "select month(t.create_date) as id, count(t.id) as amount, c1.name as startPoint, c2.name as endPoint " +
+            "from coaches cs " +
+            "join country c1 on cs.start_point = c1.id " +
+            "join country c2 on cs.end_point = c2.id " +
+            "join ticket t on t.coaches_id = cs.id " +
+            "join coach c on c.id = cs.coach_id " +
+            "join coach_garage cg on c.coach_garage_id=cg.id " +
+            "join user u on u.id=cg.user_id " +
+            "where month(t.create_date)=?1 and year(t.create_date)=?2 and u.id=?3 " +
+            "group by cs.start_point " +
+            "order by cs.end_point desc;", nativeQuery = true)
+    Collection<FrequentlyMonthStatRes> getFrequentlyMonthStatByUser(int month, int year, int id);
+
+    @Query(value = "select quarter(t.create_date) as id, count(t.id) as amount, c1.name as startPoint, c2.name as endPoint " +
+            "from coaches cs " +
+            "join country c1 on cs.start_point = c1.id " +
+            "join country c2 on cs.end_point = c2.id " +
+            "join ticket t on t.coaches_id = cs.id " +
+            "join coach c on c.id = cs.coach_id " +
+            "join coach_garage cg on c.coach_garage_id=cg.id " +
+            "join user u on u.id=cg.user_id " +
+            "where month(t.create_date) between ?1 and ?2 and year(t.create_date)=?3 and u.id=?4 " +
+            "group by cs.start_point " +
+            "order by cs.end_point desc;", nativeQuery = true)
+    Collection<FrequentlyMonthStatRes> getFrequentlyBetweenMonthStatByUser(int start, int end, int year, int id);
+
+    @Query(value = "select year(t.create_date) as id, count(t.id) as amount, c1.name as startPoint, c2.name as endPoint " +
+            "from coaches cs " +
+            "join country c1 on cs.start_point = c1.id " +
+            "join country c2 on cs.end_point = c2.id " +
+            "join ticket t on t.coaches_id = cs.id " +
+            "join coach c on c.id = cs.coach_id " +
+            "join coach_garage cg on c.coach_garage_id=cg.id " +
+            "join user u on u.id=cg.user_id " +
+            "where year(t.create_date)=?1 and u.id=?2 " +
+            "group by cs.start_point " +
+            "order by cs.end_point desc;", nativeQuery = true)
+    Collection<FrequentlyMonthStatRes> getFrequentlyYearStatByUSer(int year, int id);
 }
