@@ -34,16 +34,6 @@ CREATE TABLE `category` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `category`
---
-
-LOCK TABLES `category` WRITE;
-/*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Giường nằm 45 chỗ',1,45),(2,'Giường nằm 25 chỗ',1,25),(3,'Giường nằm 49 chỗ',0,49),(5,'Ghế ngồi 10 chỗ',0,10),(6,'Ngồi 15 chỗ',1,15);
-/*!40000 ALTER TABLE `category` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `coach`
 --
 
@@ -62,18 +52,8 @@ CREATE TABLE `coach` (
   KEY `coach_cagory_idx` (`category_id`),
   CONSTRAINT `coach_cagory` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
   CONSTRAINT `coach_coachGarage` FOREIGN KEY (`coach_garage_id`) REFERENCES `coach_garage` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `coach`
---
-
-LOCK TABLES `coach` WRITE;
-/*!40000 ALTER TABLE `coach` DISABLE KEYS */;
-INSERT INTO `coach` VALUES (1,'59AFG015H',NULL,1,1,1),(2,'58HFG015B',NULL,2,2,1),(3,'49HF321B','Xe màu hồng',2,3,0),(4,'58HFG015B',NULL,2,2,1),(5,'58HFG015B',NULL,2,2,1),(6,'58HFG015B',NULL,2,2,1),(7,'58HFG015B',NULL,2,2,1),(8,'58HFG015B',NULL,2,2,1),(9,'58HFG015B',NULL,2,2,1),(10,'58HFG015B',NULL,2,2,1),(11,'98HF321B','Cập nhật',1,1,1),(12,'58HFGAF65B','Nhìu thứ mới',1,2,1);
-/*!40000 ALTER TABLE `coach` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `coach_garage`
@@ -102,16 +82,6 @@ CREATE TABLE `coach_garage` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `coach_garage`
---
-
-LOCK TABLES `coach_garage` WRITE;
-/*!40000 ALTER TABLE `coach_garage` DISABLE KEYS */;
-INSERT INTO `coach_garage` VALUES (1,'Hải Triều','Linh','0123456789','a',NULL,3,2,'a',0),(2,'Đông Dương','Hiếu','1234567890','b',NULL,2,3,'a',1),(3,'Đà Lạt','Hải','2345678901','c',NULL,1,3,'a',1),(4,'Hải Triều','Nam','0123456789','d',NULL,3,2,'a',1),(6,'Hải Triều','Linh','0123456789','e','12/8 Đường 6',3,3,'a',2),(7,'Linh test api','Linh','0123456789','1951052099linh@gmail.com','12/8 Đường 6',3,3,'null',1),(8,'Hải Triều','Linh','0123456789','asdhasuidhaisd','12/8 Đường 6',3,7,'askjdgasduia',2),(9,'Hải Triều','Linh','0123456789','asdhasuidhaisd','12/8 Đường 6',3,7,'askjdgasduia',2);
-/*!40000 ALTER TABLE `coach_garage` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `coaches`
 --
 
@@ -138,18 +108,8 @@ CREATE TABLE `coaches` (
   CONSTRAINT `fk_coaches_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`id`),
   CONSTRAINT `fk_coaches_end_point` FOREIGN KEY (`end_point`) REFERENCES `country` (`id`),
   CONSTRAINT `fk_coaches_start_point` FOREIGN KEY (`start_point`) REFERENCES `country` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `coaches`
---
-
-LOCK TABLES `coaches` WRITE;
-/*!40000 ALTER TABLE `coaches` DISABLE KEYS */;
-INSERT INTO `coaches` VALUES (1,'2022-10-05 07:30:30','2022-10-05 10:30:30','',250000,39,_binary '',NULL,1,1,1,1),(2,'2022-10-14 06:30:00','2022-10-15 05:45:00','Xe hư dời 1 ngày',350000,0,_binary '\0',NULL,2,2,1,0),(3,'2022-10-13 06:30:00','2022-10-15 05:45:00','',550000,49,_binary '',NULL,1,1,1,1),(4,'2022-10-13 06:30:00','2022-10-15 05:45:00','',550000,25,_binary '',NULL,2,2,1,1),(6,'2022-10-26 06:30:00','2022-10-27 05:45:00','',650000,0,_binary '',NULL,2,2,1,1),(7,'2022-10-26 06:30:00','2022-10-27 05:45:00','',650000,0,_binary '',NULL,2,2,1,1),(9,'2022-10-29 06:30:00','2022-10-30 05:45:00','test update',350000,0,_binary '\0',NULL,2,2,1,0);
-/*!40000 ALTER TABLE `coaches` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `coaches_stop_by`
@@ -171,16 +131,6 @@ CREATE TABLE `coaches_stop_by` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `coaches_stop_by`
---
-
-LOCK TABLES `coaches_stop_by` WRITE;
-/*!40000 ALTER TABLE `coaches_stop_by` DISABLE KEYS */;
-INSERT INTO `coaches_stop_by` VALUES (1,1,'00:00:00',1),(1,2,'00:00:15',2),(1,3,'00:00:00',3),(3,1,'00:00:30',2),(3,2,'00:00:15',3),(3,3,'00:00:00',1),(4,2,'00:00:15',3),(4,3,'00:00:00',1);
-/*!40000 ALTER TABLE `coaches_stop_by` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `comment`
 --
 
@@ -200,18 +150,8 @@ CREATE TABLE `comment` (
   KEY `fk_comment_coach_idx` (`coach_id`),
   CONSTRAINT `fk_comment_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`id`),
   CONSTRAINT `fk_comment_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `comment`
---
-
-LOCK TABLES `comment` WRITE;
-/*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (5,'aaa',5,NULL,1,1,1),(6,'Tesing',4,'2022-10-13 08:10:05',1,1,1),(7,'Xe chạy bát nháo lắm',5,'2022-10-13 08:10:43',1,1,1);
-/*!40000 ALTER TABLE `comment` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `country`
@@ -227,16 +167,6 @@ CREATE TABLE `country` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `country`
---
-
-LOCK TABLES `country` WRITE;
-/*!40000 ALTER TABLE `country` DISABLE KEYS */;
-INSERT INTO `country` VALUES (1,'Hà Nội',1),(2,'Hồ Chí Minh',1),(3,'Đà Lạt',1),(5,'Hồ Chí Minh',1),(6,'Hồ Chí Minh',1);
-/*!40000 ALTER TABLE `country` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `district`
@@ -257,16 +187,6 @@ CREATE TABLE `district` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `district`
---
-
-LOCK TABLES `district` WRITE;
-/*!40000 ALTER TABLE `district` DISABLE KEYS */;
-INSERT INTO `district` VALUES (1,'Đống Đa',1,1),(2,'Quận 1',2,1),(3,'Quận 12',2,1);
-/*!40000 ALTER TABLE `district` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `picture`
 --
 
@@ -281,18 +201,8 @@ CREATE TABLE `picture` (
   PRIMARY KEY (`id`),
   KEY `fk_picture_coach_idx` (`coach_id`),
   CONSTRAINT `fk_picture_coach` FOREIGN KEY (`coach_id`) REFERENCES `coach` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `picture`
---
-
-LOCK TABLES `picture` WRITE;
-/*!40000 ALTER TABLE `picture` DISABLE KEYS */;
-INSERT INTO `picture` VALUES (1,'https://res.cloudinary.com/dd3tfkb7f/image/upload/v1666753564/poocvhri3euprr3l8dh5.png',1,1),(2,'https://res.cloudinary.com/dd3tfkb7f/image/upload/v1666753564/poocvhri3euprr3l8dh5.png',1,1),(3,'https://res.cloudinary.com/dd3tfkb7f/image/upload/v1666753564/poocvhri3euprr3l8dh5.png',1,1),(4,'https://res.cloudinary.com/dd3tfkb7f/image/upload/v1666753574/wwibwbvo0c0m6jxxz10k.png',1,1);
-/*!40000 ALTER TABLE `picture` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `role`
@@ -308,16 +218,6 @@ CREATE TABLE `role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `role`
---
-
-LOCK TABLES `role` WRITE;
-/*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'user',1),(2,'admin',1),(3,'coachGarage',1),(4,'employee',1);
-/*!40000 ALTER TABLE `role` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `shipping`
@@ -345,17 +245,8 @@ CREATE TABLE `shipping` (
   KEY `fk_shipping__user_idx` (`user_id`),
   CONSTRAINT `fk_shipping__user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `fk_shipping_coaches` FOREIGN KEY (`coaches_id`) REFERENCES `coaches` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `shipping`
---
-
-LOCK TABLES `shipping` WRITE;
-/*!40000 ALTER TABLE `shipping` DISABLE KEYS */;
-/*!40000 ALTER TABLE `shipping` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `stop_by`
@@ -373,18 +264,8 @@ CREATE TABLE `stop_by` (
   PRIMARY KEY (`id`),
   KEY `fk_stop_by_district_idx` (`district_id`),
   CONSTRAINT `fk_stop_by_district` FOREIGN KEY (`district_id`) REFERENCES `district` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `stop_by`
---
-
-LOCK TABLES `stop_by` WRITE;
-/*!40000 ALTER TABLE `stop_by` DISABLE KEYS */;
-INSERT INTO `stop_by` VALUES (1,'Bến xe An Sương','111 đường 8',3,1),(2,'Bến xe Quận 1','456 đường 7',2,1),(3,'Bến xe Quận 2',NULL,3,1);
-/*!40000 ALTER TABLE `stop_by` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `ticket`
@@ -415,18 +296,8 @@ CREATE TABLE `ticket` (
   CONSTRAINT `fk_ticket_drop_off` FOREIGN KEY (`drop_off_id`) REFERENCES `stop_by` (`id`),
   CONSTRAINT `fk_ticket_pick_up` FOREIGN KEY (`pick_up_id`) REFERENCES `stop_by` (`id`),
   CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ticket`
---
-
-LOCK TABLES `ticket` WRITE;
-/*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
-INSERT INTO `ticket` VALUES (3,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:29:50','0123456789',NULL,1,1,2,2,1,2),(4,15000,'1951052055hieu@ou.edu.vn','2022-10-12 04:31:02','0123456789',NULL,1,1,2,2,1,1),(5,15000,'1951052055hieu@ou.edu.vn','2022-10-12 04:31:03','0123456789',NULL,1,1,2,2,1,2),(6,15000,'1951052055hieu@ou.edu.vn','2022-10-12 04:37:12','0123456789',NULL,1,1,2,2,1,1),(7,15000,'1951052099linh@ou.edu.vn','2022-10-12 04:43:19','0123456789',NULL,1,1,2,2,1,1),(9,15000,'1951052099linh@ou.edu.vn','2022-10-27 05:17:18','0123456789',NULL,0,1,2,2,1,1);
-/*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -452,16 +323,6 @@ CREATE TABLE `user` (
   CONSTRAINT `fk_user_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','0123456789',_binary '',NULL,NULL,1,1),(2,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Bùi Mạnh Linh','1951052099linh@ou.edu.vn','1234567890',_binary '',NULL,NULL,2,1),(3,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Nguyễn Mạnh','1951052099linh@ou.edu.vn','2345678901',_binary '',NULL,NULL,3,1),(4,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Lương Hoàng Nam','1951052099linh@ou.edu.vn','3456789012',_binary '',NULL,NULL,4,1),(7,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','4567890123',_binary '',NULL,'2022-10-05 01:38:30',3,1),(8,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','5678901234',_binary '',NULL,'2022-10-05 01:38:56',1,1),(10,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','0123456711',_binary '',NULL,'2022-10-05 01:46:18',1,1),(11,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Linh test update2','1951052099linh@ou.edu.vn','1234555555',_binary '',NULL,NULL,1,0),(12,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','12345456488',_binary '',NULL,'2022-10-05 05:46:56',1,1),(13,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Nguyễn Minh Hiếu','1951052055hieu@ou.edu.vn','    ',_binary '',NULL,'2022-10-05 06:09:11',1,1),(16,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Linh','1951052055hieu@ou.edu.vn','01234567777',_binary '',NULL,'2022-10-09 16:40:00',1,1),(17,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Linh','1951052055hieu@ou.edu.vn','01234567771',_binary '',NULL,'2022-10-09 16:43:11',1,1),(19,'$2a$10$Kh28jCwLGkH13mfW669lIOdwUxyn8/AWrBsmSVgWeuFytwCjPcQNG','Linh','1951052055hieu@ou.edu.vn','0123456781',_binary '',NULL,'2022-10-24 01:01:29',1,1),(20,'$2a$10$Ow40iRavGZhB4JtHPXGXdu8iIodS3iWHVFgQwe2H/KtAc7A0KN.Fm','Linh','1951052055hieu@ou.edu.vn','0123456782',_binary '',NULL,'2022-10-24 18:03:43',1,1),(22,'$2a$10$OwgvA0i9IYDSjMxBc.781e0PL6XFFHYHp5vrQySXIurnrZGsU4YJu','Tesing 1','1951052099linh@ou.edu.vn','12345678901',_binary '',NULL,'2022-10-25 23:05:16',1,0);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -472,4 +333,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-27  7:27:27
+-- Dump completed on 2022-10-29  8:57:16
